@@ -1,0 +1,12 @@
+# --- Virtual Environment ---
+ad-satellite-telemetry/
+
+# --- Research Literature (Ignored for Copyright) ---
+docs/papers/
+*.pdf
+
+# --- Python & Notebook Artifacts ---
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.DS_Store
