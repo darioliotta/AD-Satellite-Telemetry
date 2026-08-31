@@ -1,0 +1,8 @@
+stage,latency_ms,pct_compute
+h2d,0.1064,0.0
+conv1_pool1,0.4085,0.99
+conv2_pool2,8.4473,20.37
+conv3_pool3,29.3834,70.87
+dense1_fc1,3.1274,7.54
+dense2_fc2,0.0970,0.23
+d2h,0.1140,0.0

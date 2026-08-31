@@ -21,7 +21,7 @@ def run_training():
 
     WINDOW_SIZE = 50
     BATCH_SIZE = 256
-    EPOCHS = 5
+    EPOCHS = 20
     LR = 0.001
 
     print("Dataset loading...")
@@ -37,7 +37,7 @@ def run_training():
     feats = 1
     model = TranAD(feats=feats, window_size=WINDOW_SIZE).to(device)
     optimizer = optim.AdamW(model.parameters(), lr=LR, weight_decay=1e-5)
-    l1_loss = nn.L1Loss(reduction='mean')
+    l2_loss = nn.MSELoss(reduction='mean')
 
     if CHECKPOINT_PATH.exists():
         checkpoint = torch.load(CHECKPOINT_PATH, map_location=device)
@@ -57,8 +57,8 @@ def run_training():
             optimizer.zero_grad()
             
             x1, x2 = model(x, x)
-            loss1 = l1_loss(x1, x)
-            loss2 = l1_loss(x2, x)
+            loss1 = l2_loss(x1, x)
+            loss2 = l2_loss(x2, x)
             loss = (1 / epoch) * loss1 + (1 - 1 / epoch) * loss2
             
             loss.backward()
@@ -73,8 +73,8 @@ def run_training():
             for batch in val_loader:
                 x = batch[0].permute(1, 0, 2).to(device)
                 x1, x2 = model(x, x)
-                loss1 = l1_loss(x1, x)
-                loss2 = l1_loss(x2, x)
+                loss1 = l2_loss(x1, x)
+                loss2 = l2_loss(x2, x)
                 val_loss += ((1 / epoch) * loss1 + (1 - 1 / epoch) * loss2).item()
                 
         val_loss /= len(val_loader)

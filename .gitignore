@@ -1,12 +1,31 @@
+# --- System Files ---
+.DS_Store
+**/.DS_Store
+
 # --- Virtual Environment ---
 ad-satellite-telemetry/
+.venv/
+venv/
+env/
 
-# --- Research Literature (Ignored for Copyright) ---
+# --- Research Literature ---
 docs/papers/
-*.pdf
 
 # --- Python & Notebook Artifacts ---
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
-.DS_Store
+
+# --- LaTeX Auxiliary Build Files ---
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.nav
+*.snm
+*.synctex.gz
+*.toc
+*.pyg
+*.out
+*.vrb
+_minted-*
