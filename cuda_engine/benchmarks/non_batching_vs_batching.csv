@@ -1,3 +1,0 @@
-mode,batch_size,cpu_lat_mean_ms,cpu_lat_std_ms,gpu_lat_mean_ms,gpu_lat_std_ms,speedup,cpu_throughput_sps,gpu_throughput_sps,max_diff
-non_batching,1,1.6302,0.0116,2.0872,1.8555,0.78,613.41,479.11,0.00e+00
-batching,64,104.7105,0.1247,42.8913,4.9095,2.44,611.21,1492.14,1.91e-06

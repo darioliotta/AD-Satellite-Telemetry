@@ -16,6 +16,9 @@ __pycache__/
 *.pyc
 .ipynb_checkpoints/
 
+# --- Exam material ---
+exam_material/
+
 # --- LaTeX Auxiliary Build Files ---
 *.aux
 *.fdb_latexmk
