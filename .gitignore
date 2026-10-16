@@ -11,24 +11,5 @@ env/
 # --- Research Literature ---
 docs/papers/
 
-# --- Python & Notebook Artifacts ---
-__pycache__/
-*.pyc
-.ipynb_checkpoints/
-
-# --- Exam material ---
-exam_material/
-
-# --- LaTeX Auxiliary Build Files ---
-*.aux
-*.fdb_latexmk
-*.fls
-*.log
-*.nav
-*.snm
-*.synctex.gz
-*.toc
-*.pyg
-*.out
-*.vrb
-_minted-*
+# --- Old work ---
+old-work/
