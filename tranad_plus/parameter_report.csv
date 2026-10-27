@@ -1,0 +1,7 @@
+category_attention,category_feedforward,category_output,component_fcn,component_transformer_decoder1,component_transformer_decoder2,component_transformer_encoder,features,feedforward,formula_matches,fp32_kib,model,parameters,theoretical,window
+840,330,21,21,446,446,278,3,8,True,4.65234375,OPS-SAT-3F-H8,1191,1191,20
+840,642,21,21,550,550,382,3,16,True,5.87109375,OPS-SAT-3F-H16,1503,1503,20
+840,1266,21,21,758,758,590,3,32,True,8.30859375,OPS-SAT-3F-H32,2127,2127,20
+840,2514,21,21,1174,1174,1006,3,64,True,13.18359375,OPS-SAT-3F-H64,3375,3375,20
+51000,15300,1275,1275,25500,25500,15300,25,50,True,263.96484375,SMAP-25F-H50,67575,67575,10
+117040,7572,2926,2926,49340,49340,25932,38,16,True,498.1953125,SMD-38F-H16,127538,127538,20

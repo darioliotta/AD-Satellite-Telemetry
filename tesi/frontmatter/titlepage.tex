@@ -1,0 +1,122 @@
+
+% ==========================================
+% TITLE PAGE
+% ==========================================
+
+\begin{titlepage}
+\thispagestyle{empty}
+
+% ==========================================
+% BACKGROUND WATERMARK — VERSION C
+% Grande, spostato a sinistra e parziale
+% ==========================================
+\AddToShipoutPictureBG*{%
+  \put(\LenToUnit{0.08\paperwidth},
+       \LenToUnit{0.50\paperheight}){%
+    \makebox(0,0){%
+      \transparent{0.075}%
+      \includegraphics[
+        width=1.15\paperwidth,
+        keepaspectratio
+      ]{figures/logounipdgrigio.png}%
+    }%
+  }%
+}
+
+% ==========================================
+% HEADER
+% ==========================================
+\begin{center}
+
+\vspace*{2mm}
+
+\includegraphics[
+  height=25mm,
+  keepaspectratio
+]{figures/Logo_Universita_Padova.png}
+
+\vspace{7mm}
+
+{\LARGE\scshape
+ \ThesisUniversity\par}
+
+\vspace{4mm}
+
+{\large\bfseries
+ \ThesisDepartment\par}
+
+\vspace{3mm}
+
+{\large
+ \ThesisDegree\par}
+
+% ==========================================
+% THESIS TYPE
+% ==========================================
+\vspace{12mm}
+
+{\Large\scshape
+ \ThesisType\par}
+
+% ==========================================
+% THESIS TITLE
+% ==========================================
+\vspace{18mm}
+
+\makebox[\textwidth][c]{%
+  \begin{minipage}{1.10\textwidth}
+    \centering
+    {\fontsize{21}{26}\selectfont
+     \bfseries
+     \ThesisTitle\par}
+  \end{minipage}%
+}
+
+\end{center}
+
+% ==========================================
+% FLEXIBLE VERTICAL SPACE
+% ==========================================
+\vfill
+
+% ==========================================
+% SUPERVISOR AND CANDIDATE
+% ==========================================
+\noindent
+\begin{minipage}[t]{0.46\textwidth}
+  \raggedright
+
+  {\large\bfseries Supervisor\par}
+
+  \vspace{3mm}
+
+  {\Large \ThesisSupervisor\par}
+
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{0.46\textwidth}
+  \raggedleft
+
+  {\large\bfseries Candidate\par}
+
+  \vspace{3mm}
+
+  {\Large \ThesisCandidate\par}
+
+\end{minipage}
+
+% ==========================================
+% ACADEMIC YEAR
+% ==========================================
+\vspace{17mm}
+
+\begin{center}
+  {\large\bfseries
+   Academic Year \ThesisAcademicYear\par}
+\end{center}
+
+\vspace*{1mm}
+
+\end{titlepage}
+
+\clearpage{\pagestyle{empty}\cleardoublepage}

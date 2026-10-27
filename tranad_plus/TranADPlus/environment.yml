@@ -1,0 +1,28 @@
+name: TranADPlus
+channels:
+  - conda-forge
+  - anaconda
+  - dglteam
+dependencies:
+  - pytorch=2.0.0
+  - pytorch-cuda=12.1
+  - torchvision=0.15.2
+  - torchaudio=2.0.0
+  - numpy=1.26.0
+  - matplotlib=3.8.0
+  - pandas=2.1.1
+  - scikit-learn=1.2.2
+  - plotly=5.9.0
+  - python-cufflinks=0.17.3
+  - notebook=7.0.6
+  - nb_conda_kernels=2.3.1
+  - nbformat=5.9.2
+  - ipykernel=6.26.0
+  - coverage=7.2.2
+  - tqdm=4.65.0
+  - xlrd=2.0.1
+  - dgl=1.1.2
+  - openpyxl=3.0.10
+  - odfpy=1.4.1
+  - scienceplots=2.1.0
+

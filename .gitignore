@@ -1,15 +1,110 @@
-# --- System Files ---
-.DS_Store
-**/.DS_Store
 
-# --- Virtual Environment ---
-ad-satellite-telemetry/
+# ==================================================
+# AD-SATELLITE-TELEMETRY — ROOT .gitignore
+# ==================================================
+
+# --- macOS and system files ---
+.DS_Store
+._*
+__MACOSX/
+Thumbs.db
+
+# --- Python virtual environments ---
+/ad-satellite-telemetry/
 .venv/
 venv/
 env/
+ENV/
 
-# --- Research Literature ---
-docs/papers/
+# --- Python generated files ---
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.coverage
+htmlcov/
+*.egg-info/
+build/
+dist/
+.ipynb_checkpoints/
 
-# --- Old work ---
-old-work/
+# --- Secrets and local configuration ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+credentials.json
+secrets.json
+
+# --- Datasets: original and preprocessed ---
+/data/
+/tranad_plus/TranADPlus/Datasets/
+
+# --- Central experimental archive: v6 ---
+/results/
+
+# --- Legacy experimental outputs ---
+/tranad_plus/results/
+/tranad_plus/logs/
+/tranad_plus/TranADPlus/Checkpoints/
+/tranad_plus/TranADPlus/Pickles/
+
+# --- Model and binary artifacts ---
+*.ckpt
+*.pt
+*.pth
+*.pkl
+*.pickle
+*.npy
+*.npz
+*.h5
+*.hdf5
+*.onnx
+*.safetensors
+
+# --- Runtime logs and temporary files ---
+*.log
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# --- Archives ---
+*.zip
+*.tar
+*.tar.gz
+*.7z
+
+# --- LaTeX generated files ---
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.synctex
+*.synctex.gz
+*.toc
+*.out
+*.lof
+*.lot
+*.tdo
+*.nav
+*.snm
+*.vrb
+*.bcf
+*.run.xml
+/tesi/main.pdf
+
+# --- Research papers not distributed in Git ---
+/docs/papers/
+
+# --- Archived coursework and previous work ---
+/old-work/

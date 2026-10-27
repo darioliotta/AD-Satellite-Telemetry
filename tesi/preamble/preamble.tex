@@ -1,0 +1,126 @@
+% preamble/preamble.tex — packages and global settings
+
+% --- Encoding, fonts, language ---
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% --- Page layout ---
+% Top and bottom margins generous (2cm left/right keep the 17cm text block
+% the TikZ figures are drawn against).
+\usepackage[a4paper,top=3cm,bottom=3cm,left=2cm,right=2cm,headheight=15pt,headsep=0.6cm]{geometry}
+\usepackage{setspace}
+
+% --- Running header: subsection left, chapter
+% right, small italic over a rule; page number bottom centre. Chapter
+% openings keep the plain style (no header, number at the bottom).
+% Titles are not uppercased, preserving technical capitalization.
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\itshape\nouppercase{\rightmark}}
+\fancyhead[R]{\small\itshape\nouppercase{\leftmark}}
+% Page number in footer (oneside layout).
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancypagestyle{plain}{%
+  \fancyhf{}%
+  \fancyfoot[R]{\thepage}%
+  \renewcommand{\headrulewidth}{0pt}%
+}
+% Paragraph separation: keep the first-line indent, add a small vertical skip
+% between paragraphs so consecutive paragraphs do not read as a wall of text.
+\setlength{\parskip}{0.5em}
+
+% --- Math ---
+\usepackage{amsmath,amssymb}
+\usepackage{mathtools}
+\usepackage{upgreek}
+
+% --- Theorem-like environments (formal definitions) ---
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[chapter]
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\newcommand{\dd}{\,\mathrm{d}}
+
+% --- Units and numbers ---
+\usepackage{siunitx}
+\sisetup{per-mode=symbol}
+
+% --- Graphics, floats, tables ---
+\usepackage{graphicx}
+\graphicspath{{figures/}}
+\usepackage{float}
+\usepackage{placeins}
+\usepackage{subfig}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,fit}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepgfplotslibrary{groupplots}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage{listings}
+
+% --- Source code listing style ---
+\lstdefinestyle{thesiscode}{
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\bfseries,
+  commentstyle=\itshape,
+  stringstyle=\ttfamily,
+  showstringspaces=false,
+  keepspaces=true,
+  columns=fullflexible,
+  frame=single,
+  rulecolor=\color{black!20},
+  aboveskip=6pt,
+  belowskip=6pt,
+  captionpos=b,
+  floatplacement=htbp
+}
+
+% --- Miscellaneous ---
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{xspace}
+\usepackage{enumitem}
+\usepackage{chemformula}
+\usepackage{comment}
+\usepackage{eso-pic}
+\usepackage{transparent}
+\usepackage{indentfirst}
+\usepackage{setspace}
+
+% --- Chapter heading style ---
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries}
+  {\filleft\huge\chaptertitlename~\thechapter}
+  {3ex}
+  {\vspace{1.5ex}\filright}
+  [\vspace{1ex}\titlerule]
+
+% --- Abbreviations (macros + list of abbreviations) ---
+% The list heading is typeset in main.tex (so it lands in the ToC), hence
+% heading = none here. Default display = used: only acronyms that appear in
+% the text are listed.
+\usepackage{acro}[=v3]
+\acsetup{list/heading = none}
+\input{preamble/acronyms}
+
+% --- Work-in-progress markers (delete package + \listoftodos when final) ---
+% NOTE: no "disable" option: it would swallow \cite inside todos.
+\setlength{\marginparwidth}{2cm} % silences the todonotes config warning
+\usepackage[colorinlistoftodos]{todonotes}
+
+% --- Draft line numbers (delete this block + \linenumbers in main.tex when final) ---
+\usepackage[pagewise]{lineno}
+\renewcommand{\linenumberfont}{\normalfont\tiny\color{gray}}
+
+% --- Hyperlinks (keep last) ---
+\usepackage[colorlinks,allcolors=blue!50!black]{hyperref}
+\hypersetup{linktocpage}

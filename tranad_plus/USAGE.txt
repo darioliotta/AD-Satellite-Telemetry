@@ -1,0 +1,27 @@
+Replace tranad_plus/config.py and tranad_plus/run_experiments.py with the files in this directory.
+Do not change TranADPlus/src or TranADPlus/scripts.
+
+Preview the complete campaign:
+python run_experiments.py --all --dry-run
+
+Execute all eleven profiles (six datasets):
+python run_experiments.py --all --device cuda:0
+
+Execute one dataset:
+python run_experiments.py --dataset MSL --device cuda:0
+
+Execute one profile:
+python run_experiments.py --profile smap_plus_ws50 --device cpu
+
+Evaluate an existing checkpoint without training:
+python run_experiments.py --profile smap_plus_ws50 --stage evaluate --device cpu
+
+Repeat evaluation while preserving previous results:
+python run_experiments.py --profile smap_plus_ws50 --stage evaluate --force-evaluation --device cpu
+
+Keep running later profiles after an individual failure:
+python run_experiments.py --all --device cuda:0 --keep-going
+
+Every profile stores all new training logs, evaluation logs, checkpoint, native POT/Best F1 pickle outputs, JSON metadata and event history under results/DATASET, with separate operational log copies under logs/DATASET. Dataset summaries are stored under results/DATASET/summary.json. Environment snapshots and campaign summaries are stored under logs/.
+
+The script validates archived checkpoints and reports before skipping work. An interrupted training cannot resume from a middle epoch, but a completed validated checkpoint can be reused for evaluation.

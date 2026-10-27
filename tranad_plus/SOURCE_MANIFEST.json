@@ -1,0 +1,23 @@
+{
+  "source_archive": "TranADPlus-main.zip",
+  "source_repository": "https://github.com/yyexela/TranADPlus",
+  "source_python_files_unchanged": true,
+  "sha256": {
+    "TranADPlus/__init__.py": "af4d0f10d646a22dbc5847802691499e693f29ef440656638d6802fb1e6d9ad1",
+    "TranADPlus/src/__init__.py": "91b0c513d8b577e20d7ac308a7ad97fd187a0363583c74e331c3ff1e5fc0c7f7",
+    "TranADPlus/src/datasets.py": "9389c4bf08144eba1739e979cde30bf54e122f7c2dafbf2fa861d96b599dbfcb",
+    "TranADPlus/src/global_config.py": "7297ab2f88ec8f194cdb8e1afbbcc759bb345e1c2fa3d14946ec4a6920d13f23",
+    "TranADPlus/src/helpers.py": "7af3ace8879174ca24068a278722efd362bb9bbc893c7a2e433ca0bdaa73879a",
+    "TranADPlus/src/models.py": "3f6451beed30637248e005633d7c94d1adcede0aca0d53c53665d2a54c3deeef",
+    "TranADPlus/src/omnianomaly.py": "5ec25222c5de43c316f59cd7a69c6ac32fdb811515a94080680daa47f502d97a",
+    "TranADPlus/src/parse_data.py": "87770589a984e845665bf497dffec84b7c11b5bfc3e6dc4237a5a582cd55cd2c",
+    "TranADPlus/src/plot_data.py": "3e7de55d7e977e9d01fefe36e7db8987fb6fd569518978325097b36b3f352ec4",
+    "TranADPlus/src/preprocess_data.py": "f87baf19389d8a8d10e5afc248d9d4b3076ca846e86221bda57e476e388beda7",
+    "TranADPlus/src/print_data.py": "b6e6b46709425dc8f73ab08f70df0b426fa3a952c5288a2ed4b09799655b2b2b",
+    "TranADPlus/src/spot.py": "d6791c3ce151989732a8000130ce10cc4c510d250885fde5941350b368ecb984",
+    "TranADPlus/scripts/anonymize.py": "89950c36121a39f8ec3889f9c0a438fa85d5779be9a90a3d1ceb83c0661eb459",
+    "TranADPlus/scripts/clean_data.py": "f11d33f6e93656d9682575671f2f973ec811069b7685eb7679269544de3f6425",
+    "TranADPlus/scripts/evaluation.py": "64f516e6317c27aeb3ba6506114e76c06cc74dc0407e9eea0ca5a3bc62892693",
+    "TranADPlus/scripts/training_loop.py": "125cc0ea1d56ab7def8a4e85f0fb287f3c275dbf4f9a641d26fcf1a5e68cc1b7"
+  }
+}

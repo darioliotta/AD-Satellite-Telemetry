@@ -1,0 +1,41 @@
+% MASTER'S THESIS — modular LaTeX starter (adapted from shared template)
+% Build: latexmk -pdf main.tex
+\documentclass[a4paper,12pt,oneside,openany]{book}
+\input{metadata}
+\input{preamble/preamble}
+\begin{document}
+\hypersetup{pageanchor=false}
+\frontmatter
+\input{frontmatter/titlepage}
+\hypersetup{pageanchor=true}
+\input{frontmatter/abstract}
+\tableofcontents
+\chapter*{List of Abbreviations}
+\phantomsection
+\addcontentsline{toc}{chapter}{List of Abbreviations}
+\printacronyms
+\listoftodos % Draft dashboard; comment in the final version.
+\input{frontmatter/acknowledgements}
+\mainmatter
+\linenumbers % Draft body only; comment for the final PDF.
+% To compile only selected chapters, uncomment one line before the includes:
+% \includeonly{chapters/chapter-introduction}
+\include{chapters/chapter-introduction}
+\include{chapters/chapter-background}
+\include{chapters/chapter-datasets}
+\include{chapters/chapter-methodology}
+\include{chapters/chapter-results}
+\include{chapters/chapter-hardware}
+\include{chapters/conclusions}
+\include{appendix/appendix}
+\backmatter
+\phantomsection
+\addcontentsline{toc}{chapter}{Bibliography}
+\ifthesisbibliography
+  \bibliographystyle{JHEP}
+  \bibliography{references}
+\else
+  \chapter*{Bibliography}
+  \noindent\emph{Add verified sources to references.bib and enable BibTeX in metadata.tex.}
+\fi
+\end{document}

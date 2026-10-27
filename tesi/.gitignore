@@ -1,0 +1,21 @@
+# TeX intermediates
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.bcf
+*.run.xml
+*.lof
+*.lot
+*.tdo
+*.bak
+# Keep source figures and .bib; allow main.pdf for sharing if wanted.
+.DS_Store
+__MACOSX/
+.vscode/
+.idea/
