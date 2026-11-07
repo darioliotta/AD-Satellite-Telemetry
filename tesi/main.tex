@@ -2,6 +2,7 @@
 % Build: latexmk -pdf main.tex
 \documentclass[a4paper,12pt,oneside,openany]{book}
 \input{metadata}
+\thesisbibliographytrue
 \input{preamble/preamble}
 \begin{document}
 \hypersetup{pageanchor=false}
@@ -17,15 +18,14 @@
 \listoftodos % Draft dashboard; comment in the final version.
 \input{frontmatter/acknowledgements}
 \mainmatter
-\linenumbers % Draft body only; comment for the final PDF.
 % To compile only selected chapters, uncomment one line before the includes:
 % \includeonly{chapters/chapter-introduction}
 \include{chapters/chapter-introduction}
 \include{chapters/chapter-background}
 \include{chapters/chapter-datasets}
-\include{chapters/chapter-methodology}
-\include{chapters/chapter-results}
-\include{chapters/chapter-hardware}
+\include{chapters/chapter-replication}
+\include{chapters/chapter-ablation}
+\include{chapters/chapter-architecture}
 \include{chapters/conclusions}
 \include{appendix/appendix}
 \backmatter

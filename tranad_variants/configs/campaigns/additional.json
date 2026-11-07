@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "name": "additional",
+  "purpose": "168 additional experiments; together with the completed original 72, a balanced 240-run design with 5 seeds and 4 W/FF settings",
+  "datasets": ["OPS-SAT", "SMAP", "MSL"],
+  "variants": ["reference", "shared_decoder", "single_pass", "encoder_only"],
+  "dataset_first": true,
+  "blocks": [
+    {
+      "configurations": ["reference", "compact"],
+      "seeds": [2029, 2030]
+    },
+    {
+      "configurations": ["window_only", "ff_only"],
+      "seeds": [2026, 2027, 2028, 2029, 2030]
+    }
+  ]
+}

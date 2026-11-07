@@ -2,6 +2,7 @@ import argparse
 import hashlib
 import json
 import os
+import random
 import shutil
 import tempfile
 import time
@@ -12,7 +13,8 @@ import numpy as np
 import torch
 from torch.utils.data import DataLoader
 
-from config import NATIVE_PACKAGE, RESULTS_DIR, checkpoint_path, get_profile
+from config import NATIVE_PACKAGE, RESULTS_DIR, PROCESSED_DATA_DIR, checkpoint_path, get_profile
+from epoch_telemetry import write_epoch
 
 
 def save_atomic(path, payload):
@@ -71,10 +73,10 @@ def resume(profile, device, saved, checkpoint):
     from TranADPlus.src import helpers, models
     from TranADPlus.src.datasets import TSDataset_tracks
 
-    folder = NATIVE_PACKAGE / "Datasets" / "Preprocessed" / profile["dataset"] / "Train" / "Tracks"
+    folder = PROCESSED_DATA_DIR / profile["dataset"] / "Train" / "Tracks"
     if not folder.is_dir():
         raise FileNotFoundError(folder)
-    track_paths = [str(folder / name) for name in os.listdir(folder) if name.endswith(".npy")]
+    track_paths = [str(folder / name) for name in sorted(os.listdir(folder)) if name.endswith(".npy")]
     if not track_paths:
         raise RuntimeError(f"No training tracks in {folder}")
     dataset = TSDataset_tracks(
@@ -110,6 +112,12 @@ def resume(profile, device, saved, checkpoint):
     if scheduler.last_epoch != start_epoch:
         raise RuntimeError(f"Scheduler epoch mismatch: {scheduler.last_epoch} vs {start_epoch}")
 
+    if profile.get('seed') is not None:
+        random.seed(profile['seed'])
+        np.random.seed(profile['seed'])
+        torch.manual_seed(profile['seed'])
+        if torch.cuda.is_available():
+            torch.cuda.manual_seed_all(profile['seed'])
     backup = checkpoint.with_name(f"{checkpoint.stem}_origin_epoch_{start_epoch}.ckpt")
     if not backup.exists():
         shutil.copy2(checkpoint, backup)
@@ -121,6 +129,10 @@ def resume(profile, device, saved, checkpoint):
     final_loss = None
     model.train()
     for epoch in range(start_epoch, profile["epochs"]):
+        if torch.device(device).type == 'cuda':
+            torch.cuda.synchronize(device)
+            torch.cuda.reset_peak_memory_stats(device)
+        epoch_start = time.perf_counter()
         epoch_losses = []
         for windows in dataloader:
             windows = windows.to(device).permute(1, 0, 2)
@@ -138,6 +150,14 @@ def resume(profile, device, saved, checkpoint):
         if not np.isfinite(final_loss):
             raise RuntimeError(f"Non-finite training loss at epoch {epoch}")
         scheduler.step()
+        cuda = torch.device(device).type == 'cuda'
+        if cuda:
+            torch.cuda.synchronize(device)
+        write_epoch(profile['dataset'], profile['identifier'], epoch+1, final_loss,
+                    optimizer.param_groups[0]['lr'], time.perf_counter()-epoch_start,
+                    len(epoch_losses), len(dataset), device,
+                    torch.cuda.max_memory_allocated(device) if cuda else None,
+                    torch.cuda.max_memory_reserved(device) if cuda else None)
         save_atomic(checkpoint, {
             "epoch": epoch,
             "model_state_dict": model.state_dict(),
@@ -177,6 +197,8 @@ def resume(profile, device, saved, checkpoint):
 
 
 def main():
+    from gpu_settings import configure
+    configure()
     parser = argparse.ArgumentParser(description="Resume a native TranAD+ intermediate checkpoint")
     parser.add_argument("--profile", required=True)
     parser.add_argument("--device", default="cuda:0")

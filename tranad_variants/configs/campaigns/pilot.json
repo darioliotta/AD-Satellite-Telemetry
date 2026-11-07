@@ -1,0 +1,7 @@
+{
+  "schema_version": 1, "name": "pilot",
+  "purpose": "9 full-length paired runs, reused by main; establish functionality and first trends, not statistical significance",
+  "datasets": ["OPS-SAT", "SMAP", "MSL"],
+  "variants": ["reference", "shared_decoder", "single_pass"],
+  "configurations": ["reference"], "seeds": [2026]
+}

@@ -2,6 +2,9 @@ import argparse
 import os
 import random
 import tempfile
+import time
+from epoch_telemetry import write_epoch
+from console_telemetry import emit_epoch
 from pathlib import Path
 
 import numpy as np
@@ -56,6 +59,7 @@ def restore_random_state(value):
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description="TranAD+ resumable training")
+    parser.add_argument('--seed', type=int, default=None)
     parser.add_argument("--model_str", default="TranAD")
     parser.add_argument("--dataset_str", required=True)
     parser.add_argument("--identifier", required=True)
@@ -79,6 +83,8 @@ def parse_arguments():
 
 
 def main():
+    from gpu_settings import configure
+    configure()
     parser, args = parse_arguments()
     if args.model_str != "TranAD":
         parser.error("This runner supports TranAD only")
@@ -87,9 +93,15 @@ def main():
     if args.stop_after_epoch is not None and args.stop_after_epoch < 1:
         parser.error("--stop-after-epoch must be at least 1")
 
-    base = Path(native.global_config.config.top_dir)
-    final_path = base / "Checkpoints" / f"{args.identifier}.ckpt"
-    resume_path = base / "Checkpoints" / f"{args.identifier}.resume.ckpt"
+    if args.seed is not None:
+        random.seed(args.seed)
+        np.random.seed(args.seed)
+        torch.manual_seed(args.seed)
+        if torch.cuda.is_available():
+            torch.cuda.manual_seed_all(args.seed)
+    native_cfg = native.global_config.config
+    final_path = Path(native_cfg.checkpoint_dir) / f"{args.identifier}.ckpt"
+    resume_path = Path(native_cfg.checkpoint_dir) / f"{args.identifier}.resume.ckpt"
 
     def train(model, epochs, dataloader, optimizer, scheduler, device, save_location=None):
         if save_location is None or Path(save_location) != final_path:
@@ -100,10 +112,10 @@ def main():
                 "Use resume_native.py for original intermediate checkpoints."
             )
 
-        folder = base / "Datasets" / "Preprocessed" / args.dataset_str / "Train" / "Tracks"
+        folder = Path(native_cfg.preprocess_save_dir) / args.dataset_str / "Train" / "Tracks"
         inventory = [
             (name, (folder / name).stat().st_size)
-            for name in os.listdir(folder)
+            for name in sorted(os.listdir(folder))
             if name.endswith(".npy")
         ]
         configuration = {
@@ -122,8 +134,14 @@ def main():
             "num_workers": int(dataloader.num_workers),
             "downsample": args.downsample,
             "scaling": str(args.scaling),
+            "seed": args.seed,
+            "adam_impl": os.environ.get("TRANADPLUS_ADAM_IMPL", "standard"),
+            "precision": os.environ.get("TRANADPLUS_CUDA_PRECISION", "faithful"),
             "track_inventory_ordered": inventory,
         }
+        from gpu_settings import select_optimizer
+        upstream_optimizer = optimizer
+        optimizer, scheduler = select_optimizer(model, optimizer, scheduler)
         start_epoch = 0
         final_loss = None
 
@@ -156,12 +174,20 @@ def main():
         else:
             print(f"NEW TRAINING: {args.identifier}", flush=True)
 
+        from gpu_batches import training_batches
+        batches, transfer_path = training_batches(dataloader.dataset, batch_size=dataloader.batch_size,
+            shuffle=bool(args.shuffle), device=device, num_workers=dataloader.num_workers)
         loss_fn = nn.MSELoss(reduction="none")
         for epoch in range(start_epoch, epochs):
+            if torch.device(device).type == 'cuda':
+                torch.cuda.synchronize(device)
+                torch.cuda.reset_peak_memory_stats(device)
+            epoch_start = time.perf_counter()
             model.train()
-            epoch_losses = []
-            for windows in dataloader:
-                windows = windows.to(device).permute(1, 0, 2)
+            batch_count=0
+            loss_total=torch.zeros((),device=device,dtype=torch.float64)
+            for windows in batches:
+                windows = windows.to(device, non_blocking=(transfer_path == 'cpu_pinned')).permute(1, 0, 2)
                 target = windows[-1:, :, :]
                 first, second = model(windows, target)
                 weight = 1.0 / (epoch + 1)
@@ -169,18 +195,32 @@ def main():
                     weight * loss_fn(first, target)
                     + (1.0 - weight) * loss_fn(second, target)
                 ).mean()
-                epoch_losses.append(loss.item())
-                optimizer.zero_grad()
-                loss.backward(retain_graph=True)
+                loss_total.add_(loss.detach().double())
+                batch_count += 1
+                optimizer.zero_grad(set_to_none=True)
+                loss.backward()
                 optimizer.step()
 
-            if not epoch_losses:
+            if not batch_count:
                 raise RuntimeError("Training dataloader produced no batches")
-            final_loss = float(np.mean(epoch_losses))
+            final_loss = float((loss_total / batch_count).item())
             if not np.isfinite(final_loss):
                 raise RuntimeError(f"Non-finite training loss at epoch {epoch}")
             scheduler.step()
-            print(f"Epoch {epoch} avg. loss: {final_loss:.4f}", flush=True)
+            cuda = torch.device(device).type == 'cuda'
+            if cuda:
+                torch.cuda.synchronize(device)
+            elapsed = time.perf_counter() - epoch_start
+            write_epoch(args.dataset_str, args.identifier, epoch+1, final_loss,
+                        optimizer.param_groups[0]['lr'], elapsed, batch_count,
+                        len(dataloader.dataset), device,
+                        torch.cuda.max_memory_allocated(device) if cuda else None,
+                        torch.cuda.max_memory_reserved(device) if cuda else None)
+            emit_epoch(dataset=args.dataset_str, identifier=args.identifier,
+                       epoch=epoch+1, epochs=epochs, loss=final_loss,
+                       lr=optimizer.param_groups[0]['lr'], seconds=elapsed,
+                       batches=batch_count, windows=len(dataloader.dataset),
+                       peak_allocated_bytes=(torch.cuda.max_memory_allocated(device) if cuda else None))
             completed = epoch + 1
             stop = args.stop_after_epoch is not None and completed >= args.stop_after_epoch
             if completed % args.checkpoint_every == 0 or completed == epochs or stop:
@@ -199,6 +239,13 @@ def main():
                 print("Test interruption requested; checkpoint preserved", flush=True)
                 raise SystemExit(75)
 
+        # The original upstream training_loop.py saves `optimizer` from its
+        # own local scope after this function returns. In fused mode we have
+        # trained with a replacement optimizer: copy its complete state back
+        # so the final upstream checkpoint contains the ACTUAL trained Adam
+        # moments/step counters instead of an empty original optimizer.
+        from gpu_settings import sync_upstream_optimizer
+        sync_upstream_optimizer(upstream_optimizer, optimizer)
         return final_loss, optimizer.param_groups[0]["lr"]
 
     original_train = native.helpers.train_TranAD

@@ -1,3 +1,127 @@
-% Add verified BibTeX entries here using real paper metadata.
-% Example: \cite{VerifiedKey} in a chapter, then add @article{VerifiedKey,...}.
-% Do not copy references from the original author's unrelated RDMA thesis.
+% Verified for the introduction on 2026-11-05 against the local papers and
+% publisher/author records. Provenance and scope are in docs/journal.md.
+
+@inproceedings{Hundman2018Spacecraft,
+  author    = {Hundman, Kyle and Constantinou, Valentino and Laporte, Christopher and Colwell, Ian and Soderstrom, Tom},
+  title     = {Detecting Spacecraft Anomalies Using {LSTMs} and Nonparametric Dynamic Thresholding},
+  booktitle = {Proceedings of the 24th ACM SIGKDD International Conference on Knowledge Discovery \& Data Mining},
+  year      = {2018},
+  publisher = {Association for Computing Machinery},
+  pages     = {387--395},
+  doi       = {10.1145/3219819.3219845},
+  url       = {https://arxiv.org/abs/1802.04431}
+}
+
+@article{Ruszczak2025OPSSAT,
+  author  = {Ruszczak, Bogdan and Kotowski, Krzysztof and Evans, David and Nalepa, Jakub},
+  title   = {The {OPS-SAT} benchmark for detecting anomalies in satellite telemetry},
+  journal = {Scientific Data},
+  year    = {2025},
+  volume  = {12},
+  pages   = {710},
+  doi     = {10.1038/s41597-025-05035-3},
+  url     = {https://www.nature.com/articles/s41597-025-05035-3}
+}
+
+@inproceedings{Yermakov2025TranADPlus,
+  author    = {Yermakov, Alexey and Yun, Kyongsik and Ratliff, Lillian and Kutz, J. Nathan},
+  title     = {A Transformer-Based Deep Learning Approach to Anomaly Detection of High-Bandwidth Multivariate Time-Series Satellite Communications},
+  booktitle = {18th International Conference on Space Operations},
+  year      = {2025},
+  publisher = {Canadian Space Agency},
+  address   = {Montreal, Canada},
+  doi       = {10.82217/spaceops2025_397},
+  note      = {Paper 397},
+  url       = {https://publications.spaceops.org/2025/0397}
+}
+
+@article{Sze2017EfficientDNN,
+  author  = {Sze, Vivienne and Chen, Yu-Hsin and Yang, Tien-Ju and Emer, Joel S.},
+  title   = {Efficient Processing of Deep Neural Networks: A Tutorial and Survey},
+  journal = {Proceedings of the IEEE},
+  year    = {2017},
+  volume  = {105},
+  number  = {12},
+  pages   = {2295--2329},
+  doi     = {10.1109/JPROC.2017.2761740},
+  url     = {https://eems.mit.edu/wp-content/uploads/2017/11/2017_pieee_dnn.pdf}
+}
+
+@inproceedings{Vaswani2017Attention,
+  author    = {Vaswani, Ashish and Shazeer, Noam and Parmar, Niki and Uszkoreit, Jakob and Jones, Llion and Gomez, Aidan N. and Kaiser, {\L}ukasz and Polosukhin, Illia},
+  title     = {Attention Is All You Need},
+  booktitle = {Advances in Neural Information Processing Systems},
+  volume    = {30},
+  year      = {2017},
+  url       = {https://arxiv.org/abs/1706.03762}
+}
+
+@article{Tuli2022TranAD,
+  author  = {Tuli, Shreshth and Casale, Giuliano and Jennings, Nicholas R.},
+  title   = {{TranAD}: Deep Transformer Networks for Anomaly Detection in Multivariate Time Series Data},
+  journal = {Proceedings of the VLDB Endowment},
+  year    = {2022},
+  volume  = {15},
+  number  = {6},
+  pages   = {1201--1214},
+  doi     = {10.14778/3514061.3514067},
+  url     = {https://www.vldb.org/pvldb/vol15/p1201-tuli.pdf}
+}
+
+% The supplied document identifies a principal investigator, but gives no
+% author list or publication date. Neither is inferred from PDF metadata.
+@misc{TOASTExecutiveSummary,
+  title        = {{TOAST}: Transformers On-Board for Anomaly-detection in Satellite Telemetry},
+  howpublished = {Undated internal research proposal, University of Padova},
+  note         = {Undated executive summary. Principal investigator: Andrea Triossi}
+}
+
+% Background chapter: verified against author-hosted publications and book.
+@article{Chandola2009AnomalySurvey,
+  author  = {Chandola, Varun and Banerjee, Arindam and Kumar, Vipin},
+  title   = {Anomaly Detection: A Survey},
+  journal = {ACM Computing Surveys},
+  year    = {2009},
+  volume  = {41},
+  number  = {3},
+  pages   = {15:1--15:58},
+  doi     = {10.1145/1541880.1541882},
+  url     = {https://arindam.cs.illinois.edu/papers/09/anomaly.pdf}
+}
+
+@book{Goodfellow2016DeepLearning,
+  author    = {Goodfellow, Ian and Bengio, Yoshua and Courville, Aaron},
+  title     = {Deep Learning},
+  year      = {2016},
+  publisher = {MIT Press},
+  url       = {https://www.deeplearningbook.org/}
+}
+
+% The inspected upstream snapshot is byte-identical for models.py/helpers.py.
+% Full revision: 2f02268d1fb606d85e55e76422a5fc00a08dc6d5.
+@misc{TranADPlusReferenceCode,
+  title        = {{TranADPlus} reference implementation},
+  howpublished = {GitHub repository, revision \texttt{2f02268}},
+  url          = {https://github.com/yyexela/TranADPlus},
+  note         = {Revision 2f02268d1fb606d85e55e76422a5fc00a08dc6d5}
+}
+
+% Chapter 3: verified primary source for the excess-tail model and POT.
+@inproceedings{Siffer2017POT,
+  author    = {Siffer, Alban and Fouque, Pierre-Alain and Termier, Alexandre and Largou{\"e}t, Christine},
+  title     = {Anomaly Detection in Streams with Extreme Value Theory},
+  booktitle = {Proceedings of the 23rd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining},
+  year      = {2017},
+  pages     = {1067--1075},
+  publisher = {Association for Computing Machinery},
+  doi       = {10.1145/3097983.3098144},
+  url       = {https://www.amossys.fr/wp-content/uploads/anomaly-detection-with-evt-1.pdf}
+}
+
+% Official dataset documentation, including supplied scaling and command inputs.
+@misc{TelemanomReferenceData,
+  title        = {{Telemanom}: reference implementation and spacecraft anomaly data},
+  howpublished = {Official GitHub repository},
+  url          = {https://github.com/khundman/telemanom},
+  note         = {README and labeled\_anomalies.csv; accessed 6 November 2026}
+}

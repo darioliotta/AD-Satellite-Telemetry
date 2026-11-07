@@ -12,6 +12,7 @@ import numpy as np
 from config import (
     DATASETS,
     NATIVE_PACKAGE,
+    DATA_DIR,
     PROCESSED_DATA_DIR,
     RAW_DATA_DIR,
     result_directory,
@@ -102,7 +103,7 @@ def ensure_link(destination, source):
 
 
 def connect_datasets(dataset, raw, processed):
-    raw_base = NATIVE_PACKAGE / "Datasets" / "Raw"
+    raw_base = DATA_DIR / "native" / "Raw"
 
     linked = (
         ("SMAP", "MSL")
@@ -115,10 +116,9 @@ def connect_datasets(dataset, raw, processed):
 
     processed.mkdir(parents=True, exist_ok=True)
 
-    ensure_link(
-        NATIVE_PACKAGE / "Datasets" / "Preprocessed",
-        processed,
-    )
+    from config import PROCESSED_DATA_DIR
+    if processed.resolve() != PROCESSED_DATA_DIR.resolve():
+        raise ValueError("--processed must equal the configured shared preprocessing directory")
 
 
 def initialize(dataset):

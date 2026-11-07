@@ -1,0 +1,7 @@
+{
+  "schema_version": 1, "name": "main",
+  "purpose": "27 reference-width matched comparisons; 9 pilot runs reused, 18 additional runs",
+  "datasets": ["OPS-SAT", "SMAP", "MSL"],
+  "variants": ["reference", "shared_decoder", "single_pass"],
+  "configurations": ["reference"], "seeds": [2026, 2027, 2028]
+}

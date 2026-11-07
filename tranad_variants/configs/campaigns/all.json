@@ -1,0 +1,7 @@
+{
+  "schema_version": 1, "name": "all",
+  "purpose": "Union of all 72 unique experiments; includes pilot without duplicating it",
+  "datasets": ["OPS-SAT", "SMAP", "MSL"],
+  "variants": ["reference", "shared_decoder", "single_pass", "encoder_only"],
+  "configurations": ["reference", "compact"], "seeds": [2026, 2027, 2028]
+}

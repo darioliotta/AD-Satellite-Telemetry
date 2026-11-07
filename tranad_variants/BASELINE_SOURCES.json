@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "purpose": "Numerical baseline sources are pinned; path/catalog/telemetry support files are recorded at runtime to allow the server WADI profile extension",
+  "files": {
+    "TranADPlus/src/models.py": "3f6451beed30637248e005633d7c94d1adcede0aca0d53c53665d2a54c3deeef",
+    "TranADPlus/src/helpers.py": "7af3ace8879174ca24068a278722efd362bb9bbc893c7a2e433ca0bdaa73879a",
+    "TranADPlus/src/datasets.py": "9389c4bf08144eba1739e979cde30bf54e122f7c2dafbf2fa861d96b599dbfcb",
+    "TranADPlus/src/omnianomaly.py": "5ec25222c5de43c316f59cd7a69c6ac32fdb811515a94080680daa47f502d97a",
+    "TranADPlus/src/spot.py": "d6791c3ce151989732a8000130ce10cc4c510d250885fde5941350b368ecb984",
+    "opssat_pipeline.py": "9810d57b5028bd39408c90ee0da6e4c4ae2719a1a7661e8c35b17b75b3b56ce1",
+    "opssat_scoring.py": "2df4f6b1d6169ff8aac20ae5b114c0f9807547fb988a819dcdedf46570449e6e",
+    "paper_metrics.py": "7a85b4416d940b6ac7df1d5efc0d58969a8bbc51649a14c6c940afbcb700481d",
+    "gpu_batches.py": "62e298d8bbfd3699628e39081f9db412ab0361fe64f66fb7abb72dc52b7c0049",
+    "gpu_settings.py": "68531e3abf7e5a9d87c78183db20685c73fd11ebf7fbcfb0c2a0b16ba9320716"
+  },
+  "support_files": [
+    "TranADPlus/__init__.py",
+    "TranADPlus/src/__init__.py",
+    "TranADPlus/src/global_config.py",
+    "config.py",
+    "project_paths.py",
+    "console_telemetry.py",
+    "observability/measure_experiment.py",
+    "observability/export_anomaly_scores.py"
+  ]
+}

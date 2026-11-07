@@ -1,6 +1,0 @@
-TranADPlus/Datasets/
-TranADPlus/Checkpoints/
-TranADPlus/Pickles/
-logs/
-__pycache__/
-*.pyc

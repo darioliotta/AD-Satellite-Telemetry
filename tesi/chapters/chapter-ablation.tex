@@ -1,0 +1,39 @@
+\chapter{Window Size and Feed-Forward Dimension Ablation}
+\label{chap:ablation}
+
+\todo[inline]{Outline approved; prose pending. Analyze the existing window/FF experiments on OPS-SAT, SMAP and MSL using verified reports. Present variability and detection--cost trade-offs without assuming that compression always reduces detection performance.}
+
+\section{Research hypotheses and experimental design}
+\label{sec:ablation-design}
+% Describe the grid, repeated seeds and the complementary roles of v10 and v12.
+
+\section{Reference configurations and controlled comparisons}
+\label{sec:ablation-controls}
+% Distinguish study baselines from the configurations maximizing the paper's metrics.
+% Verify fixed settings and evaluation compatibility before pooling campaigns.
+
+\section{Window-size reduction at fixed feed-forward dimension}
+\label{sec:ablation-window}
+% Analyze each dataset; distinguish reduced context/computation from parameter reduction.
+
+\section{Feed-forward reduction at fixed window size}
+\label{sec:ablation-feedforward}
+% Report the effect on detection, parameters, weight memory and computational cost.
+
+\section{Joint reduction of window size and feed-forward dimension}
+\label{sec:ablation-joint}
+% Examine interactions and departures from the effects of isolated reductions.
+
+\section{Variability and comparison across datasets}
+\label{sec:ablation-variability}
+% Report seed variability and dataset-specific behavior, with emphasis on OPS-SAT.
+% Different label granularity limits direct comparison of absolute scores across datasets.
+
+\section{Detection performance versus resource requirements}
+\label{sec:ablation-tradeoffs}
+% Relate detection metrics to parameter counts, estimated computation and measured latency.
+% Separate exploratory test-based comparisons from validation-based model selection.
+
+\section{Implications for architectural simplification}
+\label{sec:ablation-implications}
+% Use supported findings to motivate the structural interventions in Chapter 6.

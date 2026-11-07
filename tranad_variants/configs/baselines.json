@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "reference": "v10/v12 hyperparameter-ablation baseline, not the paper-best checkpoints",
+  "training": {
+    "epochs": 50, "num_layers": 1, "shuffle": false,
+    "padding": true, "num_workers": 0, "downsample": null
+  },
+  "evaluation": {
+    "alpha_steps": 21, "paper_threshold_steps": 200,
+    "score_batch_size_by_dataset": {"OPS-SAT": 1024, "SMAP": 1024, "MSL": 128},
+    "dense_thresholds": "all_distinct_scores", "train_quantile": 0.995,
+    "pot_max_initializations": 35, "warmup": 10, "iterations": 100
+  },
+  "datasets": {
+    "OPS-SAT": {
+      "features": 1,
+      "training": {
+        "batch_sz": 256, "lr": 0.001, "pot_q": 0.01,
+        "validation_fraction": 0.2, "split_seed": 2026,
+        "channels": null, "max_train_fragments_per_channel": null,
+        "max_test_fragments_per_channel": null
+      },
+      "configurations": {
+        "reference": {"window_sz": 10, "dim_feedforward": 8},
+        "window_only": {"window_sz": 5, "dim_feedforward": 8},
+        "ff_only": {"window_sz": 10, "dim_feedforward": 4},
+        "compact": {"window_sz": 5, "dim_feedforward": 4}
+      }
+    },
+    "SMAP": {
+      "features": 25,
+      "training": {"batch_sz": 1024, "lr": 0.001, "pot_q": 0.07},
+      "configurations": {
+        "reference": {"window_sz": 10, "dim_feedforward": 50},
+        "window_only": {"window_sz": 5, "dim_feedforward": 50},
+        "ff_only": {"window_sz": 10, "dim_feedforward": 25},
+        "compact": {"window_sz": 5, "dim_feedforward": 25}
+      }
+    },
+    "MSL": {
+      "features": 55,
+      "training": {"batch_sz": 128, "lr": 0.0001, "pot_q": 0.01},
+      "configurations": {
+        "reference": {"window_sz": 50, "dim_feedforward": 110},
+        "window_only": {"window_sz": 25, "dim_feedforward": 110},
+        "ff_only": {"window_sz": 50, "dim_feedforward": 55},
+        "compact": {"window_sz": 25, "dim_feedforward": 55}
+      }
+    }
+  }
+}

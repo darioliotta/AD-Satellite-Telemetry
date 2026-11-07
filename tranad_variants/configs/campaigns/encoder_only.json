@@ -1,0 +1,7 @@
+{
+  "schema_version": 1, "name": "encoder_only",
+  "purpose": "18 exploratory encoder-only runs; compare with the matched reference controls from main and compact",
+  "datasets": ["OPS-SAT", "SMAP", "MSL"],
+  "variants": ["encoder_only"],
+  "configurations": ["reference", "compact"], "seeds": [2026, 2027, 2028]
+}

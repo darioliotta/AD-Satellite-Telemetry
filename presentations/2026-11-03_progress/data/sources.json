@@ -1,0 +1,86 @@
+{
+  "language": "English",
+  "slides": 13,
+  "colour": "#9B0014",
+  "selection": "Saved ordinary legacy maxima by dataset and method, except SWaT: closest to the paper for each method. One row per dataset.",
+  "ablation": "Mean and sample SD of 3 seeds; 50 epochs; PA; dense BF in ablation; original BF in benchmark.",
+  "sources": {
+    "v10": {
+      "csv": "/Users/darioliotta/Documents/Physics of Data/AD-Satellite-Telemetry/results/v10/study/all_experiments.csv",
+      "csv_sha256": "58157500574b00c0c2dcd07023c55b3ef4450949ee25491323d3c4ae7b447f25",
+      "source_hashes": {
+        "models_sha256": [
+          "3f6451beed30637248e005633d7c94d1adcede0aca0d53c53665d2a54c3deeef"
+        ],
+        "runner_sha256": [
+          "72de82e1682e258a5f31eb5c1d08f877ca809b93a86a63b52238493eb8fafd0f"
+        ],
+        "scoring_sha256": [
+          "2df4f6b1d6169ff8aac20ae5b114c0f9807547fb988a819dcdedf46570449e6e"
+        ],
+        "evaluation_sha256": [
+          "8061a90494c0f18a9e82e811232bec53b00fd95fb280fb751dc48101242061bd"
+        ]
+      }
+    },
+    "v12": {
+      "csv": "/Users/darioliotta/Documents/Physics of Data/AD-Satellite-Telemetry/results/v12/study/all_experiments.csv",
+      "csv_sha256": "8d445cd5e4b5b08b427b7e2bf2bafdb5a5fb04df61c5b64a025d5e1e25afd6de",
+      "source_hashes": {
+        "models_sha256": [
+          "3f6451beed30637248e005633d7c94d1adcede0aca0d53c53665d2a54c3deeef"
+        ],
+        "runner_sha256": [
+          "576afa9c1e7fc9aec2d1c4aca76f0a93831047e71e277d36d9a354f12a839eec"
+        ],
+        "scoring_sha256": [
+          "2df4f6b1d6169ff8aac20ae5b114c0f9807547fb988a819dcdedf46570449e6e"
+        ],
+        "evaluation_sha256": [
+          "9810d57b5028bd39408c90ee0da6e4c4ae2719a1a7661e8c35b17b75b3b56ce1"
+        ]
+      }
+    },
+    "notes": [
+      "270 reports checked; 90 architecture cells; three seeds per cell; 50 epochs.",
+      "Authors ROC/AUC verified against balanced accuracy of binary PA predictions.",
+      "Dense ROC/AUC recovered for all 270 runs from integer confusion counts, reconstructed using saved dense precision/recall and label totals. Saved dense F1 verified to 1e-12.",
+      "OPS-SAT source hash and exact train/validation/test segment IDs match across all runs.",
+      "Model source hashes match; evaluation source hashes differ. Numeric scoring parity is NOT certified.",
+      "No retraining or selection of a final architecture was performed."
+    ]
+  },
+  "slides_content": [
+    "TranAD+",
+    "Datasets & study",
+    "Benchmarks \u00b7 F1 (%)",
+    "Window size",
+    "Feed-forward width",
+    "Window + FF",
+    "OPS-SAT",
+    "SMAP",
+    "MSL",
+    "Accuracy vs compute",
+    "Compact models",
+    "Precision \u00b7 Recall \u00b7 AUC",
+    "Architecture proposals"
+  ],
+  "swat20_selected": {
+    "seed": 2,
+    "identifier": "papercheck_SWaT_bf_w20_ff816_l4_bs2048_s2",
+    "pot_f1": 0.27971850665026693,
+    "pot_precision": 0.1640252312442268,
+    "pot_recall": 0.9492869043042054,
+    "pot_ROC/AUC": 0.6403829701865982,
+    "pot_source": "results/legacy/SWaT/_native_pickles/papercheck_SWaT_bf_w20_ff816_l4_bs2048_s2_pot.pkl",
+    "pot_sha256": "45a2bc08e75e903754181b931c2b3e6822369d42a670e5b30c93718fa3f57d48",
+    "bf_f1": 0.8183895515817279,
+    "bf_precision": 0.9572595081042642,
+    "bf_recall": 0.7147067977517805,
+    "bf_ROC/AUC": 0.8551487330288584,
+    "bf_source": "results/legacy/SWaT/_native_pickles/papercheck_SWaT_bf_w20_ff816_l4_bs2048_s2_bf.pkl",
+    "bf_sha256": "f9a230bf1ffc7d0c1d466137837f1eb60e5e811807c29cf4505d78623b30b074"
+  },
+  "brand_source": "https://www.unipd.it/",
+  "builder_sha256": "54ec25118caa494c39c7a2d5a4cc907578b8d84773fb4b0c223684a3fa22d43e"
+}

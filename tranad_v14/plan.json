@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "name": "v14_exploration",
+  "window_study": {
+    "versions": ["v10", "v12"],
+    "datasets": ["OPS-SAT", "SMAP", "MSL"],
+    "seeds": [2026, 2027, 2028],
+    "windows_per_dataset": 6,
+    "ff_widths_per_dataset": 5,
+    "alpha": 0.5,
+    "diagnostic_test_normal_fpr": 0.005,
+    "baseline_ff": {"OPS-SAT": 8, "SMAP": 50, "MSL": 110}
+  },
+  "context": {
+    "datasets": ["OPS-SAT", "SMAP", "MSL"],
+    "variants": ["reference", "encoder_only"],
+    "configurations": ["reference", "window_only"],
+    "seeds": [2026, 2027, 2028, 2029, 2030],
+    "conditions": ["original", "reverse_past", "repeat_current"]
+  },
+  "continuation": {
+    "datasets": ["SMAP", "OPS-SAT", "MSL"],
+    "variants": ["reference", "encoder_only"],
+    "configurations": ["reference"],
+    "seeds": [2026, 2027, 2028, 2029, 2030],
+    "extra_epochs": 50
+  }
+}

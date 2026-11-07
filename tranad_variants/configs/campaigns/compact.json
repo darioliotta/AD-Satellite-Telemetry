@@ -1,0 +1,7 @@
+{
+  "schema_version": 1, "name": "compact",
+  "purpose": "27 matched comparisons at predeclared half-window, half-FF settings; avoid test-driven configuration selection",
+  "datasets": ["OPS-SAT", "SMAP", "MSL"],
+  "variants": ["reference", "shared_decoder", "single_pass"],
+  "configurations": ["compact"], "seeds": [2026, 2027, 2028]
+}

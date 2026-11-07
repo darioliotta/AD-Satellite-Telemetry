@@ -38,7 +38,7 @@ def main(args=None):
         device = 'cuda:0'
 
     # Create location where we store checkpoints
-    checkpoint_dir = os.path.join(top_dir, 'Checkpoints')
+    checkpoint_dir = config.checkpoint_dir
     helpers.make_dir_tree(checkpoint_dir)
 
     ###############################
@@ -118,26 +118,26 @@ def main(args=None):
     ###################################
 
     # Get list of track paths
-    preprocessed_data_dir = os.path.join(top_dir, 'Datasets', 'Preprocessed')
+    preprocessed_data_dir = config.preprocess_save_dir
 
     if dataset_str == 'SWaT':
         track_dir = os.path.join(preprocessed_data_dir, 'SWaT', 'Train', 'Tracks')
-        track_paths = [os.path.join(track_dir, track) for track in os.listdir(track_dir)]
+        track_paths = [os.path.join(track_dir, track) for track in sorted(os.listdir(track_dir))]
     elif dataset_str == 'SMAP':
         track_dir = os.path.join(preprocessed_data_dir, 'SMAP', 'Train', 'Tracks')
-        track_paths = [os.path.join(track_dir, track) for track in os.listdir(track_dir)]
+        track_paths = [os.path.join(track_dir, track) for track in sorted(os.listdir(track_dir))]
     elif dataset_str == 'WADI':
         track_dir = os.path.join(preprocessed_data_dir, 'WADI', 'Train', 'Tracks')
-        track_paths = [os.path.join(track_dir, track) for track in os.listdir(track_dir)]
+        track_paths = [os.path.join(track_dir, track) for track in sorted(os.listdir(track_dir))]
     elif dataset_str == 'MSL':
         track_dir = os.path.join(preprocessed_data_dir, 'MSL', 'Train', 'Tracks')
-        track_paths = [os.path.join(track_dir, track) for track in os.listdir(track_dir)]
+        track_paths = [os.path.join(track_dir, track) for track in sorted(os.listdir(track_dir))]
     elif dataset_str == 'SMD':
         track_dir = os.path.join(preprocessed_data_dir, 'SMD', 'Train', 'Tracks')
-        track_paths = [os.path.join(track_dir, track) for track in os.listdir(track_dir)]
+        track_paths = [os.path.join(track_dir, track) for track in sorted(os.listdir(track_dir))]
     elif dataset_str == 'DSN_1k':
         track_dir = os.path.join(preprocessed_data_dir, 'DSN_1k', 'Train', 'Tracks')
-        track_paths = [os.path.join(track_dir, track) for track in os.listdir(track_dir)]
+        track_paths = [os.path.join(track_dir, track) for track in sorted(os.listdir(track_dir))]
     else:
         raise Exception(f"Invalid dataset_str: {dataset_str}")
 

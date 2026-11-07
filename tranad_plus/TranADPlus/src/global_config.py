@@ -141,9 +141,10 @@ class Config:
         ###################################################
 
         # Directory structure
-        self.dataset_dir = os.path.join(self.top_dir, "test", "Datasets")
-        self.checkpoint_dir = os.path.join(self.top_dir, "test", "Checkpoints")
-        self.pickle_dir = os.path.join(self.top_dir, "test", "Pickles")
+        from project_paths import NATIVE_DATA_ROOT, RESULTS_ROOT
+        self.dataset_dir = str(NATIVE_DATA_ROOT / "test")
+        self.checkpoint_dir = str(RESULTS_ROOT / "_tests" / "Checkpoints")
+        self.pickle_dir = str(RESULTS_ROOT / "_tests" / "Pickles")
         self.raw_data_dir = os.path.join(self.dataset_dir, "Raw")
         self.original_data_dir = os.path.join(self.dataset_dir, "Original")
         self.preprocess_save_dir = os.path.join(self.dataset_dir, "Preprocessed")
@@ -206,12 +207,13 @@ class Config:
         ###################################################
 
         # Directory structure
-        self.dataset_dir = os.path.join(self.top_dir, "Datasets")
-        self.checkpoint_dir = os.path.join(self.top_dir, "Checkpoints")
-        self.pickle_dir = os.path.join(self.top_dir, "Pickles")
+        from project_paths import NATIVE_DATA_ROOT, PREPROCESSED_ROOT, RESULTS_ROOT
+        self.dataset_dir = str(NATIVE_DATA_ROOT)
+        self.checkpoint_dir = os.environ.get("TRANADPLUS_NATIVE_CHECKPOINT_DIR", str(RESULTS_ROOT / "_native_checkpoints"))
+        self.pickle_dir = os.environ.get("TRANADPLUS_NATIVE_PICKLE_DIR", str(RESULTS_ROOT / "_native_pickles"))
         self.raw_data_dir = os.path.join(self.dataset_dir, "Raw")
         self.original_data_dir = os.path.join(self.dataset_dir, "Original")
-        self.preprocess_save_dir = os.path.join(self.dataset_dir, "Preprocessed")
+        self.preprocess_save_dir = os.environ.get("TRANADPLUS_PREPROCESSED_DIR", str(PREPROCESSED_ROOT))
         self.parse_save_dir = os.path.join(self.dataset_dir, "EDA")
 
         # SMAP/MSL dataset parameters

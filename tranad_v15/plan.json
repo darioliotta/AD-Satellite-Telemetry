@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "name": "v15_history_controls",
+  "seeds": [2026, 2027, 2028, 2029, 2030],
+  "variants": ["encoder_only", "single_pass", "shared_decoder", "reference"],
+  "configurations": ["window_only", "reference"],
+  "frozen_datasets": ["OPS-SAT", "SMAP", "MSL"],
+  "frozen_conditions": ["original", "shuffle_1101", "shuffle_2202", "shuffle_3303", "reverse_past", "repeat_current"],
+  "training_conditions": ["shuffle_1101", "repeat_current"],
+  "training_dataset": "OPS-SAT",
+  "training_epochs": 50,
+  "no_history_window": 1,
+  "smd_seeds": [2, 3],
+  "smd": {
+    "dataset": "SMD", "features": 38, "variant": "reference",
+    "configuration": "legacy_ws20_ff16_l1_e500", "window_sz": 20,
+    "dim_feedforward": 16, "num_layers": 1, "batch_sz": 8192,
+    "lr": 0.0001, "epochs": 500, "pot_q": 0.001,
+    "shuffle": false, "padding": true, "num_workers": 0, "downsample": null
+  },
+  "evaluation": {
+    "alpha_steps": 21, "paper_threshold_steps": 200,
+    "pot_max_initializations": 35,
+    "score_batch_size_by_dataset": {"OPS-SAT": 1024, "SMAP": 1024, "MSL": 128, "SMD": 512}
+  }
+}

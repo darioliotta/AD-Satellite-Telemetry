@@ -1,0 +1,37 @@
+{
+  "source_metadata": "results/legacy/SMD/smd_plus_ws20_dff16_training_20261024T232836087177Z_ae368f84.json",
+  "source_metadata_sha256": "ec4a0d1c557f13e4bbccb28d729b48f06508966c60783d95d48c611ae3ee2ee8",
+  "source_checkpoint": "results/legacy/SMD/smd_plus_ws20_dff16.ckpt",
+  "source_checkpoint_sha256": "73ba4888f6015075ac979ce93df35e45c83b50cd4a427903473ba57c27abae43",
+  "profile": {
+    "num_layers": 1,
+    "shuffle": false,
+    "padding": true,
+    "num_workers": 0,
+    "downsample": null,
+    "epochs": 500,
+    "batch_sz": 8192,
+    "window_sz": 20,
+    "lr": 0.0001,
+    "dim_feedforward": 16,
+    "pot_q": 0.001,
+    "dataset": "SMD",
+    "identifier": "smd_plus_ws20_dff16"
+  },
+  "checkpoint_evidence": {
+    "features": 38,
+    "encoder_first_ff_weight_shape": [
+      16,
+      76
+    ],
+    "effective_ff": 16,
+    "scaling": true,
+    "encoder_layers": 1,
+    "decoder_layers_per_stack": 1
+  },
+  "replication_changes": [
+    "explicit model seeds 2 and 3; the archived profile does not record a seed",
+    "new identifier and isolated v15 output location"
+  ],
+  "note": "Copies the archived 500-epoch benchmark. FF=16 is an absolute width, not 16 times 38 features."
+}

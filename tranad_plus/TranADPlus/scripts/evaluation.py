@@ -34,10 +34,10 @@ def main(args=None):
 
     # Location where we store checkpoints
     experiment_dir = os.path.join(config.top_dir)
-    checkpoint_dir = os.path.join(experiment_dir, 'Checkpoints')
+    checkpoint_dir = config.checkpoint_dir
     checkpoint_str = os.path.join(checkpoint_dir, f'{args.identifier}.ckpt')
     checkpoint = torch.load(checkpoint_str)
-    helpers.make_dir_tree(os.path.join(experiment_dir, "Pickles"))
+    helpers.make_dir_tree(config.pickle_dir)
 
     # Load data onto GPU if available
     if not torch.cuda.is_available():
@@ -92,86 +92,86 @@ def main(args=None):
     print(f"Loading {dataset_str} training and testing datasets")
 
     # Get list of track paths
-    preprocessed_data_dir = os.path.join(config.top_dir, 'Datasets', 'Preprocessed')
+    preprocessed_data_dir = config.preprocess_save_dir
 
     inference_sz = hp_dict['batch_sz']
     if dataset_str == 'WADI':
         train_track_dir = os.path.join(preprocessed_data_dir, 'WADI', 'Train', 'Tracks')
-        train_track_paths = [os.path.join(train_track_dir, track) for track in os.listdir(train_track_dir)]
+        train_track_paths = [os.path.join(train_track_dir, track) for track in sorted(os.listdir(train_track_dir))]
 
         train_anom_dir = os.path.join(preprocessed_data_dir, 'WADI', 'Train', 'Labels')
-        train_anom_paths = [os.path.join(train_anom_dir, anom) for anom in os.listdir(train_anom_dir)]
+        train_anom_paths = [os.path.join(train_anom_dir, anom) for anom in sorted(os.listdir(train_anom_dir))]
         
         test_track_dir = os.path.join(preprocessed_data_dir, 'WADI', 'Test', 'Tracks')
-        test_track_paths = [os.path.join(test_track_dir, track) for track in os.listdir(test_track_dir)]
+        test_track_paths = [os.path.join(test_track_dir, track) for track in sorted(os.listdir(test_track_dir))]
 
         test_anom_dir = os.path.join(preprocessed_data_dir, 'WADI', 'Test', 'Labels')
-        test_anom_paths = [os.path.join(test_anom_dir, anom) for anom in os.listdir(test_anom_dir)]
+        test_anom_paths = [os.path.join(test_anom_dir, anom) for anom in sorted(os.listdir(test_anom_dir))]
 
     elif dataset_str == 'SWaT':
         train_track_dir = os.path.join(preprocessed_data_dir, 'SWaT', 'Train', 'Tracks')
-        train_track_paths = [os.path.join(train_track_dir, track) for track in os.listdir(train_track_dir)]
+        train_track_paths = [os.path.join(train_track_dir, track) for track in sorted(os.listdir(train_track_dir))]
 
         train_anom_dir = os.path.join(preprocessed_data_dir, 'SWaT', 'Train', 'Labels')
-        train_anom_paths = [os.path.join(train_anom_dir, anom) for anom in os.listdir(train_anom_dir)]
+        train_anom_paths = [os.path.join(train_anom_dir, anom) for anom in sorted(os.listdir(train_anom_dir))]
         
         test_track_dir = os.path.join(preprocessed_data_dir, 'SWaT', 'Test', 'Tracks')
-        test_track_paths = [os.path.join(test_track_dir, track) for track in os.listdir(test_track_dir)]
+        test_track_paths = [os.path.join(test_track_dir, track) for track in sorted(os.listdir(test_track_dir))]
 
         test_anom_dir = os.path.join(preprocessed_data_dir, 'SWaT', 'Test', 'Labels')
-        test_anom_paths = [os.path.join(test_anom_dir, anom) for anom in os.listdir(test_anom_dir)]
+        test_anom_paths = [os.path.join(test_anom_dir, anom) for anom in sorted(os.listdir(test_anom_dir))]
 
     elif dataset_str == 'SMAP':
         train_track_dir = os.path.join(preprocessed_data_dir, 'SMAP', 'Train', 'Tracks')
-        train_track_paths = [os.path.join(train_track_dir, track) for track in os.listdir(train_track_dir)]
+        train_track_paths = [os.path.join(train_track_dir, track) for track in sorted(os.listdir(train_track_dir))]
 
         train_anom_dir = os.path.join(preprocessed_data_dir, 'SMAP', 'Train', 'Labels')
-        train_anom_paths = [os.path.join(train_anom_dir, anom) for anom in os.listdir(train_anom_dir)]
+        train_anom_paths = [os.path.join(train_anom_dir, anom) for anom in sorted(os.listdir(train_anom_dir))]
         
         test_track_dir = os.path.join(preprocessed_data_dir, 'SMAP', 'Test', 'Tracks')
-        test_track_paths = [os.path.join(test_track_dir, track) for track in os.listdir(test_track_dir)]
+        test_track_paths = [os.path.join(test_track_dir, track) for track in sorted(os.listdir(test_track_dir))]
 
         test_anom_dir = os.path.join(preprocessed_data_dir, 'SMAP', 'Test', 'Labels')
-        test_anom_paths = [os.path.join(test_anom_dir, anom) for anom in os.listdir(test_anom_dir)]
+        test_anom_paths = [os.path.join(test_anom_dir, anom) for anom in sorted(os.listdir(test_anom_dir))]
 
     elif dataset_str == 'MSL':
         train_track_dir = os.path.join(preprocessed_data_dir, 'MSL', 'Train', 'Tracks')
-        train_track_paths = [os.path.join(train_track_dir, track) for track in os.listdir(train_track_dir)]
+        train_track_paths = [os.path.join(train_track_dir, track) for track in sorted(os.listdir(train_track_dir))]
 
         train_anom_dir = os.path.join(preprocessed_data_dir, 'MSL', 'Train', 'Labels')
-        train_anom_paths = [os.path.join(train_anom_dir, anom) for anom in os.listdir(train_anom_dir)]
+        train_anom_paths = [os.path.join(train_anom_dir, anom) for anom in sorted(os.listdir(train_anom_dir))]
         
         test_track_dir = os.path.join(preprocessed_data_dir, 'MSL', 'Test', 'Tracks')
-        test_track_paths = [os.path.join(test_track_dir, track) for track in os.listdir(test_track_dir)]
+        test_track_paths = [os.path.join(test_track_dir, track) for track in sorted(os.listdir(test_track_dir))]
 
         test_anom_dir = os.path.join(preprocessed_data_dir, 'MSL', 'Test', 'Labels')
-        test_anom_paths = [os.path.join(test_anom_dir, anom) for anom in os.listdir(test_anom_dir)]
+        test_anom_paths = [os.path.join(test_anom_dir, anom) for anom in sorted(os.listdir(test_anom_dir))]
 
     elif dataset_str == 'SMD':
         train_track_dir = os.path.join(preprocessed_data_dir, 'SMD', 'Train', 'Tracks')
-        train_track_paths = [os.path.join(train_track_dir, track) for track in os.listdir(train_track_dir)]
+        train_track_paths = [os.path.join(train_track_dir, track) for track in sorted(os.listdir(train_track_dir))]
 
         train_anom_dir = os.path.join(preprocessed_data_dir, 'SMD', 'Train', 'Labels')
-        train_anom_paths = [os.path.join(train_anom_dir, anom) for anom in os.listdir(train_anom_dir)]
+        train_anom_paths = [os.path.join(train_anom_dir, anom) for anom in sorted(os.listdir(train_anom_dir))]
         
         test_track_dir = os.path.join(preprocessed_data_dir, 'SMD', 'Test', 'Tracks')
-        test_track_paths = [os.path.join(test_track_dir, track) for track in os.listdir(test_track_dir)]
+        test_track_paths = [os.path.join(test_track_dir, track) for track in sorted(os.listdir(test_track_dir))]
 
         test_anom_dir = os.path.join(preprocessed_data_dir, 'SMD', 'Test', 'Labels')
-        test_anom_paths = [os.path.join(test_anom_dir, anom) for anom in os.listdir(test_anom_dir)]
+        test_anom_paths = [os.path.join(test_anom_dir, anom) for anom in sorted(os.listdir(test_anom_dir))]
 
     elif dataset_str == 'DSN_1k':
         train_track_dir = os.path.join(preprocessed_data_dir, 'DSN_1k', 'Train', 'Tracks')
-        train_track_paths = [os.path.join(train_track_dir, track) for track in os.listdir(train_track_dir)]
+        train_track_paths = [os.path.join(train_track_dir, track) for track in sorted(os.listdir(train_track_dir))]
 
         train_anom_dir = os.path.join(preprocessed_data_dir, 'DSN_1k', 'Train', 'Labels')
-        train_anom_paths = [os.path.join(train_anom_dir, anom) for anom in os.listdir(train_anom_dir)]
+        train_anom_paths = [os.path.join(train_anom_dir, anom) for anom in sorted(os.listdir(train_anom_dir))]
         
         test_track_dir = os.path.join(preprocessed_data_dir, 'DSN_1k', 'Test', 'Tracks')
-        test_track_paths = [os.path.join(test_track_dir, track) for track in os.listdir(test_track_dir)]
+        test_track_paths = [os.path.join(test_track_dir, track) for track in sorted(os.listdir(test_track_dir))]
 
         test_anom_dir = os.path.join(preprocessed_data_dir, 'DSN_1k', 'Test', 'Labels')
-        test_anom_paths = [os.path.join(test_anom_dir, anom) for anom in os.listdir(test_anom_dir)]
+        test_anom_paths = [os.path.join(test_anom_dir, anom) for anom in sorted(os.listdir(test_anom_dir))]
 
     else:
         raise Exception(f"Invalid dataset_str: {dataset_str}")
@@ -227,17 +227,17 @@ def main(args=None):
     pprint(bf_best_ret)
     print()
     pot_best_ret.update({"alpha": pot_best_alpha})
-    pot_best_ret.update({"best": 1-pot_best_alpha})
+    pot_best_ret.update({"beta": 1-pot_best_alpha})
     print(f"Best pot output had alpha={pot_best_alpha}") 
     pprint(pot_best_ret)
 
     # Save output results as pickles
     fname = hp_dict['identifier'] + '_bf.pkl'
-    with open(os.path.join(experiment_dir, 'Pickles', fname), 'wb') as f:
+    with open(os.path.join(config.pickle_dir, fname), 'wb') as f:
         pickle.dump(bf_best_ret, f)
 
     fname = hp_dict['identifier'] + '_pot.pkl'
-    with open(os.path.join(experiment_dir, 'Pickles', fname), 'wb') as f:
+    with open(os.path.join(config.pickle_dir, fname), 'wb') as f:
         pickle.dump(pot_best_ret, f)
 
 if __name__ == '__main__':
