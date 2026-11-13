@@ -1,5 +1,12 @@
 # Satellite Telemetry Anomaly Detection
 
+## Current implementation
+
+`tranad_plus/` is the only current code root. Version numbers label campaign
+plans and results. See [the current-code guide](tranad_plus/CURRENT_CODE.md)
+for the architecture tools, integer campaign and server commands.
+
+
 Research project focused on anomaly detection in multivariate time-series data, with particular emphasis on satellite telemetry and the development of computationally efficient deep learning models.
 
 The project is organized into three main stages:

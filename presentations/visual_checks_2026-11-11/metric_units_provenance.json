@@ -1,0 +1,28 @@
+{
+  "sources": [
+    {
+      "path": "results/v13/architectures/OPS-SAT/reference/reference/seed_2026/scores.npz",
+      "sha256": "8b7417fff3df62c3b43fef7ec4dac17b0b25aed800d18697476318f7afad038e",
+      "report_sha256": "411f6b78bb1280c980fd7b6fad193c7183b47b6c7f0388031fe93ce6952fc907"
+    },
+    {
+      "path": "results/v13/architectures/OPS-SAT/reference/window_only/seed_2026/scores.npz",
+      "sha256": "1d931ffa2ffade57738b581d2cf21d76869790e1453c945a8abbbf39aeabc1bd",
+      "report_sha256": "2d2192ecf4ee5a50a604ac3203b700f6550f54e4ad8e5d12ea6dcde5c4c4ef60"
+    },
+    {
+      "path": "results/v13/architectures/OPS-SAT/reference/ff_only/seed_2026/scores.npz",
+      "sha256": "88aa804168a894bd83f72a24d57408c0eda6dead8929ff13ec26256d793ab175",
+      "report_sha256": "4b0a3a9e8b09f594cf61f1f2792447a736cd034bd2b02f24cf6a56fb4b2f08c0"
+    },
+    {
+      "path": "results/v13/architectures/OPS-SAT/reference/compact/seed_2026/scores.npz",
+      "sha256": "0275d9e2a64f7be66fe22a90b8de904bf0d511846522f6f1c2503839b390dbff",
+      "report_sha256": "2add501e419b05750b4de7d919044ad5410617dfe05d40bd1eeb0803638e7a9b"
+    }
+  ],
+  "threshold_source": "case_metrics.csv, BF200/POT at fixed alpha .5, unchanged thresholds for all three counting units",
+  "fragment_rule": "positive iff any point score exceeds the original point threshold; equals thresholding the fragment maximum",
+  "selection": "No fragment-level optimization or retuning; one illustrative seed, not model-quality estimates averaged over seeds",
+  "original_results_changed": false
+}

@@ -16,6 +16,8 @@ from pathlib import Path
 import pickle
 import shutil
 import sys
+import subprocess
+import tempfile
 
 os.environ.setdefault("MPLCONFIGDIR", "/tmp/toast-presentation-mpl")
 if Path("/tmp/toast-presentation-deps").is_dir():
@@ -107,9 +109,68 @@ def read_results(project):
                 choice = min(candidates, key=lambda r: (abs(r["f1"] - target), r["source"]))
             else:
                 choice = max(candidates, key=lambda r: (r["f1"], r["source"]))
+            if dataset == "SMD" and method == "pot":
+                candidate = smd_result(project)
+                if candidate["f1"] > choice["f1"]:
+                    choice = candidate
             best[dataset, method] = choice
             selected.append(choice)
     return cells, best, selected, provenance
+
+
+def smd_result(project):
+    source = project / "results/v16/smd/author_pot/seed_3/metrics.json"
+    status = json.loads((source.parent / "status.json").read_text())
+    if status["status"] != "complete":
+        raise RuntimeError("SMD replication is incomplete")
+    for name, expected in status["artifacts"].items():
+        if sha256(source.parent / name) != expected:
+            raise RuntimeError("Changed SMD artifact: " + name)
+    values = json.loads(source.read_text())["formats"]["fp32"]["oracle"]["pot"]
+    return dict(dataset="SMD", method="pot", source=str(source.relative_to(project)),
+                source_sha256=sha256(source),
+                **{k: float(values["pot_" + k]) for k in ("f1", "precision", "recall", "ROC/AUC")})
+
+
+def update_smd(project, out):
+    """Replace only the SMD POT cell; preserve all other slides and rows."""
+    path = out / "data/benchmarks.csv"
+    with path.open() as stream:
+        rows = list(csv.DictReader(stream))
+    replacement = smd_result(project)
+    rows = [replacement if r["dataset"] == "SMD" and r["method"] == "pot" else r for r in rows]
+    best = {(r["dataset"], r["method"]): {**r, "f1": float(r["f1"])} for r in rows}
+    stem = out / "figures/03_benchmarks"
+    with tempfile.TemporaryDirectory(prefix="toast-slide-") as temp:
+        temp = Path(temp)
+        fig = benchmark_figure(best)
+        fig.savefig(stem.with_suffix(".svg"))
+        fig.savefig(temp / "benchmark.png", dpi=300)
+        title(fig, "Benchmarks · F1 (%)")
+        fig.savefig(stem.with_suffix(".pdf"))
+        plt.close(fig)
+        subprocess.run(["pdfseparate", str(out / "Results.pdf"), str(temp / "page-%d.pdf")], check=True)
+        pages = sorted(temp.glob("page-*.pdf"), key=lambda p: int(p.stem.split("-")[-1]))
+        pages[2] = stem.with_suffix(".pdf")
+        subprocess.run(["pdfunite", *map(str, pages), str(temp / "Results.pdf")], check=True)
+        prs = Presentation(out / "Results.pptx")
+        slide = prs.slides[2]
+        picture = next(s for s in slide.shapes if s.shape_type == 13)
+        picture._element.getparent().remove(picture._element)
+        add_svg(slide, stem.with_suffix(".svg"), temp / "benchmark.png", prs.part.package)
+        # Place the replacement figure behind the existing editable heading.
+        element = slide.shapes[-1]._element
+        element.getparent().remove(element)
+        slide.shapes._spTree.insert(2, element)
+        prs.save(out / "Results.pptx")
+        shutil.copyfile(temp / "Results.pdf", out / "Results.pdf")
+    csv_write(path, rows)
+    path = out / "data/sources.json"
+    manifest = json.loads(path.read_text())
+    manifest["smd_pot_update"] = replacement
+    manifest["builder_sha256"] = sha256(__file__)
+    path.write_text(json.dumps(manifest, indent=2) + "\n")
+    print("Updated SMD POT only: 68.61%; other slides and benchmark rows preserved.")
 
 
 def canvas():
@@ -456,5 +517,6 @@ if __name__=="__main__":
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--project-root",type=Path,default=Path(__file__).resolve().parents[2])
     parser.add_argument("--output-dir",type=Path,default=Path(__file__).resolve().parent)
+    parser.add_argument("--update-smd", action="store_true")
     args=parser.parse_args()
-    build(args.project_root.resolve(),args.output_dir.resolve())
+    (update_smd if args.update_smd else build)(args.project_root.resolve(),args.output_dir.resolve())

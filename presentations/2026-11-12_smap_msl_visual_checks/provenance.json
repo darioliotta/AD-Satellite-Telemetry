@@ -1,0 +1,951 @@
+{
+  "sources": [
+    {
+      "key": [
+        "SMAP",
+        "reference",
+        "reference",
+        2026
+      ],
+      "report": "results/v13/architectures/SMAP/reference/reference/seed_2026/metrics.json",
+      "report_sha256": "a8afd0bd65f1c409ca5a104ccfa885da46154d4f807f70c2a5d4d5724ce4d378",
+      "scores_sha256": "9de3abd2d65f9d9fc861410fdfdea6cb85c500cb87c0b0f87604c8de94d15c96",
+      "matched_alpha_POT_source": "results/v17/integer/SMAP/reference/reference/seed_2026/metrics.json",
+      "matched_alpha_POT_source_sha256": "3d02da001c6948ce5207dfc2525ee893c2642299610bfb713a0b54216469e527"
+    },
+    {
+      "key": [
+        "SMAP",
+        "reference",
+        "window_only",
+        2026
+      ],
+      "report": "results/v13/architectures/SMAP/reference/window_only/seed_2026/metrics.json",
+      "report_sha256": "ef3a118a3104b3b20fa023af509887e8821b0db14347d621a319894127d3efd1",
+      "scores_sha256": "d8b754ca426906c5dae58bae3f65328004057fac5a7d7e4ee33cb9cc45c04a89",
+      "matched_alpha_POT_source": "results/v17/integer/SMAP/reference/window_only/seed_2026/metrics.json",
+      "matched_alpha_POT_source_sha256": "36cce3f1710fa43a3f043f0d2cf1c56ad268661857173e48b607949cfb416a82"
+    },
+    {
+      "key": [
+        "SMAP",
+        "reference",
+        "ff_only",
+        2026
+      ],
+      "report": "results/v13/architectures/SMAP/reference/ff_only/seed_2026/metrics.json",
+      "report_sha256": "918e2673de7f205007498e9c5bf3164a66498ff5b21cf82e89e4922d91427024",
+      "scores_sha256": "490e51999f51880b4a0d698198f5c28cb9066add04425358b4fa33de21a2947b",
+      "matched_alpha_POT_source": "results/v17/integer/SMAP/reference/ff_only/seed_2026/metrics.json",
+      "matched_alpha_POT_source_sha256": "3ba9dfcbced28b70363cc7fbf41f5168f0bc4cc13079b9fb83cdd259972082b4"
+    },
+    {
+      "key": [
+        "SMAP",
+        "reference",
+        "compact",
+        2026
+      ],
+      "report": "results/v13/architectures/SMAP/reference/compact/seed_2026/metrics.json",
+      "report_sha256": "f05ef1832799efcf8955bcbbca2030d2d6c2877b9da59e2aae53a149d6508372",
+      "scores_sha256": "928a3d2749521067f227af6a49891973b297fbf7826b430d426fd00a807dc777",
+      "matched_alpha_POT_source": "results/v17/integer/SMAP/reference/compact/seed_2026/metrics.json",
+      "matched_alpha_POT_source_sha256": "56c0b224dd682afc52cd8d86d35e40f7912c3ac81e704c29a8c83328e03697c8"
+    },
+    {
+      "key": [
+        "SMAP",
+        "shared_decoder",
+        "reference",
+        2026
+      ],
+      "report": "results/v13/architectures/SMAP/shared_decoder/reference/seed_2026/metrics.json",
+      "report_sha256": "9515273606b6bc9ffc9285f9c9667a65397af6d015f279d1f50b53b958e0ecd3",
+      "scores_sha256": "9b60dd2c2a31d374ea2ce4fedf2979a5fe0dc154187364f2fa76892a19d29284",
+      "matched_alpha_POT_source": "results/v17/integer/SMAP/shared_decoder/reference/seed_2026/metrics.json",
+      "matched_alpha_POT_source_sha256": "23e566317368c16d77adba7986c3a5206f69dc7eb39ba1a2ea76275355f7bdfe"
+    },
+    {
+      "key": [
+        "SMAP",
+        "single_pass",
+        "reference",
+        2026
+      ],
+      "report": "results/v13/architectures/SMAP/single_pass/reference/seed_2026/metrics.json",
+      "report_sha256": "32dc4f3386db2c3faec7a5928f9de3e4541560b94a2f4aea7cbcd480cd297b93",
+      "scores_sha256": "35a08f4a29d03b52bb1e58681ed2dcf57bb60921ac8a828eecfa03dd46af74a5",
+      "matched_alpha_POT_source": "results/v17/integer/SMAP/single_pass/reference/seed_2026/metrics.json",
+      "matched_alpha_POT_source_sha256": "c1dcf76f2eb8d2aed94c4495c99c91f5fbb7f3299493741b10ab28716235dadb"
+    },
+    {
+      "key": [
+        "SMAP",
+        "encoder_only",
+        "reference",
+        2026
+      ],
+      "report": "results/v13/architectures/SMAP/encoder_only/reference/seed_2026/metrics.json",
+      "report_sha256": "6e6bebb230e7f33589f670127c009769dfdf524347ae5508aa7f4714940a9832",
+      "scores_sha256": "90f0963e78876b16765bc6b41200105e55be2b85b4908cf5aa5db325fac7ac5e",
+      "matched_alpha_POT_source": "results/v17/integer/SMAP/encoder_only/reference/seed_2026/metrics.json",
+      "matched_alpha_POT_source_sha256": "2b83a5f7274879be9e6e6e25fd2accdf66ffe05c583e681f86ea7d04b0839a25"
+    },
+    {
+      "key": [
+        "SMAP",
+        "reference",
+        "reference",
+        2027
+      ],
+      "report": "results/v13/architectures/SMAP/reference/reference/seed_2027/metrics.json",
+      "report_sha256": "cd3d164ad2ba1ff223cbec4628f737d2e58ad53a09babaa0456196a9ac4a0242",
+      "scores_sha256": "03d734a8291bf157bfe08e51ce1440f724f65e591ac562a8a885b2b7cfbbcbc7",
+      "matched_alpha_POT_source": "results/v17/integer/SMAP/reference/reference/seed_2027/metrics.json",
+      "matched_alpha_POT_source_sha256": "0f86d73ce457b73beea80fc2335e128542d35166ae5e184e52cc064927a1de5d"
+    },
+    {
+      "key": [
+        "SMAP",
+        "reference",
+        "window_only",
+        2027
+      ],
+      "report": "results/v13/architectures/SMAP/reference/window_only/seed_2027/metrics.json",
+      "report_sha256": "1a25c1caa12e628899bf0b44c1dc219fea0d4a223995959a722657fbd2ab92b4",
+      "scores_sha256": "3a053cfc8b885d1ef40877d453ead80c78944962f253a13addc2c02632c584a7",
+      "matched_alpha_POT_source": "results/v17/integer/SMAP/reference/window_only/seed_2027/metrics.json",
+      "matched_alpha_POT_source_sha256": "0d12850773cc0769669dbb8f909768a0ea487e918d54f3387d04421e3095a520"
+    },
+    {
+      "key": [
+        "SMAP",
+        "reference",
+        "ff_only",
+        2027
+      ],
+      "report": "results/v13/architectures/SMAP/reference/ff_only/seed_2027/metrics.json",
+      "report_sha256": "a841409e30db702e86a7bba2ac81a9ab6b4a3f30e6b89725af4111a2d9645595",
+      "scores_sha256": "fd6f8491c60a2dbc8547aa097b26a747b57b69d98f7eb7c52fe46b681740c8c2",
+      "matched_alpha_POT_source": "results/v17/integer/SMAP/reference/ff_only/seed_2027/metrics.json",
+      "matched_alpha_POT_source_sha256": "a0ce5919cf5f24267e50a037b61526bf0f20a71b5a1bf5fab9fd768bfea8a6ab"
+    },
+    {
+      "key": [
+        "SMAP",
+        "reference",
+        "compact",
+        2027
+      ],
+      "report": "results/v13/architectures/SMAP/reference/compact/seed_2027/metrics.json",
+      "report_sha256": "6d261334b3c765f8169554d4ded95237d1d942e365ee2ad90a83c61e6c8facc2",
+      "scores_sha256": "42c4ae3d5446fa6e3c9e6467e29a8bb10067651a36ad83747acf814de7b5701f",
+      "matched_alpha_POT_source": "results/v17/integer/SMAP/reference/compact/seed_2027/metrics.json",
+      "matched_alpha_POT_source_sha256": "33bea0d81cea320a1bc135cd5a646423adba81e1500154de466d008ef7d661b6"
+    },
+    {
+      "key": [
+        "SMAP",
+        "shared_decoder",
+        "reference",
+        2027
+      ],
+      "report": "results/v13/architectures/SMAP/shared_decoder/reference/seed_2027/metrics.json",
+      "report_sha256": "fcd55d22a89acad5ca0e50ae545e5bfa6ae7b5c8b5c9f437ee317d03c18f3439",
+      "scores_sha256": "a182a82c1382352fed439662a563c2a6d8fb438559b7ea00cd95c160ec35eedc",
+      "matched_alpha_POT_source": "results/v17/integer/SMAP/shared_decoder/reference/seed_2027/metrics.json",
+      "matched_alpha_POT_source_sha256": "17f950c9e7c180ecaddd1bb7b5b60754eca61ef55c82a56b29ad1e87758e3d6c"
+    },
+    {
+      "key": [
+        "SMAP",
+        "single_pass",
+        "reference",
+        2027
+      ],
+      "report": "results/v13/architectures/SMAP/single_pass/reference/seed_2027/metrics.json",
+      "report_sha256": "398b435093f2ed10bdc8193b9a7bc56062c9e68142e17710a39cb723a738c03f",
+      "scores_sha256": "6857fc97a842c031a8bfc2b3b2558d32f3b1fb7f7b5ed973f158ac4d567af888",
+      "matched_alpha_POT_source": "results/v17/integer/SMAP/single_pass/reference/seed_2027/metrics.json",
+      "matched_alpha_POT_source_sha256": "d94aca7142a2db23d5f20c9eeedd99db9fab104833e7007f994cc796441a8f08"
+    },
+    {
+      "key": [
+        "SMAP",
+        "encoder_only",
+        "reference",
+        2027
+      ],
+      "report": "results/v13/architectures/SMAP/encoder_only/reference/seed_2027/metrics.json",
+      "report_sha256": "8aef6b62c7cdefeaf8023d577f12d5f64a8e9cb90319cd56e52a258ba81476e4",
+      "scores_sha256": "3fe0dba97cf24d4f5032bab9f5865137cb85cf6654063d2d925a87fd4591435c",
+      "matched_alpha_POT_source": "results/v17/integer/SMAP/encoder_only/reference/seed_2027/metrics.json",
+      "matched_alpha_POT_source_sha256": "db2838e17a0a7ce9d5018e843b847f93fc128ca129e6dc3bd097ca366ad22f0a"
+    },
+    {
+      "key": [
+        "SMAP",
+        "reference",
+        "reference",
+        2028
+      ],
+      "report": "results/v13/architectures/SMAP/reference/reference/seed_2028/metrics.json",
+      "report_sha256": "769ae3b0ed92faea922c1772e160abe68a3dee67ca300e7432db6feb7ed40a3e",
+      "scores_sha256": "0aa3db84ff8646d1b750a2cdf44c9ac28218066e1c5b0dad287dd72eaaf7be3b",
+      "matched_alpha_POT_source": "results/v17/integer/SMAP/reference/reference/seed_2028/metrics.json",
+      "matched_alpha_POT_source_sha256": "e8968e18fe3951367408e1d917fcf940b70f22ec766ec391d18ca6899ca37e6b"
+    },
+    {
+      "key": [
+        "SMAP",
+        "reference",
+        "window_only",
+        2028
+      ],
+      "report": "results/v13/architectures/SMAP/reference/window_only/seed_2028/metrics.json",
+      "report_sha256": "c83459c6e88367c131ba274c29aa33bbc1fc63a7945e3f6b3731edd8dc9cc7c3",
+      "scores_sha256": "37947ccf0c92823684772136e521679c6829dfdcadd26580f84471759700e873",
+      "matched_alpha_POT_source": "results/v17/integer/SMAP/reference/window_only/seed_2028/metrics.json",
+      "matched_alpha_POT_source_sha256": "3b186e924baeda895b7af30cfe3423e8097007fd188e99975e398cec29797a91"
+    },
+    {
+      "key": [
+        "SMAP",
+        "reference",
+        "ff_only",
+        2028
+      ],
+      "report": "results/v13/architectures/SMAP/reference/ff_only/seed_2028/metrics.json",
+      "report_sha256": "e3d816c9da139daeb462a5264144be942da78260f6601bbdf885eb515658af93",
+      "scores_sha256": "abf3f3969a3c6e79fe3de5ca2cd21c307c5e87c833daf9232780223a40fc3f96",
+      "matched_alpha_POT_source": "results/v17/integer/SMAP/reference/ff_only/seed_2028/metrics.json",
+      "matched_alpha_POT_source_sha256": "74e9161a8fcdfd561101e46e050c22046845ced8656a967e6f71d7b0fb00e4ff"
+    },
+    {
+      "key": [
+        "SMAP",
+        "reference",
+        "compact",
+        2028
+      ],
+      "report": "results/v13/architectures/SMAP/reference/compact/seed_2028/metrics.json",
+      "report_sha256": "83be63ab9c1ec99124401963b192316fb1027aeaf9dbd71bee36bf682c60035e",
+      "scores_sha256": "c2852a79a8ac8417d8fb7adf29a7a09bbfe8a0cb0efc4dac0845518c7f9145a1",
+      "matched_alpha_POT_source": "results/v17/integer/SMAP/reference/compact/seed_2028/metrics.json",
+      "matched_alpha_POT_source_sha256": "40cb74f31d339b1915c0da2b67a692941a03a5c829ede7fb03aa05bbdc09c17b"
+    },
+    {
+      "key": [
+        "SMAP",
+        "shared_decoder",
+        "reference",
+        2028
+      ],
+      "report": "results/v13/architectures/SMAP/shared_decoder/reference/seed_2028/metrics.json",
+      "report_sha256": "666a1b8f3690a182f9b90f36500f8d2f795c22b9a30730304951ff47642b8a1b",
+      "scores_sha256": "de3423e7dd049b3932012b061653559c27bf9f5462977def72cc2f76e5148e4d",
+      "matched_alpha_POT_source": "results/v17/integer/SMAP/shared_decoder/reference/seed_2028/metrics.json",
+      "matched_alpha_POT_source_sha256": "e4268f6a9eaf2c2e78439a7ca21e39507dfdddac50e3824b6b750979063724b6"
+    },
+    {
+      "key": [
+        "SMAP",
+        "single_pass",
+        "reference",
+        2028
+      ],
+      "report": "results/v13/architectures/SMAP/single_pass/reference/seed_2028/metrics.json",
+      "report_sha256": "26d279d20f19ffba1ae70d752862b53b429d9cd608a40345246664e620a140a2",
+      "scores_sha256": "a8a47128f998b72c10fd8decc71dda09cdc7354f1651fae67db67014b68083ff",
+      "matched_alpha_POT_source": "results/v17/integer/SMAP/single_pass/reference/seed_2028/metrics.json",
+      "matched_alpha_POT_source_sha256": "948ac341cca965f4904b4a34544944af796cf65444f8c920facaf354dc03f09b"
+    },
+    {
+      "key": [
+        "SMAP",
+        "encoder_only",
+        "reference",
+        2028
+      ],
+      "report": "results/v13/architectures/SMAP/encoder_only/reference/seed_2028/metrics.json",
+      "report_sha256": "07842bb11fdd005e9a26f1e90589c01c5a53404806a94610e155a8e68695936e",
+      "scores_sha256": "ad5b2d8029acd98fa9f5f1ae9d1ef812206f9402449cc259e4d65b2e3037f57b",
+      "matched_alpha_POT_source": "results/v17/integer/SMAP/encoder_only/reference/seed_2028/metrics.json",
+      "matched_alpha_POT_source_sha256": "ab91af9e4ebdbe49c0b5f77cbe1348a20af5543bab3dfa876dabe34d60557f72"
+    },
+    {
+      "key": [
+        "MSL",
+        "reference",
+        "reference",
+        2026
+      ],
+      "report": "results/v13/architectures/MSL/reference/reference/seed_2026/metrics.json",
+      "report_sha256": "b1ccdd0e06849238042aa86e8681f300dc5238990cbf122f538ee58082383e21",
+      "scores_sha256": "ed090c797268e1a93d131c0dd4936b5d576d733b36b3e8a385d72e62fa5c54f8",
+      "matched_alpha_POT_source": "results/v17/integer/MSL/reference/reference/seed_2026/metrics.json",
+      "matched_alpha_POT_source_sha256": "9ccf6c1469b63c52c3528e1072f1e4e00dfa08e6a18fac59d35793414ff987bd"
+    },
+    {
+      "key": [
+        "MSL",
+        "reference",
+        "window_only",
+        2026
+      ],
+      "report": "results/v13/architectures/MSL/reference/window_only/seed_2026/metrics.json",
+      "report_sha256": "f2858893227e091452bc0321b7c3f1bfc916252daac5e5d3353ab9ba9a75fa6c",
+      "scores_sha256": "0bdbf9d74963ef7152a92ed6e8f62a3ce59edd59246be8e45a6946ca5473f7e1",
+      "matched_alpha_POT_source": "results/v17/integer/MSL/reference/window_only/seed_2026/metrics.json",
+      "matched_alpha_POT_source_sha256": "ab97d17fd6b402d4f43d66470b0fa552d0ae86a493e09a4c8695a412f01bea07"
+    },
+    {
+      "key": [
+        "MSL",
+        "reference",
+        "ff_only",
+        2026
+      ],
+      "report": "results/v13/architectures/MSL/reference/ff_only/seed_2026/metrics.json",
+      "report_sha256": "646680d4ee552597a196269791af1a4d81866bfe225ebe77bc19a004558064f9",
+      "scores_sha256": "c3e255b8a401d587f17798d70b98d6d23ef4972d5ac1adc4590640c8d778c457",
+      "matched_alpha_POT_source": "results/v17/integer/MSL/reference/ff_only/seed_2026/metrics.json",
+      "matched_alpha_POT_source_sha256": "698df7947f225a13bfef9b3652b513552e11d551cb0817c50dc12c59ddadeadd"
+    },
+    {
+      "key": [
+        "MSL",
+        "reference",
+        "compact",
+        2026
+      ],
+      "report": "results/v13/architectures/MSL/reference/compact/seed_2026/metrics.json",
+      "report_sha256": "ba40cf9d973e63e27476cd1af507b3a255daf94d8e41bf422a5facc36e7c3039",
+      "scores_sha256": "ea2a31982e0e1b7f3eeac917cdd1f75eae2ec5e21193db4aca5308d6d33ae50e",
+      "matched_alpha_POT_source": "results/v17/integer/MSL/reference/compact/seed_2026/metrics.json",
+      "matched_alpha_POT_source_sha256": "48c9686258c1f0c68ba2b24c861004fd101be5eb360bf94012729a8e594659d9"
+    },
+    {
+      "key": [
+        "MSL",
+        "shared_decoder",
+        "reference",
+        2026
+      ],
+      "report": "results/v13/architectures/MSL/shared_decoder/reference/seed_2026/metrics.json",
+      "report_sha256": "ed9692ab77001c887cc811702078e88da04a44f6ca6cc84c4b8e701cbf5e740d",
+      "scores_sha256": "35881758a9472b7fea9387eeaf7d907385a584fd4bbee55459d6ca31fc8b3193",
+      "matched_alpha_POT_source": "results/v17/integer/MSL/shared_decoder/reference/seed_2026/metrics.json",
+      "matched_alpha_POT_source_sha256": "9b3f3a8d6f2e2dd8dadfdf4b295a0d8cfb0f32463510fc48c7c6162590776667"
+    },
+    {
+      "key": [
+        "MSL",
+        "single_pass",
+        "reference",
+        2026
+      ],
+      "report": "results/v13/architectures/MSL/single_pass/reference/seed_2026/metrics.json",
+      "report_sha256": "3677c9ec8c6916b5e4be6ad50cc24b578102f7a397ad8e24de61f455a3a7fc76",
+      "scores_sha256": "e0ce71e60ba91488de31624d4eebf9a76adce835b48e7f2f9260c7330ae29807",
+      "matched_alpha_POT_source": "results/v17/integer/MSL/single_pass/reference/seed_2026/metrics.json",
+      "matched_alpha_POT_source_sha256": "9a778f28a13aa2a1409df39c17041d7d97bd118efa49a77bca6c36bc8cab9e57"
+    },
+    {
+      "key": [
+        "MSL",
+        "encoder_only",
+        "reference",
+        2026
+      ],
+      "report": "results/v13/architectures/MSL/encoder_only/reference/seed_2026/metrics.json",
+      "report_sha256": "a8408bc47267b79ec05a7c7703690b3f0ac335fc04f2331d4b254ae78e3e1010",
+      "scores_sha256": "6371269290d00d41dc04929747fe5e2fc16892a4589b6cc4f9f38cd98018163b",
+      "matched_alpha_POT_source": "results/v17/integer/MSL/encoder_only/reference/seed_2026/metrics.json",
+      "matched_alpha_POT_source_sha256": "333b80b62ed8a8ca06fb1798de984a348553dba545eb999eb65c568a4b1243f5"
+    },
+    {
+      "key": [
+        "MSL",
+        "reference",
+        "reference",
+        2027
+      ],
+      "report": "results/v13/architectures/MSL/reference/reference/seed_2027/metrics.json",
+      "report_sha256": "ad9f6744f751c990d32d9543c760f3cf387920f44c893c8dfe9a3efb5cccad6d",
+      "scores_sha256": "c2d5c0f2e81cec8250299d7884fd30c609c56c22fe0ce5ed1a082a2e5cfdd814",
+      "matched_alpha_POT_source": "results/v17/integer/MSL/reference/reference/seed_2027/metrics.json",
+      "matched_alpha_POT_source_sha256": "32c615b6edf8c0ef223a4b9c70c408c8cd7d702cd45c4d2ccd4b6084939b9c7c"
+    },
+    {
+      "key": [
+        "MSL",
+        "reference",
+        "window_only",
+        2027
+      ],
+      "report": "results/v13/architectures/MSL/reference/window_only/seed_2027/metrics.json",
+      "report_sha256": "534fd540353d6737284b08eb57c720462654b64fe61f229c1b3454173b3d705b",
+      "scores_sha256": "356438f05ba1589bcbcde134b8539bfa4fb63ed97725513e7e2c2ddb3fb16789",
+      "matched_alpha_POT_source": "results/v17/integer/MSL/reference/window_only/seed_2027/metrics.json",
+      "matched_alpha_POT_source_sha256": "1a99b132eeeefcb690f2c783a7433ec19c740ecea6a3484db23dcbe0919f06b5"
+    },
+    {
+      "key": [
+        "MSL",
+        "reference",
+        "ff_only",
+        2027
+      ],
+      "report": "results/v13/architectures/MSL/reference/ff_only/seed_2027/metrics.json",
+      "report_sha256": "cfd4196ae2c4320e8cef82db280372966796a71e23fb62af92227056de5abf5f",
+      "scores_sha256": "103ab00ac881902b639ba28b5ac380236c8b21b93b7952c98f187f4551557fb3",
+      "matched_alpha_POT_source": "results/v17/integer/MSL/reference/ff_only/seed_2027/metrics.json",
+      "matched_alpha_POT_source_sha256": "727d64a183e337389d96c4203bdeaba92418e31f1391f41ee410fe73eca6ca58"
+    },
+    {
+      "key": [
+        "MSL",
+        "reference",
+        "compact",
+        2027
+      ],
+      "report": "results/v13/architectures/MSL/reference/compact/seed_2027/metrics.json",
+      "report_sha256": "5f85a8ec20b0cf1e8bfa1391ac1b0d47c5a21da75049993fc04b6471ececb23c",
+      "scores_sha256": "a9f6b9e4e5b5179590468889e6265d7c483453d76a1429c7ef138a95f6e1dcf3",
+      "matched_alpha_POT_source": "results/v17/integer/MSL/reference/compact/seed_2027/metrics.json",
+      "matched_alpha_POT_source_sha256": "f5f0b6af445b29a1807ba172f5c345ff49318ab8748e95f667d01b5a8205a16f"
+    },
+    {
+      "key": [
+        "MSL",
+        "shared_decoder",
+        "reference",
+        2027
+      ],
+      "report": "results/v13/architectures/MSL/shared_decoder/reference/seed_2027/metrics.json",
+      "report_sha256": "165519ef543f824980ee091981d2f2a2fc9fd758d535eb43937eb92708754cde",
+      "scores_sha256": "7e031a86466da671e6bdb1f33b47dcd8b8e75b61858ede967a36e3bc2d092fd9",
+      "matched_alpha_POT_source": "results/v17/integer/MSL/shared_decoder/reference/seed_2027/metrics.json",
+      "matched_alpha_POT_source_sha256": "5b098ab37b14fcaaf26a86c08fcd67183c3fea9dd6c630314b46577a1f7e3156"
+    },
+    {
+      "key": [
+        "MSL",
+        "single_pass",
+        "reference",
+        2027
+      ],
+      "report": "results/v13/architectures/MSL/single_pass/reference/seed_2027/metrics.json",
+      "report_sha256": "80745bbdcbb9c3a7b78c5c505a55be4988c6f2d0c3ade0d302c2d05beeaf1b99",
+      "scores_sha256": "81624bb07e40374616467ede43c0a4b9bc9e06585122d219de3eb1e98c646af2",
+      "matched_alpha_POT_source": "results/v17/integer/MSL/single_pass/reference/seed_2027/metrics.json",
+      "matched_alpha_POT_source_sha256": "d5b94e9c35f42305f2b5441f89f50e914f5f3235a92a37090bd8c81c09993b4b"
+    },
+    {
+      "key": [
+        "MSL",
+        "encoder_only",
+        "reference",
+        2027
+      ],
+      "report": "results/v13/architectures/MSL/encoder_only/reference/seed_2027/metrics.json",
+      "report_sha256": "ec6cc99f13c4afa5653c5339395a14c3fb922c3da985822443dfdfbc0c05f441",
+      "scores_sha256": "78ce724041f8d5819cd50986d04968051f30a715d2f343371b5817c689664a6a",
+      "matched_alpha_POT_source": "results/v17/integer/MSL/encoder_only/reference/seed_2027/metrics.json",
+      "matched_alpha_POT_source_sha256": "6a7390a8ed65557d2a316814a53669fb260c75c1824619ccc8c2aad9074b6e53"
+    },
+    {
+      "key": [
+        "MSL",
+        "reference",
+        "reference",
+        2028
+      ],
+      "report": "results/v13/architectures/MSL/reference/reference/seed_2028/metrics.json",
+      "report_sha256": "28d6a1935d768ab84466da650e0459c6a1893179431213942cac435ec3108fd7",
+      "scores_sha256": "9d519add9145427973dd81c47381660d9174654865763d5ab9cf7ce2b0954519",
+      "matched_alpha_POT_source": "results/v17/integer/MSL/reference/reference/seed_2028/metrics.json",
+      "matched_alpha_POT_source_sha256": "37f123b47a3fc83cc6b04e1e72b4e838ed7dcc39860f74176152394347a99dfe"
+    },
+    {
+      "key": [
+        "MSL",
+        "reference",
+        "window_only",
+        2028
+      ],
+      "report": "results/v13/architectures/MSL/reference/window_only/seed_2028/metrics.json",
+      "report_sha256": "26b99bad78de8d197c9cc0f620b19c901f68224bf50aaf8804647f49c8ca985b",
+      "scores_sha256": "be001a9aee1a15629b38fc687ffb58778e7f013efd52f98b16991b273a094f95",
+      "matched_alpha_POT_source": "results/v17/integer/MSL/reference/window_only/seed_2028/metrics.json",
+      "matched_alpha_POT_source_sha256": "09abf923f3a7df09407c2869a375631ada417a2fe44a57e11d16d9c7da51be12"
+    },
+    {
+      "key": [
+        "MSL",
+        "reference",
+        "ff_only",
+        2028
+      ],
+      "report": "results/v13/architectures/MSL/reference/ff_only/seed_2028/metrics.json",
+      "report_sha256": "30687826afcb1a4138bacb2706fedfa1ad9d7fbd80d099998b9e98e0d6e68884",
+      "scores_sha256": "66b8853b4d5f99e72f4c46201784f337e6dbb611f844732e13d7766af2d76b2f",
+      "matched_alpha_POT_source": "results/v17/integer/MSL/reference/ff_only/seed_2028/metrics.json",
+      "matched_alpha_POT_source_sha256": "c7c972888598b1a8b82abb409342aac9340cddbb61627da7a946b823b7fd8057"
+    },
+    {
+      "key": [
+        "MSL",
+        "reference",
+        "compact",
+        2028
+      ],
+      "report": "results/v13/architectures/MSL/reference/compact/seed_2028/metrics.json",
+      "report_sha256": "9c3337e5864c90e25f6405096b9d64e5858bdbd22a1fb1154196e09c112df811",
+      "scores_sha256": "37563fb16dca802156f09bcfccb4d98c03c3e6d5a5e4397765cd7945ded02968",
+      "matched_alpha_POT_source": "results/v17/integer/MSL/reference/compact/seed_2028/metrics.json",
+      "matched_alpha_POT_source_sha256": "009dfdc7e2e0797607642788c062b52ebcc5e7c6ee87bae3122f5a20b4881b5a"
+    },
+    {
+      "key": [
+        "MSL",
+        "shared_decoder",
+        "reference",
+        2028
+      ],
+      "report": "results/v13/architectures/MSL/shared_decoder/reference/seed_2028/metrics.json",
+      "report_sha256": "be0c9535a1bbcde5065a00098757fa96816521e45204f15741842c499294b846",
+      "scores_sha256": "303c540e68a6a8ef916ce430cdfd4198d9a367ad5258ffbc0829a64ca4ecee13",
+      "matched_alpha_POT_source": "results/v17/integer/MSL/shared_decoder/reference/seed_2028/metrics.json",
+      "matched_alpha_POT_source_sha256": "83c47ebb2c456fba0c0c29e061fedac7d0502d9edc873d362381e3a3ba5773bb"
+    },
+    {
+      "key": [
+        "MSL",
+        "single_pass",
+        "reference",
+        2028
+      ],
+      "report": "results/v13/architectures/MSL/single_pass/reference/seed_2028/metrics.json",
+      "report_sha256": "4784f3c2a72e8bf21a7cf6c6a1c2503a3ecc46f5b4525c7dc1ed1383764c1649",
+      "scores_sha256": "257acc85063d4b98147bf06755bb6440ae0498c819916ab4496ef5024e615d92",
+      "matched_alpha_POT_source": "results/v17/integer/MSL/single_pass/reference/seed_2028/metrics.json",
+      "matched_alpha_POT_source_sha256": "42a9d60a01de98aa25f96d7015fec5d955c76aca36e46e44ff921dd6b602ed32"
+    },
+    {
+      "key": [
+        "MSL",
+        "encoder_only",
+        "reference",
+        2028
+      ],
+      "report": "results/v13/architectures/MSL/encoder_only/reference/seed_2028/metrics.json",
+      "report_sha256": "4edba50b84e7cd911109838f6e5aaf8699b2bbe2173b8d83d26bce3bfbc6fdfa",
+      "scores_sha256": "102a49a64f42e868373a0b9ff3667bfae774eda0886caf630383b4150f20a67d",
+      "matched_alpha_POT_source": "results/v17/integer/MSL/encoder_only/reference/seed_2028/metrics.json",
+      "matched_alpha_POT_source_sha256": "79e450fe104e7d8343f97bef021b2e4655ec99b2544a5942e3bf2b8b51b57578"
+    }
+  ],
+  "label_checks": 81,
+  "reconstruction_parity_checks": [
+    {
+      "profile": "toast13_smap_reference_reference_s2026",
+      "method": "bf",
+      "points": 160,
+      "max_absolute_MSE_drift": 1.2223608791828156e-09
+    },
+    {
+      "profile": "toast13_smap_reference_window_only_s2026",
+      "method": "bf",
+      "points": 160,
+      "max_absolute_MSE_drift": 1.1059455573558807e-09
+    },
+    {
+      "profile": "toast13_smap_reference_ff_only_s2026",
+      "method": "bf",
+      "points": 160,
+      "max_absolute_MSE_drift": 9.313225746154785e-10
+    },
+    {
+      "profile": "toast13_smap_reference_compact_s2026",
+      "method": "bf",
+      "points": 160,
+      "max_absolute_MSE_drift": 4.001776687800884e-10
+    },
+    {
+      "profile": "toast13_smap_reference_reference_s2026",
+      "method": "pot",
+      "points": 160,
+      "max_absolute_MSE_drift": 7.566995918750763e-10
+    },
+    {
+      "profile": "toast13_smap_reference_window_only_s2026",
+      "method": "pot",
+      "points": 160,
+      "max_absolute_MSE_drift": 9.022187441587448e-10
+    },
+    {
+      "profile": "toast13_smap_reference_ff_only_s2026",
+      "method": "pot",
+      "points": 160,
+      "max_absolute_MSE_drift": 1.0186340659856796e-09
+    },
+    {
+      "profile": "toast13_smap_reference_compact_s2026",
+      "method": "pot",
+      "points": 160,
+      "max_absolute_MSE_drift": 3.4924596548080444e-10
+    },
+    {
+      "profile": "toast13_smap_reference_reference_s2026",
+      "method": "bf",
+      "points": 160,
+      "max_absolute_MSE_drift": 5.238689482212067e-10
+    },
+    {
+      "profile": "toast13_smap_shared_decoder_reference_s2026",
+      "method": "bf",
+      "points": 160,
+      "max_absolute_MSE_drift": 5.675246939063072e-10
+    },
+    {
+      "profile": "toast13_smap_single_pass_reference_s2026",
+      "method": "bf",
+      "points": 160,
+      "max_absolute_MSE_drift": 2.1645973902195692e-10
+    },
+    {
+      "profile": "toast13_smap_encoder_only_reference_s2026",
+      "method": "bf",
+      "points": 160,
+      "max_absolute_MSE_drift": 5.587935447692871e-09
+    },
+    {
+      "profile": "toast13_smap_reference_reference_s2026",
+      "method": "pot",
+      "points": 160,
+      "max_absolute_MSE_drift": 3.346940502524376e-10
+    },
+    {
+      "profile": "toast13_smap_shared_decoder_reference_s2026",
+      "method": "pot",
+      "points": 160,
+      "max_absolute_MSE_drift": 6.693881005048752e-10
+    },
+    {
+      "profile": "toast13_smap_single_pass_reference_s2026",
+      "method": "pot",
+      "points": 160,
+      "max_absolute_MSE_drift": 2.1645973902195692e-10
+    },
+    {
+      "profile": "toast13_smap_encoder_only_reference_s2026",
+      "method": "pot",
+      "points": 160,
+      "max_absolute_MSE_drift": 5.587935447692871e-09
+    },
+    {
+      "profile": "toast13_smap_reference_reference_s2026",
+      "method": "bf",
+      "points": 231,
+      "max_absolute_MSE_drift": 2.1827872842550278e-10
+    },
+    {
+      "profile": "toast13_smap_reference_window_only_s2026",
+      "method": "bf",
+      "points": 231,
+      "max_absolute_MSE_drift": 3.637978807091713e-10
+    },
+    {
+      "profile": "toast13_smap_reference_ff_only_s2026",
+      "method": "bf",
+      "points": 231,
+      "max_absolute_MSE_drift": 6.548361852765083e-11
+    },
+    {
+      "profile": "toast13_smap_reference_compact_s2026",
+      "method": "bf",
+      "points": 231,
+      "max_absolute_MSE_drift": 4.3655745685100555e-10
+    },
+    {
+      "profile": "toast13_smap_reference_reference_s2026",
+      "method": "pot",
+      "points": 231,
+      "max_absolute_MSE_drift": 9.458744898438454e-11
+    },
+    {
+      "profile": "toast13_smap_reference_window_only_s2026",
+      "method": "pot",
+      "points": 231,
+      "max_absolute_MSE_drift": 6.111804395914078e-10
+    },
+    {
+      "profile": "toast13_smap_reference_ff_only_s2026",
+      "method": "pot",
+      "points": 231,
+      "max_absolute_MSE_drift": 1.0186340659856796e-10
+    },
+    {
+      "profile": "toast13_smap_reference_compact_s2026",
+      "method": "pot",
+      "points": 231,
+      "max_absolute_MSE_drift": 7.275957614183426e-11
+    },
+    {
+      "profile": "toast13_smap_reference_reference_s2026",
+      "method": "bf",
+      "points": 231,
+      "max_absolute_MSE_drift": 7.8580342233181e-10
+    },
+    {
+      "profile": "toast13_smap_shared_decoder_reference_s2026",
+      "method": "bf",
+      "points": 231,
+      "max_absolute_MSE_drift": 3.601599019020796e-10
+    },
+    {
+      "profile": "toast13_smap_single_pass_reference_s2026",
+      "method": "bf",
+      "points": 231,
+      "max_absolute_MSE_drift": 5.238689482212067e-10
+    },
+    {
+      "profile": "toast13_smap_encoder_only_reference_s2026",
+      "method": "bf",
+      "points": 231,
+      "max_absolute_MSE_drift": 9.604264050722122e-10
+    },
+    {
+      "profile": "toast13_smap_reference_reference_s2026",
+      "method": "pot",
+      "points": 231,
+      "max_absolute_MSE_drift": 3.8562575355172157e-10
+    },
+    {
+      "profile": "toast13_smap_shared_decoder_reference_s2026",
+      "method": "pot",
+      "points": 231,
+      "max_absolute_MSE_drift": 3.4924596548080444e-10
+    },
+    {
+      "profile": "toast13_smap_single_pass_reference_s2026",
+      "method": "pot",
+      "points": 231,
+      "max_absolute_MSE_drift": 5.238689482212067e-10
+    },
+    {
+      "profile": "toast13_smap_encoder_only_reference_s2026",
+      "method": "pot",
+      "points": 231,
+      "max_absolute_MSE_drift": 9.604264050722122e-10
+    },
+    {
+      "profile": "toast13_msl_reference_reference_s2026",
+      "method": "bf",
+      "points": 160,
+      "max_absolute_MSE_drift": 1.6370904631912708e-10
+    },
+    {
+      "profile": "toast13_msl_reference_window_only_s2026",
+      "method": "bf",
+      "points": 160,
+      "max_absolute_MSE_drift": 1.4551915228366852e-10
+    },
+    {
+      "profile": "toast13_msl_reference_ff_only_s2026",
+      "method": "bf",
+      "points": 160,
+      "max_absolute_MSE_drift": 2.000888343900442e-10
+    },
+    {
+      "profile": "toast13_msl_reference_compact_s2026",
+      "method": "bf",
+      "points": 160,
+      "max_absolute_MSE_drift": 2.1100277081131935e-10
+    },
+    {
+      "profile": "toast13_msl_reference_reference_s2026",
+      "method": "pot",
+      "points": 160,
+      "max_absolute_MSE_drift": 1.0550138540565968e-10
+    },
+    {
+      "profile": "toast13_msl_reference_window_only_s2026",
+      "method": "pot",
+      "points": 160,
+      "max_absolute_MSE_drift": 1.4915713109076023e-10
+    },
+    {
+      "profile": "toast13_msl_reference_ff_only_s2026",
+      "method": "pot",
+      "points": 160,
+      "max_absolute_MSE_drift": 1.2187229003757238e-10
+    },
+    {
+      "profile": "toast13_msl_reference_compact_s2026",
+      "method": "pot",
+      "points": 160,
+      "max_absolute_MSE_drift": 1.5279510989785194e-10
+    },
+    {
+      "profile": "toast13_msl_reference_reference_s2026",
+      "method": "bf",
+      "points": 160,
+      "max_absolute_MSE_drift": 1.1095835361629725e-10
+    },
+    {
+      "profile": "toast13_msl_shared_decoder_reference_s2026",
+      "method": "bf",
+      "points": 160,
+      "max_absolute_MSE_drift": 1.1641532182693481e-10
+    },
+    {
+      "profile": "toast13_msl_single_pass_reference_s2026",
+      "method": "bf",
+      "points": 160,
+      "max_absolute_MSE_drift": 1.2732925824820995e-10
+    },
+    {
+      "profile": "toast13_msl_encoder_only_reference_s2026",
+      "method": "bf",
+      "points": 160,
+      "max_absolute_MSE_drift": 4.3655745685100555e-10
+    },
+    {
+      "profile": "toast13_msl_reference_reference_s2026",
+      "method": "pot",
+      "points": 160,
+      "max_absolute_MSE_drift": 1.255102688446641e-10
+    },
+    {
+      "profile": "toast13_msl_shared_decoder_reference_s2026",
+      "method": "pot",
+      "points": 160,
+      "max_absolute_MSE_drift": 9.094947017729282e-11
+    },
+    {
+      "profile": "toast13_msl_single_pass_reference_s2026",
+      "method": "pot",
+      "points": 160,
+      "max_absolute_MSE_drift": 1.2732925824820995e-10
+    },
+    {
+      "profile": "toast13_msl_encoder_only_reference_s2026",
+      "method": "pot",
+      "points": 160,
+      "max_absolute_MSE_drift": 4.3655745685100555e-10
+    },
+    {
+      "profile": "toast13_msl_reference_reference_s2026",
+      "method": "bf",
+      "points": 221,
+      "max_absolute_MSE_drift": 1.2369127944111824e-10
+    },
+    {
+      "profile": "toast13_msl_reference_window_only_s2026",
+      "method": "bf",
+      "points": 221,
+      "max_absolute_MSE_drift": 1.7462298274040222e-10
+    },
+    {
+      "profile": "toast13_msl_reference_ff_only_s2026",
+      "method": "bf",
+      "points": 221,
+      "max_absolute_MSE_drift": 2.546585164964199e-10
+    },
+    {
+      "profile": "toast13_msl_reference_compact_s2026",
+      "method": "bf",
+      "points": 221,
+      "max_absolute_MSE_drift": 1.1641532182693481e-10
+    },
+    {
+      "profile": "toast13_msl_reference_reference_s2026",
+      "method": "pot",
+      "points": 221,
+      "max_absolute_MSE_drift": 1.1459633242338896e-10
+    },
+    {
+      "profile": "toast13_msl_reference_window_only_s2026",
+      "method": "pot",
+      "points": 221,
+      "max_absolute_MSE_drift": 2.219167072325945e-10
+    },
+    {
+      "profile": "toast13_msl_reference_ff_only_s2026",
+      "method": "pot",
+      "points": 221,
+      "max_absolute_MSE_drift": 1.382431946694851e-10
+    },
+    {
+      "profile": "toast13_msl_reference_compact_s2026",
+      "method": "pot",
+      "points": 221,
+      "max_absolute_MSE_drift": 9.458744898438454e-11
+    },
+    {
+      "profile": "toast13_msl_reference_reference_s2026",
+      "method": "bf",
+      "points": 201,
+      "max_absolute_MSE_drift": 8.731149137020111e-11
+    },
+    {
+      "profile": "toast13_msl_shared_decoder_reference_s2026",
+      "method": "bf",
+      "points": 201,
+      "max_absolute_MSE_drift": 1.1641532182693481e-10
+    },
+    {
+      "profile": "toast13_msl_single_pass_reference_s2026",
+      "method": "bf",
+      "points": 201,
+      "max_absolute_MSE_drift": 1.7462298274040222e-10
+    },
+    {
+      "profile": "toast13_msl_encoder_only_reference_s2026",
+      "method": "bf",
+      "points": 201,
+      "max_absolute_MSE_drift": 4.3655745685100555e-10
+    },
+    {
+      "profile": "toast13_msl_reference_reference_s2026",
+      "method": "pot",
+      "points": 201,
+      "max_absolute_MSE_drift": 1.7462298274040222e-10
+    },
+    {
+      "profile": "toast13_msl_shared_decoder_reference_s2026",
+      "method": "pot",
+      "points": 201,
+      "max_absolute_MSE_drift": 1.3278622645884752e-10
+    },
+    {
+      "profile": "toast13_msl_single_pass_reference_s2026",
+      "method": "pot",
+      "points": 201,
+      "max_absolute_MSE_drift": 1.7462298274040222e-10
+    },
+    {
+      "profile": "toast13_msl_encoder_only_reference_s2026",
+      "method": "pot",
+      "points": 201,
+      "max_absolute_MSE_drift": 4.3655745685100555e-10
+    }
+  ],
+  "anchor_seed": 2026,
+  "seeds_used_for_selection": [
+    2026,
+    2027,
+    2028
+  ],
+  "new_training": 0,
+  "original_alpha_and_threshold_preserved": true,
+  "new_threshold_protocol": false,
+  "score_uses_all_features": true,
+  "first_coordinate_only_in_telemetry_panel": true,
+  "source_metadata_sha256": "057ce2d6c8875982bf4e5404aefea14efdcbce413d80826d2b737c95b59b7539",
+  "script_sha256": "1aa6550ad0aaf87522fc46683590babe0b0b391d77900c211b066a512cd3c88e",
+  "original_results_changed": false
+}

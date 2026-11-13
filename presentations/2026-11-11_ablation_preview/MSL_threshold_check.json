@@ -1,0 +1,35 @@
+[
+  {
+    "seed": 2026,
+    "report_file": "results/v10/study/MSL/toast10_msl_w100_h100_s2026_integrated_5fa5245540a9_cuda-0_db2fa6db33.json",
+    "report_sha256": "23acc72dcfd2d25a54085188adae2a7b744431dd5881bd109affe18d1753f917",
+    "same_checkpoint_and_alpha": true,
+    "alpha": 0.65,
+    "BF200_f1": 0.40705481511173464,
+    "POT_f1_at_BF200_selected_alpha": 0.8496879643387816,
+    "BF200_threshold": 0.00748833889547891,
+    "POT_threshold_at_same_alpha": 2.6484329232144984e-05
+  },
+  {
+    "seed": 2027,
+    "report_file": "results/v10/study/MSL/toast10_msl_w100_h100_s2027_integrated_a71ed8d7eee3_cuda-0_db2fa6db33.json",
+    "report_sha256": "bb1f0cacfa89099a26d5b76f7705c07fbd28ad99a02381fe7fce29d9f9a55163",
+    "same_checkpoint_and_alpha": true,
+    "alpha": 0.65,
+    "BF200_f1": 0.7158854583266677,
+    "POT_f1_at_BF200_selected_alpha": 0.8571428571428571,
+    "BF200_threshold": 0.007371977979413165,
+    "POT_threshold_at_same_alpha": 2.8335356702870687e-05
+  },
+  {
+    "seed": 2028,
+    "report_file": "results/v10/study/MSL/toast10_msl_w100_h100_s2028_integrated_b9a36c74f21d_cuda-0_db2fa6db33.json",
+    "report_sha256": "361ee1f4c5032073a8ef1e68bbb782e8196683534051b661b338bd10950b6c2b",
+    "same_checkpoint_and_alpha": true,
+    "alpha": 0.65,
+    "BF200_f1": 0.41475019825535286,
+    "POT_f1_at_BF200_selected_alpha": 0.8522385418509999,
+    "BF200_threshold": 0.007424415064862348,
+    "POT_threshold_at_same_alpha": 2.7865883801535403e-05
+  }
+]

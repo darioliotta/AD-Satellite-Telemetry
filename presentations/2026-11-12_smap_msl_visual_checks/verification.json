@@ -1,0 +1,20 @@
+{
+  "labelled_tracks_checked": 81,
+  "original_score_sources": 42,
+  "checkpoint_reconstruction_checks": 64,
+  "example_endpoint_rows": 64,
+  "FP_invariance_under_PA": true,
+  "metadata_duplicate_rows": [
+    {
+      "dataset": "SMAP",
+      "track": "P-2",
+      "samples": "8209",
+      "positive_samples": "1226",
+      "matches_inclusive_metadata_intervals": "True",
+      "metadata_rows": "2",
+      "metadata_policy": "first row, matching original preprocessing"
+    }
+  ],
+  "new_training": 0,
+  "source_results_changed": false
+}

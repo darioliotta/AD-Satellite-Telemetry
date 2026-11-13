@@ -6,7 +6,7 @@
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2026-11-04T01:40:50.977502</dc:date>
+    <dc:date>2026-11-08T17:33:02.925673</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -35,7 +35,7 @@ L 907.17732 144.72
 L 907.17732 97.2 
 L 52.79868 97.2 
 z
-" clip-path="url(#p40f0974a14)" style="fill: #9b0014"/>
+" clip-path="url(#p042c85fa4c)" style="fill: #9b0014"/>
    </g>
    <g id="patch_3">
     <path d="M 52.79868 192.24 
@@ -43,7 +43,7 @@ L 907.17732 192.24
 L 907.17732 144.72 
 L 52.79868 144.72 
 z
-" clip-path="url(#p40f0974a14)" style="fill: #fcf4f5"/>
+" clip-path="url(#p042c85fa4c)" style="fill: #fcf4f5"/>
    </g>
    <g id="patch_4">
     <path d="M 52.79868 239.76 
@@ -51,7 +51,7 @@ L 907.17732 239.76
 L 907.17732 192.24 
 L 52.79868 192.24 
 z
-" clip-path="url(#p40f0974a14)" style="fill: #ffffff"/>
+" clip-path="url(#p042c85fa4c)" style="fill: #ffffff"/>
    </g>
    <g id="patch_5">
     <path d="M 52.79868 287.28 
@@ -59,7 +59,7 @@ L 907.17732 287.28
 L 907.17732 239.76 
 L 52.79868 239.76 
 z
-" clip-path="url(#p40f0974a14)" style="fill: #fcf4f5"/>
+" clip-path="url(#p042c85fa4c)" style="fill: #fcf4f5"/>
    </g>
    <g id="patch_6">
     <path d="M 52.79868 334.8 
@@ -67,7 +67,7 @@ L 907.17732 334.8
 L 907.17732 287.28 
 L 52.79868 287.28 
 z
-" clip-path="url(#p40f0974a14)" style="fill: #ffffff"/>
+" clip-path="url(#p042c85fa4c)" style="fill: #ffffff"/>
    </g>
    <g id="patch_7">
     <path d="M 52.79868 382.32 
@@ -75,7 +75,7 @@ L 907.17732 382.32
 L 907.17732 334.8 
 L 52.79868 334.8 
 z
-" clip-path="url(#p40f0974a14)" style="fill: #fcf4f5"/>
+" clip-path="url(#p042c85fa4c)" style="fill: #fcf4f5"/>
    </g>
    <g id="patch_8">
     <path d="M 52.79868 429.84 
@@ -83,7 +83,7 @@ L 907.17732 429.84
 L 907.17732 382.32 
 L 52.79868 382.32 
 z
-" clip-path="url(#p40f0974a14)" style="fill: #ffffff"/>
+" clip-path="url(#p042c85fa4c)" style="fill: #ffffff"/>
    </g>
    <g id="text_1">
     <!-- Dataset -->
@@ -1217,13 +1217,13 @@ z
     </g>
    </g>
    <g id="text_28">
-    <!-- 67.04 -->
+    <!-- 68.61 -->
     <g style="fill: #252525" transform="translate(477.156319 364.505859) scale(0.23 -0.23)">
      <use xlink:href="#ArialMT-36"/>
-     <use xlink:href="#ArialMT-37" transform="translate(55.615234 0)"/>
+     <use xlink:href="#ArialMT-38" transform="translate(55.615234 0)"/>
      <use xlink:href="#ArialMT-2e" transform="translate(111.230469 0)"/>
-     <use xlink:href="#ArialMT-30" transform="translate(139.013672 0)"/>
-     <use xlink:href="#ArialMT-34" transform="translate(194.628906 0)"/>
+     <use xlink:href="#ArialMT-36" transform="translate(139.013672 0)"/>
+     <use xlink:href="#ArialMT-31" transform="translate(194.628906 0)"/>
     </g>
    </g>
    <g id="text_29">
@@ -1334,7 +1334,7 @@ z
   </g>
  </g>
  <defs>
-  <clipPath id="p40f0974a14">
+  <clipPath id="p042c85fa4c">
    <rect x="0" y="0" width="959.976" height="540"/>
   </clipPath>
  </defs>

@@ -82,5 +82,15 @@
     "bf_sha256": "f9a230bf1ffc7d0c1d466137837f1eb60e5e811807c29cf4505d78623b30b074"
   },
   "brand_source": "https://www.unipd.it/",
-  "builder_sha256": "54ec25118caa494c39c7a2d5a4cc907578b8d84773fb4b0c223684a3fa22d43e"
+  "builder_sha256": "3254327cb9fd692bf7123548033a4926d5704fc683b97fe0072a5f0ff0fa8e62",
+  "smd_pot_update": {
+    "dataset": "SMD",
+    "method": "pot",
+    "source": "results/v16/smd/author_pot/seed_3/metrics.json",
+    "source_sha256": "41a4d16d4580e92df68ca4b6bf1ac789f24c5efd269511385091460b691b6b3b",
+    "f1": 0.6861043844384682,
+    "precision": 0.5345988280583316,
+    "recall": 0.9574446406738215,
+    "ROC/AUC": 0.9606631611746579
+  }
 }

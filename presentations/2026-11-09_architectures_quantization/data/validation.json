@@ -1,0 +1,13 @@
+{
+  "pages": 20,
+  "pdf_text_within_page": true,
+  "v18_and_dense_metrics_excluded": true,
+  "embedded_svg_figures": 20,
+  "speaker_notes": 20,
+  "fallback_resolution": "~4000x2250",
+  "numerical_source_records": 1260,
+  "source_reports": "Completion status and metric hashes verified; full V17 artifact hashes verified",
+  "visual_review": "Slide 12 markers removed; slide 13 simplified; former slides 21 and22 removed.",
+  "missing_POT_controls": "Availability retained in source data and speaker notes; no slide markers.",
+  "toy_PA_example": "A: TP3 FP1 FN3 -> TP6 FP1 FN0; B: TP1 FP0 FN5 -> TP6 FP0 FN0"
+}
