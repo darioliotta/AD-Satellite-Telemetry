@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "name": "v17_integer",
+  "datasets": ["OPS-SAT", "SMAP", "MSL"],
+  "variants": ["encoder_only", "single_pass", "shared_decoder", "reference"],
+  "configurations": ["compact", "window_only", "ff_only", "reference"],
+  "seeds": [2026, 2027, 2028, 2029, 2030],
+  "formats": ["int8", "int4"],
+  "quantization": {
+    "method": "post_training_dynamic_symmetric",
+    "weights": "per_output_channel_absmax",
+    "activations": "per_vector_absmax_at_runtime",
+    "range_int8": [-127, 127],
+    "range_int4": [-7, 7],
+    "kernel": "Triton INT8 x INT8 with INT32 accumulator",
+    "int4_execution": "W4A4 values on INT8 instructions; not native INT4 hardware",
+    "floating_nonlinearities_and_residuals": true,
+    "calibration_uses_test_labels": false,
+    "floating_gemm_fallback": false
+  },
+  "storage": {"max_output_gib": 3, "save_pointwise_arrays": false, "save_reconstructions": false},
+  "evaluation": {
+    "alpha_steps": 21, "paper_threshold_steps": 200,
+    "score_batch_size_by_dataset": {"OPS-SAT": 256, "SMAP": 128, "MSL": 64},
+    "latency_warmup": 10, "latency_iterations": 100,
+    "archive_policy": "compact_summary_only",
+    "save_pointwise_arrays": false, "save_reconstructions": false,
+    "profile_operators": true
+  }
+}

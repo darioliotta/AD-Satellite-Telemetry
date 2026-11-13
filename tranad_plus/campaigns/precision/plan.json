@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "name": "v16_precision",
+  "campaigns": ["ptq", "smd"],
+  "storage": {"policy": "compact", "max_output_gib": 3, "save_pointwise_arrays": false, "save_reconstructions": false},
+  "datasets": ["OPS-SAT", "SMAP", "MSL"],
+  "variants": ["encoder_only", "single_pass", "shared_decoder", "reference"],
+  "configurations": ["compact", "window_only", "ff_only", "reference"],
+  "seeds": [2026, 2027, 2028, 2029, 2030],
+  "ptq_formats": ["fp16", "int8", "int4"],
+  "quantization": {
+    "scope": "all_unique_learned_matrices_including_attention_QKV_and_output_projections",
+    "scheme": "symmetric_per_tensor_fixed_parent_absmax",
+    "bias_dtype": "float32",
+    "activation_dtype": "float32",
+    "execution": "dequantized_float32_simulation",
+    "int4_storage": "two_offset_signed_codes_per_uint8"
+  },
+  "evaluation": {
+    "alpha_steps": 21, "paper_threshold_steps": 200,
+    "score_batch_size_by_dataset": {"OPS-SAT": 1024, "SMAP": 1024, "MSL": 128, "SMD": 512},
+    "latency_warmup": 10, "latency_iterations": 100,
+    "archive_policy": "compact_summary_only",
+    "save_pointwise_arrays": false,
+    "save_reconstructions": false,
+    "profile_operators": true
+  },
+  "smd_seeds": [2, 3],
+  "smd": {
+    "dataset": "SMD", "features": 38, "variant": "reference", "configuration": "author_pot",
+    "epochs": 100, "window_sz": 20, "dim_feedforward": 76, "num_layers": 5,
+    "batch_sz": 8192, "lr": 0.0001, "pot_q": 0.001,
+    "shuffle": false, "padding": true, "num_workers": 0, "downsample": null
+  }
+}

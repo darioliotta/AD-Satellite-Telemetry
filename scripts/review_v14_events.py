@@ -24,7 +24,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 
-from tranad_v14.metrics import anomaly_segments, real_point_mask
+from tranad_plus.campaigns.exploration.metrics import anomaly_segments, real_point_mask
 
 DATASETS = ('OPS-SAT', 'SMAP', 'MSL')
 MODELS = ('reference', 'encoder_only')

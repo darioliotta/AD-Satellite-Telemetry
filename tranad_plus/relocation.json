@@ -1,0 +1,367 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-08",
+  "reason": "Single current code root; import and filesystem relocation only.",
+  "packages": {
+    "tranad_variants": "tranad_plus.core",
+    "tranad_v14": "tranad_plus.campaigns.exploration",
+    "tranad_v15": "tranad_plus.campaigns.temporal",
+    "tranad_v16": "tranad_plus.campaigns.precision"
+  },
+  "files": {
+    "tranad_plus/core/bootstrap.py": {
+      "before_sha256": "d40bdaaa2966b4b1aa1bfb1e9548edf495964c635978eaf6f4eb8e4595b36625",
+      "after_sha256": "a4b0d8f3c9a00ca466f3437d63aa47efb9faad7b444505ec652de958d07307a3",
+      "old_path": "tranad_variants/bootstrap.py",
+      "scope": "paths_and_imports"
+    },
+    "tranad_plus/core/runner.py": {
+      "before_sha256": "ef66d64ffea3a0f3818da0efe2e8ee2d59edd72c841fc4a84d8a8f0aabb0feb9",
+      "after_sha256": "ef66d64ffea3a0f3818da0efe2e8ee2d59edd72c841fc4a84d8a8f0aabb0feb9",
+      "old_path": "tranad_variants/runner.py",
+      "scope": "imports_only_AST_verified"
+    },
+    "tranad_plus/core/__init__.py": {
+      "before_sha256": "d7817a7d744689c6156520411e65b0e58c28240ba9fbcd3a5497c13b76ef321e",
+      "after_sha256": "d7817a7d744689c6156520411e65b0e58c28240ba9fbcd3a5497c13b76ef321e",
+      "old_path": "tranad_variants/__init__.py",
+      "scope": "imports_only_AST_verified"
+    },
+    "tranad_plus/core/common.py": {
+      "before_sha256": "c357435a52ba828236fbb30a0288e7efdcd52c4f52098caec5120d1ecc8c60ad",
+      "after_sha256": "c357435a52ba828236fbb30a0288e7efdcd52c4f52098caec5120d1ecc8c60ad",
+      "old_path": "tranad_variants/common.py",
+      "scope": "imports_only_AST_verified"
+    },
+    "tranad_plus/core/planning.py": {
+      "before_sha256": "e748632c33696ac60193b3af3fb221b03e3beb77e9933342ed390e8bfc2a68da",
+      "after_sha256": "e748632c33696ac60193b3af3fb221b03e3beb77e9933342ed390e8bfc2a68da",
+      "old_path": "tranad_variants/planning.py",
+      "scope": "imports_only_AST_verified"
+    },
+    "tranad_plus/core/run_experiments.py": {
+      "before_sha256": "ed763f2aa772cd43ad0de85cc5c9367c6f55c17125ac9538313c7d73a3292e71",
+      "after_sha256": "f2473deb826954c06fb87d14e53a89021be68aae58b7025ef9dc7ea2bce15c1d",
+      "old_path": "tranad_variants/run_experiments.py",
+      "scope": "paths_and_imports"
+    },
+    "tranad_plus/core/data.py": {
+      "before_sha256": "0406eb956132db081dde54dc0e0badc3bd4923e0c12874bf08108b88d7c489ba",
+      "after_sha256": "0406eb956132db081dde54dc0e0badc3bd4923e0c12874bf08108b88d7c489ba",
+      "old_path": "tranad_variants/data.py",
+      "scope": "imports_only_AST_verified"
+    },
+    "tranad_plus/core/training/__init__.py": {
+      "before_sha256": "457f423329e7457eb287dc7d40fc4419c3ee2decc2ddf77c71802006239f83e5",
+      "after_sha256": "457f423329e7457eb287dc7d40fc4419c3ee2decc2ddf77c71802006239f83e5",
+      "old_path": "tranad_variants/training/__init__.py",
+      "scope": "imports_only_AST_verified"
+    },
+    "tranad_plus/core/training/engine.py": {
+      "before_sha256": "67e0d9a9171eb382bc6f6976590b0fe10435637f44a3783c859298c681d7de95",
+      "after_sha256": "67e0d9a9171eb382bc6f6976590b0fe10435637f44a3783c859298c681d7de95",
+      "old_path": "tranad_variants/training/engine.py",
+      "scope": "imports_only_AST_verified"
+    },
+    "tranad_plus/core/training/objectives.py": {
+      "before_sha256": "a18227469cb131a8b7c4c326f5591f0dda64a24a23f3561a5015a97a984f197e",
+      "after_sha256": "a18227469cb131a8b7c4c326f5591f0dda64a24a23f3561a5015a97a984f197e",
+      "old_path": "tranad_variants/training/objectives.py",
+      "scope": "imports_only_AST_verified"
+    },
+    "tranad_plus/core/tests/test_architectures.py": {
+      "before_sha256": "76bd397114530f296ef36c137bb664561d8206546b5c865d0bcfc9a449ceea81",
+      "after_sha256": "76a1aaba071409b2652bd9157ad34fe7624fb7d72a32874c285b0a9633c38f02",
+      "old_path": "tranad_variants/tests/test_architectures.py",
+      "scope": "paths_and_imports"
+    },
+    "tranad_plus/core/tests/test_pipeline.py": {
+      "before_sha256": "5b785ba7d1d1bab8695efa13ab8c57329e1a05389b8c642000083f9d30cf08b1",
+      "after_sha256": "6b365f1671c2856b63e4a0eff6d6541b164af2ec226f91c060e1a2c5d541831a",
+      "old_path": "tranad_variants/tests/test_pipeline.py",
+      "scope": "paths_and_imports"
+    },
+    "tranad_plus/core/models/__init__.py": {
+      "before_sha256": "9279fc23cf2db029d5c64cdb221f8e4ec95d223b1f1af3ce05fd21601c744687",
+      "after_sha256": "9279fc23cf2db029d5c64cdb221f8e4ec95d223b1f1af3ce05fd21601c744687",
+      "old_path": "tranad_variants/models/__init__.py",
+      "scope": "imports_only_AST_verified"
+    },
+    "tranad_plus/core/models/encoder_only/__init__.py": {
+      "before_sha256": "67dffc6c233c790aac46fbcc685057a01819ab23b65dbc7204913afe0a72f8fb",
+      "after_sha256": "67dffc6c233c790aac46fbcc685057a01819ab23b65dbc7204913afe0a72f8fb",
+      "old_path": "tranad_variants/models/encoder_only/__init__.py",
+      "scope": "imports_only_AST_verified"
+    },
+    "tranad_plus/core/models/encoder_only/model.py": {
+      "before_sha256": "56c6104066874efa9aa0af0de3d809b4ecd0adbcf9c4b3e0cea4528e47cadeb2",
+      "after_sha256": "56c6104066874efa9aa0af0de3d809b4ecd0adbcf9c4b3e0cea4528e47cadeb2",
+      "old_path": "tranad_variants/models/encoder_only/model.py",
+      "scope": "imports_only_AST_verified"
+    },
+    "tranad_plus/core/models/single_pass/__init__.py": {
+      "before_sha256": "88d7fabe4b2d3348d6dfa91366ae1eb033b11d715bd08d89253d38fafc320786",
+      "after_sha256": "88d7fabe4b2d3348d6dfa91366ae1eb033b11d715bd08d89253d38fafc320786",
+      "old_path": "tranad_variants/models/single_pass/__init__.py",
+      "scope": "imports_only_AST_verified"
+    },
+    "tranad_plus/core/models/single_pass/model.py": {
+      "before_sha256": "0298046162f6df9546f1e22288fbc8270a01f242f82fa07dedbde1aeeebba310",
+      "after_sha256": "0298046162f6df9546f1e22288fbc8270a01f242f82fa07dedbde1aeeebba310",
+      "old_path": "tranad_variants/models/single_pass/model.py",
+      "scope": "imports_only_AST_verified"
+    },
+    "tranad_plus/core/models/shared_decoder/__init__.py": {
+      "before_sha256": "1f0c3dbe5f0f83e704f364cd0d8ad7f8c79aa6b6065f3065efe576ab5f4e75f9",
+      "after_sha256": "1f0c3dbe5f0f83e704f364cd0d8ad7f8c79aa6b6065f3065efe576ab5f4e75f9",
+      "old_path": "tranad_variants/models/shared_decoder/__init__.py",
+      "scope": "imports_only_AST_verified"
+    },
+    "tranad_plus/core/models/shared_decoder/model.py": {
+      "before_sha256": "b76863ec5e296edf82f7a57b7df8386c062e6a44070050dc20815705b2acfcf7",
+      "after_sha256": "b76863ec5e296edf82f7a57b7df8386c062e6a44070050dc20815705b2acfcf7",
+      "old_path": "tranad_variants/models/shared_decoder/model.py",
+      "scope": "imports_only_AST_verified"
+    },
+    "tranad_plus/core/models/reference/__init__.py": {
+      "before_sha256": "a2cdc176101254374c0a629e592e80376dfab0d540485836d05785ab1cc2adf6",
+      "after_sha256": "a2cdc176101254374c0a629e592e80376dfab0d540485836d05785ab1cc2adf6",
+      "old_path": "tranad_variants/models/reference/__init__.py",
+      "scope": "imports_only_AST_verified"
+    },
+    "tranad_plus/core/models/reference/model.py": {
+      "before_sha256": "cb904e456f16f6f99f9cfc98cb26fdbc9d83a1eb03f9d731b0cf7f4c967564b8",
+      "after_sha256": "cb904e456f16f6f99f9cfc98cb26fdbc9d83a1eb03f9d731b0cf7f4c967564b8",
+      "old_path": "tranad_variants/models/reference/model.py",
+      "scope": "imports_only_AST_verified"
+    },
+    "tranad_plus/core/evaluation/metrics.py": {
+      "before_sha256": "457f014c031f1efa50e028139c94ff0c2da1f5e769f0854c09d9bbeb0b5f98e0",
+      "after_sha256": "457f014c031f1efa50e028139c94ff0c2da1f5e769f0854c09d9bbeb0b5f98e0",
+      "old_path": "tranad_variants/evaluation/metrics.py",
+      "scope": "imports_only_AST_verified"
+    },
+    "tranad_plus/core/evaluation/scoring.py": {
+      "before_sha256": "260b9c8f7a0af3ccaaa413d643d440982eda615e40ca41d2f7336c25e9996d56",
+      "after_sha256": "260b9c8f7a0af3ccaaa413d643d440982eda615e40ca41d2f7336c25e9996d56",
+      "old_path": "tranad_variants/evaluation/scoring.py",
+      "scope": "imports_only_AST_verified"
+    },
+    "tranad_plus/core/evaluation/__init__.py": {
+      "before_sha256": "596301ea91293a8a21ae96b37d8ec49444f8f7ed3a8bfae25e78f6535457b53b",
+      "after_sha256": "596301ea91293a8a21ae96b37d8ec49444f8f7ed3a8bfae25e78f6535457b53b",
+      "old_path": "tranad_variants/evaluation/__init__.py",
+      "scope": "imports_only_AST_verified"
+    },
+    "tranad_plus/core/evaluation/engine.py": {
+      "before_sha256": "4d1c3dc9ac77436a573b008863618908686c58526b156acdceec566b67db27a4",
+      "after_sha256": "4d1c3dc9ac77436a573b008863618908686c58526b156acdceec566b67db27a4",
+      "old_path": "tranad_variants/evaluation/engine.py",
+      "scope": "imports_only_AST_verified"
+    },
+    "tranad_plus/core/evaluation/resources.py": {
+      "before_sha256": "250f61f09974639d0a7fcc8efbedfcfd021573bba809085610b65a80c2290b60",
+      "after_sha256": "250f61f09974639d0a7fcc8efbedfcfd021573bba809085610b65a80c2290b60",
+      "old_path": "tranad_variants/evaluation/resources.py",
+      "scope": "imports_only_AST_verified"
+    },
+    "tranad_plus/core/evaluation/selection.py": {
+      "before_sha256": "d4741a9eb99d3e080758ad8352686a24ea42ef5baa9144fab88efffeac00cd22",
+      "after_sha256": "d4741a9eb99d3e080758ad8352686a24ea42ef5baa9144fab88efffeac00cd22",
+      "old_path": "tranad_variants/evaluation/selection.py",
+      "scope": "imports_only_AST_verified"
+    },
+    "tranad_plus/core/reports/__init__.py": {
+      "before_sha256": "679ee3684010088d81971f9925a0dde0c5d2dd8b74c4a3d40e8fb9d96e1dd366",
+      "after_sha256": "679ee3684010088d81971f9925a0dde0c5d2dd8b74c4a3d40e8fb9d96e1dd366",
+      "old_path": "tranad_variants/reports/__init__.py",
+      "scope": "paths_and_imports"
+    },
+    "tranad_plus/core/reports/plot_tradeoffs.py": {
+      "before_sha256": "38c3c187260d7359bfdda1d6d1a9a71d375ae9b9d82c5790edb8e4db044fa8d2",
+      "after_sha256": "9c29bfcbc7ec3e392515397fad5c62487cca1a3c0aeb75d38d8e1c5901326b5a",
+      "old_path": "tranad_variants/reports/plot_tradeoffs.py",
+      "scope": "paths_and_imports"
+    },
+    "tranad_plus/core/reports/summarize.py": {
+      "before_sha256": "f823f07c29fc977d5f7583681e5a24be5e45b55eb870b0fcea5313582324749f",
+      "after_sha256": "98d8b1cc3d7ed4e2ad938b8dcf919b4d6ab0aacef41cec75317e0d579fd93f5d",
+      "old_path": "tranad_variants/reports/summarize.py",
+      "scope": "paths_and_imports"
+    },
+    "tranad_plus/campaigns/exploration/metrics.py": {
+      "before_sha256": "22dcfde11b3fc515cb1064b5c937a5ff1f1701b1deb0df151b1b4011c5eab595",
+      "after_sha256": "22dcfde11b3fc515cb1064b5c937a5ff1f1701b1deb0df151b1b4011c5eab595",
+      "old_path": "tranad_v14/metrics.py",
+      "scope": "paths_and_imports"
+    },
+    "tranad_plus/campaigns/exploration/run.py": {
+      "before_sha256": "76f14dac5d646fea8108c063d16d68aa84e3a9ade1bfe306edf41a48456d320e",
+      "after_sha256": "f740f30b300171ab00c00066828fd5bed8a259a6bc58aad07b8dcb48bb4b9557",
+      "old_path": "tranad_v14/run.py",
+      "scope": "paths_and_imports"
+    },
+    "tranad_plus/campaigns/exploration/__init__.py": {
+      "before_sha256": "ef4a3142cb7375b34a1a1aeb26c51ce0c6b53016d3ae66086f4aff62de05a975",
+      "after_sha256": "ef4a3142cb7375b34a1a1aeb26c51ce0c6b53016d3ae66086f4aff62de05a975",
+      "old_path": "tranad_v14/__init__.py",
+      "scope": "paths_and_imports"
+    },
+    "tranad_plus/campaigns/exploration/summarize.py": {
+      "before_sha256": "7f4e2544f3f871fef642be3929f885f576c9527bd6408067c2e829db5bf42d1e",
+      "after_sha256": "a9a4ab5b16d330f94d359b9dc303d224e3bf05ab2138ff21c0bd1dbfea56cb04",
+      "old_path": "tranad_v14/summarize.py",
+      "scope": "paths_and_imports"
+    },
+    "tranad_plus/campaigns/exploration/continuation.py": {
+      "before_sha256": "144f429348efd6e5af1801b3e84699c0f79f0345c75bce6c69ec10f5396adee8",
+      "after_sha256": "d8460e396b8c6e5c0c8cf3a56e1850ab71a7bb449831eb9ab25982d8a903255f",
+      "old_path": "tranad_v14/continuation.py",
+      "scope": "paths_and_imports"
+    },
+    "tranad_plus/campaigns/exploration/context.py": {
+      "before_sha256": "5feeca136e6f172ee6b09527155b7cdf533b2b6c271b41c01e990dcff04d5c81",
+      "after_sha256": "049e66bfadc704550cee55da3d22a0585aeba15bdf22a81a2a2c91faee73430f",
+      "old_path": "tranad_v14/context.py",
+      "scope": "paths_and_imports"
+    },
+    "tranad_plus/campaigns/exploration/windows.py": {
+      "before_sha256": "50d65a2e8b745ac2d2a9d4077604bbae3a7733f88405180ec365284b71db90ab",
+      "after_sha256": "412dd085f991aa03402c0be7e88eeb2f3b05d6e1c7d8c07b3699ec0bdb5bad50",
+      "old_path": "tranad_v14/windows.py",
+      "scope": "paths_and_imports"
+    },
+    "tranad_plus/campaigns/exploration/test_followups.py": {
+      "before_sha256": "d8a95e2e9c729ae678f4f1d600a4bce88e1054e780b9a48b9b1b198a6dc68643",
+      "after_sha256": "37424a58463e0d95f25d95f9ab4a764d6ce5571d0f0154438a236c84782e2baf",
+      "old_path": "tranad_v14/test_followups.py",
+      "scope": "paths_and_imports"
+    },
+    "tranad_plus/campaigns/exploration/progress.py": {
+      "before_sha256": "c7849d86eb3b894c999c5bb0808a96e89f36f1a25cb3c5290501ab5aa2c83a5e",
+      "after_sha256": "8b90ec07f5dee1da9fb39e7cb8dfdca17f2260b54b12d43b90e4ae9953576b45",
+      "old_path": "tranad_v14/progress.py",
+      "scope": "paths_and_imports"
+    },
+    "tranad_plus/campaigns/exploration/test_windows.py": {
+      "before_sha256": "6d6c22d1fa4c8d43cf4112f3e486846d5670b9627376d7708bcdfce9c5bab064",
+      "after_sha256": "149a3a62b7130717346c033c2fef984ba3df812e16bf249628d2dff0fa5bd448",
+      "old_path": "tranad_v14/test_windows.py",
+      "scope": "paths_and_imports"
+    },
+    "tranad_plus/campaigns/temporal/controls.py": {
+      "before_sha256": "6c166bdfcc6f2948fe8ddad0ebcd221686fdc9d8d381793761569f3e377b2047",
+      "after_sha256": "c5687b5dddfa1208c02569a1f1549396c14f112f0e9426edd5767e34dff1f26d",
+      "old_path": "tranad_v15/controls.py",
+      "scope": "paths_and_imports"
+    },
+    "tranad_plus/campaigns/temporal/run.py": {
+      "before_sha256": "f02e435ef0a88fd7c9917a5013e0afb71ea5254244fa849b7d5ca8a23aea1f40",
+      "after_sha256": "9b0468e3c06c77442f2310da1e91fdcc6a81fab2d2e303eb2eb9341363e0b7ce",
+      "old_path": "tranad_v15/run.py",
+      "scope": "paths_and_imports"
+    },
+    "tranad_plus/campaigns/temporal/evaluation.py": {
+      "before_sha256": "dd54d51398fd809db70fe819e048eb2b6d1baba149a23561396c04192524d608",
+      "after_sha256": "b41264bdafc13457618efeb49b2c021cf1faa11c61a9ebd94eaa062f36b253b8",
+      "old_path": "tranad_v15/evaluation.py",
+      "scope": "paths_and_imports"
+    },
+    "tranad_plus/campaigns/temporal/test_controls.py": {
+      "before_sha256": "6efc7beabd946522ad3d3bd6da4b3b2c5f82c26e949d28095f8cfdbe209ce2ec",
+      "after_sha256": "1731ba39778bfe96100387fdc9d5827861d72dbcecedc927699422990b7267e1",
+      "old_path": "tranad_v15/test_controls.py",
+      "scope": "paths_and_imports"
+    },
+    "tranad_plus/campaigns/temporal/__init__.py": {
+      "before_sha256": "3a750a60ceec53aaa68c8e0a345d7ccd3649d776c642832aa078bd16222be322",
+      "after_sha256": "3a750a60ceec53aaa68c8e0a345d7ccd3649d776c642832aa078bd16222be322",
+      "old_path": "tranad_v15/__init__.py",
+      "scope": "paths_and_imports"
+    },
+    "tranad_plus/campaigns/temporal/summarize.py": {
+      "before_sha256": "1fba7957fe27165ba4aafcb3191d380a0f62a5107c5a43f00cb806e5ec02984e",
+      "after_sha256": "14d360b022d66401ffb2c6dadccbd8a4d33ba0a0fb42fed84009df629d115227",
+      "old_path": "tranad_v15/summarize.py",
+      "scope": "paths_and_imports"
+    },
+    "tranad_plus/campaigns/temporal/progress.py": {
+      "before_sha256": "909f38e132b7e6078cf928fb0646400093cfc51c6b7ecbfc970ece81d5fb4370",
+      "after_sha256": "222cff0cdbc7882c0cee9a983f563f37e1074478773baeba54e57b6625c4013d",
+      "old_path": "tranad_v15/progress.py",
+      "scope": "paths_and_imports"
+    },
+    "tranad_plus/campaigns/temporal/status.py": {
+      "before_sha256": "6670215811b8c80a16b3069be8eb8850547ed9c96a082eb83c79cea408f30565",
+      "after_sha256": "785cb93025d991cdc8e1674ce0d4ee20bb8b03dc92c18550154dc91a55c025c9",
+      "old_path": "tranad_v15/status.py",
+      "scope": "paths_and_imports"
+    },
+    "tranad_plus/campaigns/precision/run.py": {
+      "before_sha256": "b82b00c4527edbd18a4782b33c9f88906d41f7243d83b36e9614db5bf0f105cd",
+      "after_sha256": "0ae9b0ebdd7c9a48f701363f1629fdcdec55a31a40ca6d08218a337b53a94fad",
+      "old_path": "tranad_v16/run.py",
+      "scope": "paths_and_imports"
+    },
+    "tranad_plus/campaigns/precision/test_precision.py": {
+      "before_sha256": "9762e3d64152a90fe8c07662b9f23b823dbd6ec6e7ac9ed7be3f938a7d5c133a",
+      "after_sha256": "05b4288330ddcf3e7aa175dd366f4591b78fa94d27f0aecb0e33f9f18257542b",
+      "old_path": "tranad_v16/test_precision.py",
+      "scope": "paths_and_imports"
+    },
+    "tranad_plus/campaigns/precision/quantization.py": {
+      "before_sha256": "df3d6def5e7aa7fb319e4b93e8c118da9665b7f1f58b7d7652d44efca2333b6a",
+      "after_sha256": "545910be7625e3d6e1384659ac21fecb54bd149a3f736e1bbcd6636cb81de526",
+      "old_path": "tranad_v16/quantization.py",
+      "scope": "paths_and_imports"
+    },
+    "tranad_plus/campaigns/precision/evaluation.py": {
+      "before_sha256": "e141a8bc5c62ab9ac51ef2d36a12c7748b3ba3fe75a4979d44b49ba5cb4d43e8",
+      "after_sha256": "aba0d860fd8fc0602269817c64720b4fb3f4bb4a7136bb42348d1d298cf61182",
+      "old_path": "tranad_v16/evaluation.py",
+      "scope": "paths_and_imports"
+    },
+    "tranad_plus/campaigns/precision/__init__.py": {
+      "before_sha256": "e3c248003084be718b52f370bbb38dfcec63f8480c278c74e7f27fefac11757d",
+      "after_sha256": "e3c248003084be718b52f370bbb38dfcec63f8480c278c74e7f27fefac11757d",
+      "old_path": "tranad_v16/__init__.py",
+      "scope": "paths_and_imports"
+    },
+    "tranad_plus/campaigns/precision/summarize.py": {
+      "before_sha256": "6fc1c63f6d240dd1c430dc6ec1691484625352b878024c5c95802e35624f4608",
+      "after_sha256": "ad9231119363c04d78da6e953c500fccc8b88cf86c1a887a13bac87fc46fd14d",
+      "old_path": "tranad_v16/summarize.py",
+      "scope": "paths_and_imports"
+    },
+    "tranad_plus/campaigns/precision/storage.py": {
+      "before_sha256": "e02984a6df66b0464372981696b81a5bcc78c32d877d8b4d7787ae7b60312010",
+      "after_sha256": "09db7c83574e99a9348d557d4ae3fc5dd3f97602a939fa99272982c495bc7494",
+      "old_path": "tranad_v16/storage.py",
+      "scope": "paths_and_imports"
+    },
+    "tranad_plus/campaigns/precision/resources.py": {
+      "before_sha256": "ad3654ebc9e2cb539c955e4fa0417d481a9762869a727858640146ade716952f",
+      "after_sha256": "e21f92279a93dacdde76bb0e492c14298e37c927b69b294192fab65241312464",
+      "old_path": "tranad_v16/resources.py",
+      "scope": "paths_and_imports"
+    },
+    "tranad_plus/campaigns/precision/progress.py": {
+      "before_sha256": "f3c3c9bd6e766efbf890b3f985f91fdffa365383e92ca291349ac4cd5462524c",
+      "after_sha256": "5d93ee2a9933d2e50d11c18ab80b98a32c0212d2c27b3fb8ddc6ebf178796100",
+      "old_path": "tranad_v16/progress.py",
+      "scope": "paths_and_imports"
+    },
+    "tranad_plus/campaigns/precision/finetune.py": {
+      "before_sha256": "48819a7cf958d4fe8fa35ae3fdabc12c42780fee1ab8d22910cd8d1880d05303",
+      "after_sha256": "681e5f8e6155b1951da75b1fdfa81f8bba2e16445d97661c6bf5eee2a7f746d9",
+      "old_path": "tranad_v16/finetune.py",
+      "scope": "paths_and_imports"
+    },
+    "tranad_plus/campaigns/precision/status.py": {
+      "before_sha256": "3fc7046d6484d7346078953a6b01578db725f488e250b07c30600764a014707a",
+      "after_sha256": "5b5c7a8ed4de3ec61b4ce12a989b570f56950fa0d328238c5c03b97fb4afbe08",
+      "old_path": "tranad_v16/status.py",
+      "scope": "paths_and_imports"
+    }
+  }
+}

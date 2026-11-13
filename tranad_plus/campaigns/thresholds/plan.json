@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "name": "v18_no_pa",
+  "datasets": ["OPS-SAT", "SMAP", "MSL"],
+  "variants": ["encoder_only", "single_pass", "shared_decoder", "reference"],
+  "configurations": ["compact", "window_only", "ff_only", "reference"],
+  "seeds": [2026, 2027, 2028, 2029, 2030],
+  "formats": ["fp32", "int8", "int4"],
+  "evaluation": {
+    "point_adjustment_during_selection": false,
+    "alpha_steps": 21,
+    "bf_threshold_steps": 200,
+    "bf_threshold_range": "min(score) to mean(score)+3*std(score)",
+    "pot_threshold_source": "v17_per_alpha_SPOT_thresholds",
+    "pot_q_unchanged": true,
+    "test_score_batch": "match_each_v17_format_actual_batch",
+    "score_parity_rtol": 0.0005,
+    "score_parity_atol": 0.0000001,
+    "binary_auc_without_PA_name": "AUC-bin",
+    "binary_auc_with_PA_name": "AUC-PA",
+    "selection_uses_test_labels": true
+  },
+  "storage": {
+    "max_output_gib": 1,
+    "save_models": false,
+    "save_pointwise_arrays": false,
+    "save_reconstructions": false
+  }
+}

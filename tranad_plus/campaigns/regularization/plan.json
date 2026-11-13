@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "name": "v19_controlled_generalization",
+  "datasets": ["OPS-SAT", "SMAP", "MSL"],
+  "variants": ["encoder_only", "single_pass", "shared_decoder", "reference"],
+  "configurations": ["compact", "reference"],
+  "optional_configurations": ["window_only", "ff_only"],
+  "seeds": [2026, 2027, 2028],
+  "arms": {
+    "baseline": {"weight_decay": 0.0, "dropout": 0.1},
+    "weight_decay": {"weight_decay": 0.0001, "dropout": 0.1}
+  },
+  "max_epochs": 100,
+  "fixed_epoch_checkpoint": 50,
+  "native_validation_fraction": 0.2,
+  "native_window_policy": "upstream_global_padding_separately_within_each_split",
+  "author_anchors": {
+    "SMAP": {
+      "configuration": "benchmark_smap_w10", "features": 25,
+      "window_sz": 10, "dim_feedforward": 50, "num_layers": 1,
+      "batch_sz": 8192, "lr": 0.001, "pot_q": 0.07,
+      "fixed_epoch_checkpoint": 50, "epochs": 100,
+      "evidence": "results/legacy/SMAP/smap_plus_ws10_training_20261021T074354533693Z_d783b339.json"
+    },
+    "MSL": {
+      "configuration": "benchmark_msl_w50_ff880", "features": 55,
+      "window_sz": 50, "dim_feedforward": 880, "num_layers": 2,
+      "batch_sz": 2048, "lr": 0.0001, "pot_q": 0.01,
+      "fixed_epoch_checkpoint": 100, "epochs": 150,
+      "evidence": "tranad_plus/verify_author_checkpoints.py CASES.msl50; author checkpoint Aug-20-24_03-34-10-129705.ckpt"
+    }
+  },
+  "early_stopping": {
+    "patience": 10,
+    "min_epochs": 20,
+    "relative_min_delta": 0.001,
+    "monitor": "validation_nominal_last_output_mse",
+    "default_mode": "audit_full_horizon"
+  },
+  "opssat_detection": {"every_epochs": 5, "fixed_alpha": 0.5, "criterion": "BF200_PA_validation_F1"},
+  "evaluation": {
+    "alpha_steps": 21, "paper_threshold_steps": 200, "batch_size": 1024,
+    "batch_size_by_dataset": {"OPS-SAT": 1024, "SMAP": 512, "MSL": 128},
+    "native_fixed_alpha": 0.5
+  },
+  "integer": {"bits": [8, 4], "checkpoints": ["early_stopped", "fixed_50", "fixed_100", "final", "validation_detection"], "export_weights": false},
+  "storage": {"save_pointwise_arrays": false, "save_epoch_checkpoints": false, "max_planned_gib": 1.5}
+}

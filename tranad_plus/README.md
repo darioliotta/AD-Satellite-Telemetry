@@ -1,5 +1,22 @@
 # TOAST v12 — Complete v10 architectural grids to 6 × 5 (126 new runs)
 
+## Current source tree
+
+All current implementation lives in this directory. Campaign versions label
+results, not sibling code copies. See [CURRENT_CODE.md](CURRENT_CODE.md) for
+the consolidated layout, server installation and the integer campaign.
+
+For the current V19 validation/early-stopping/regularization study, use
+[campaigns/regularization/README.md](campaigns/regularization/README.md).
+The default diagnostic stage selects 60 trajectories across OPS-SAT, SMAP and
+MSL; later compression and integer reevaluation stages are separate commands.
+
+For V20 score-separation, simple-detector and current-sample controls on all
+three datasets, see [campaigns/mechanisms/README.md](campaigns/mechanisms/README.md).
+Launch `bash run_mechanisms.sh`: 432 existing-model evaluations, six baselines
+and 72 new paired trainings, with compact artifacts under `results/v20/mechanisms/`.
+
+
 A **single replacement `tranad_plus/` source tree**: extract the ZIP into
 `/home/dliotta/AD-Satellite-Telemetry/`. Dataset files and existing v10/v11
 results live outside this folder and are not included in this archive.
