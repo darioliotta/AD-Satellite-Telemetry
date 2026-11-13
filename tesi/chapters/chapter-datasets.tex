@@ -2,28 +2,31 @@
 \label{chap:datasets}
 \chaptermark{Datasets and protocol}
 
-% Draft requested by the author on 2026-11-06. Dataset counts are computed
-% from the released files, not inferred from benchmark tables. See journal.
-This chapter defines the data and experimental procedures used to reproduce
-TranAD+ and study its simplification. Dataset properties are separated from
-choices made in the implementation. This distinction is necessary because a
-change in preprocessing, score construction or evaluation can change a metric
-without changing the trained network.
+% Cleaned on 2026-11-12 (author request). Previous draft (2026-11-06) kept in
+% docs/chapter-datasets_before_2026-11-12_cleanup.tex. Content unchanged;
+% source paths updated to the current repository layout.
+% Source conventions: \cite{} for published work and released code;
+% "% Source:" comments for counts and behaviour verified in this repository.
 
-The same reconstruction principle is applied to the three main datasets, but
-the available annotations differ. We therefore distinguish the model output,
-which is an error for each evaluated sample, from the unit on which detection
-is assessed. We also separate evaluations that use test labels to optimize a
-score from scoring settings selected on validation data and subsequently
-applied to test fragments.
+This chapter describes the data, the preprocessing and the procedures used
+to train and evaluate the models. We keep three elements separate: the
+properties of each dataset, the choices made by the implementation and the
+evaluation procedure. A metric can change because of any of these three,
+even when the trained network is the same.
 
-\section{Dataset selection and roles in the study}
+The same reconstruction model is applied to all datasets, but their
+annotations differ. The model always produces one error for each evaluated
+sample, while detection may be assessed on samples or on whole fragments.
+We also distinguish evaluations that use test labels to choose a threshold
+from settings selected on validation data before the test.
+
+\section{Datasets and their roles}
 \label{sec:datasets-roles}
-The experimental work has two related purposes. The first is to reconstruct
-the reference results on the six datasets considered in the TranAD+
-paper~\cite{Yermakov2025TranADPlus}. The second is to investigate model cost
-and detection performance on a smaller set relevant to spacecraft telemetry.
-The datasets and their roles are listed in Table~\ref{tab:datasets-roles}.
+
+The experiments have two purposes. The first is to reproduce the results
+of TranAD+ on the datasets of its original study~\cite{Yermakov2025TranADPlus}.
+The second is to study model cost and detection performance on spacecraft
+telemetry. Table~\ref{tab:datasets-roles} lists the datasets and their roles.
 
 \begin{table}[htbp]
   \centering
@@ -32,93 +35,88 @@ The datasets and their roles are listed in Table~\ref{tab:datasets-roles}.
     \toprule
     Dataset & Data source & Role in this thesis \\
     \midrule
-    \acs{OPS-SAT} & Satellite telemetry fragments & Reference application and main simplification study \\
-    \acs{SMAP} & Earth-observation satellite telemetry and command inputs & Benchmark reproduction and main simplification study \\
-    \acs{MSL} & Mars rover telemetry and command inputs & Benchmark reproduction and main simplification study \\
-    \acs{SMD} & Server operating measurements & Benchmark reproduction \\
-    SWaT & Water-treatment testbed & Benchmark reproduction \\
-    WADI & Water-distribution testbed & Benchmark reproduction \\
-    DSN\_1k & Deep Space Network communications monitoring & Benchmark reproduction \\
+    \acs{OPS-SAT} & Satellite telemetry fragments & Main application and model study \\
+    \acs{SMAP} & Earth-observation satellite telemetry and command inputs & Reproduction and model study \\
+    \acs{MSL} & Mars rover telemetry and command inputs & Reproduction and model study \\
+    \acs{SMD} & Server operating measurements & Reproduction only \\
+    SWaT & Water-treatment testbed & Reproduction only \\
+    WADI & Water-distribution testbed & Reproduction only \\
+    DSN\_1k & Deep Space Network communications monitoring & Reproduction only \\
     \bottomrule
   \end{tabularx}
-  \caption{Dataset roles. The six reproduction datasets follow the scope of
-  the TranAD+ paper. The main model study uses \acs{OPS-SAT}, \acs{SMAP} and
-  \acs{MSL}; their descriptions follow the respective dataset sources.}
+  \caption{Datasets and their roles. The six reproduction datasets are those
+  of the TranAD+ study~\cite{Yermakov2025TranADPlus}. The model study uses
+  \acs{OPS-SAT}, \acs{SMAP} and \acs{MSL}.}
   \label{tab:datasets-roles}
 \end{table}
 
-\ac{OPS-SAT} is the reference application because its data were collected
-on an operational experimental satellite and annotated by spacecraft
-operations engineers~\cite{Ruszczak2025OPSSAT}. \ac{SMAP} and \ac{MSL}
-provide additional spacecraft telemetry benchmarks already used by
+\ac{OPS-SAT} is the main application: its data come from an experimental
+satellite in operation and were annotated with the help of spacecraft
+operations engineers~\cite{Ruszczak2025OPSSAT}. \ac{SMAP} and \ac{MSL} are
+spacecraft telemetry benchmarks already used by
 TranAD+~\cite{Hundman2018Spacecraft,Yermakov2025TranADPlus}. \ac{SMAP} is an
-Earth-orbiting satellite; \ac{MSL} is the Curiosity rover on Mars. Their common
-relevance is spacecraft monitoring, rather than identical platforms,
-sensors or operating conditions.
+Earth-orbiting satellite and \ac{MSL} is the Curiosity rover on Mars: the
+three datasets share the task of spacecraft monitoring, not the platform,
+the sensors or the operating conditions.
 
-The additional reproduction datasets help assess the reference implementation
-across the domains used in the published comparison. They are not included
-in the main architecture grid. Their benchmark-specific configurations and
-preprocessing decisions are documented in Chapter~\ref{chap:replication} and
-Appendix~\ref{app:reproducibility}. Agreement on those datasets does not by
-itself establish performance on the \ac{OPS-SAT} application.
+The remaining datasets are used only to check the reference implementation
+in the domains of the published comparison. Their configurations are
+documented in Chapter~\ref{chap:replication}. Agreement with the published
+results on these datasets does not by itself establish performance on
+\ac{OPS-SAT}.
 
 \section{OPS-SAT telemetry}
 \label{sec:datasets-opssat}
-\subsection{Telemetry fragments and annotation granularity}
+
+\subsection{Fragments and labels}
 \label{sec:datasets-opssat-labels}
+
 The \ac{OPS-SAT} benchmark contains \num{2123} telemetry fragments from
-\num{9} channels. These comprise \num{3} magnetometer channels and \num{6}
-photodiode channels. The fragments were selected and annotated through a
-process involving spacecraft operations engineers and machine learning
-researchers~\cite{Ruszczak2025OPSSAT}. They have varying lengths and sampling
-frequencies. The released benchmark also supplies \num{18} handcrafted
-features per fragment. Our reconstruction models use the sampled signal
-values, rather than that feature table.
+\num{9} channels: \num{3} magnetometer channels and \num{6} photodiode
+channels. Fragments have different lengths and sampling frequencies. They
+were selected and annotated by spacecraft operations engineers and machine
+learning researchers~\cite{Ruszczak2025OPSSAT}. The benchmark also provides
+\num{18} handcrafted features for each fragment; the reconstruction models
+use the sampled values instead.
 
-Each fragment is a univariate sequence with a binary annotation describing
-the fragment as a whole. An anomalous fragment can contain unusual shapes,
-peaks, constant readings or gaps, but the annotation does not locate a precise
-anomaly onset and offset inside it~\cite{Ruszczak2025OPSSAT}. A label of
-\(1\) therefore means that the fragment contains behavior judged anomalous;
-it does not establish that every sample is individually anomalous.
+Each fragment is a univariate sequence with one binary label for the whole
+fragment. An anomalous fragment can contain unusual shapes, peaks, constant
+readings or gaps, but the label does not mark where the anomaly starts or
+ends~\cite{Ruszczak2025OPSSAT}. A label of \(1\) means that the fragment
+contains behaviour judged anomalous, not that every sample is anomalous.
 
-The network receives one numerical value per sample, so its feature count is
-\(F=1\). Fragments from the retained channels are processed by a shared
-univariate model. Channel identity determines which normalization is used,
-but is not an additional input coordinate. The timestamps identify the
-observations and are retained for interpretation; elapsed time is not a
-network input in the present implementation. Consequently, a window length
-in samples should not be interpreted as the same physical duration for all
-fragments.
-% Sources: data/raw/OPSSAT/segments.csv; tranad_plus/opssat_pipeline.py
-% prepare_data and FragmentWindows; tranad_variants/data.py load_data.
+The network receives one value per sample, so \(F=1\). A single model
+processes the fragments of all channels. The channel determines which
+normalization is applied but is not a model input. Timestamps are kept for
+interpretation and are not model inputs either. Because sampling
+frequencies differ, a window of \(w\) samples does not correspond to the
+same duration in every fragment.
+% Source: data/raw/OPSSAT/segments.csv; tranad_plus/opssat_pipeline.py
+% (prepare_data, FragmentWindows); tranad_plus/core/data.py (load_data).
 
-This annotation granularity determines the primary application-level
-assessment. Point scores are combined into one score per fragment and compared
-with its binary label. Repeating a fragment label on its samples is also
-used for supplementary pointwise calculations, including the adjusted
-benchmark-style metrics. Those calculations retain weak labels and cannot
-measure the accuracy of anomaly localization within the fragment.
+The annotation therefore defines the main assessment: point scores are
+combined into one score per fragment and compared with the fragment label.
+For comparison with the benchmark metrics we also repeat each fragment
+label on its samples. These pointwise labels are weak: they cannot measure
+whether an anomaly is located correctly inside a fragment.
 
-\subsection{Data organization and split construction}
+\subsection{Data organization and splits}
 \label{sec:datasets-opssat-splits}
-The released \texttt{segments.csv} file associates each sample with a channel,
-a timestamp, a value, a fragment identifier, a binary anomaly label and an
-official training or test assignment. Grouping is performed by fragment
-identifier while preserving the sample order supplied in the file. Channel,
-split and label must be constant within a fragment.
 
-Table~\ref{tab:datasets-inventory} reports the input inventory used here.
-Counts are taken from the released files before temporal padding. The
-\ac{OPS-SAT} official training assignment contains \num{1594} fragments:
-\num{1273} nominal and \num{321} anomalous. The official test assignment
-contains \num{529} fragments: \num{416} nominal and \num{113}
-anomalous.\footnote{Table 1 of the dataset article~\cite{Ruszczak2025OPSSAT} prints \num{1494} as the
+The released file \texttt{segments.csv} gives, for each sample, its channel,
+timestamp, value, fragment identifier, binary label and official training
+or test assignment. Samples are grouped by fragment identifier in the order
+of the file. Channel, label and assignment are checked to be constant
+within each fragment.
+
+Table~\ref{tab:datasets-inventory} reports the data used in this study. The
+official training assignment contains \num{1594} fragments (\num{1273}
+nominal and \num{321} anomalous); the official test assignment contains
+\num{529} fragments (\num{416} nominal and \num{113} anomalous).\footnote{Table~1
+of the dataset article~\cite{Ruszczak2025OPSSAT} prints \num{1494} as the
 training total. Its nominal and anomalous subtotals sum to \num{1594}, which
 is also the count in the released \texttt{segments.csv}. We use the counts
-verified from that file.} The official assignments are preserved when
-constructing the learning protocol.
+from the file.}
 
 \begin{table}[htbp]
   \centering
@@ -132,41 +130,36 @@ constructing the learning protocol.
     \acs{MSL} & 55 & \num{27} & \num{27} & \num{58317} & \num{73729} \\
     \bottomrule
   \end{tabular}
-  \caption{Deterministic counts from the input files used in the study, before
-  window padding. Units are fragments for \acs{OPS-SAT} and tracks for
-  \acs{SMAP}/\acs{MSL}. The \acs{OPS-SAT} training columns describe the official
-  assignment before nominal-only filtering and validation construction.
-  Native training and test files share track identifiers.}
+  \caption{Counts from the input files, before window padding. Units are
+  fragments for \acs{OPS-SAT} and tracks for \acs{SMAP} and \acs{MSL}. The
+  \acs{OPS-SAT} training columns refer to the official assignment, before
+  the selection of nominal fragments and the construction of the validation
+  set.}
   \label{tab:datasets-inventory}
 \end{table}
-% Inventory provenance: OPS-SAT segments.csv SHA-256
+% Source: OPS-SAT segments.csv, SHA-256
 % dab2e01e873c93590692b50a7cc312d9cce4d5ba7e69ce8015603c47a8ffb97b.
-% Native counts: sum of array lengths in data/processed/tranad_plus/{SMAP,MSL}/
-% {Train,Test}/Tracks; counts verified against the saved experiment inventories.
+% SMAP/MSL: sums of array lengths in data/processed/tranad_plus/{SMAP,MSL}/
+% {Train,Test}/Tracks, matching the saved experiment inventories.
 
-Only nominal official-training fragments enter weight optimization. A
-channel-stratified holdout reserves approximately \num{20}\% of those
-fragments for validation. The integer allocation is performed separately
-within each channel, giving \num{254} held-out nominal fragments and
-\num{1019} nominal fragments for optimization. All \num{321} anomalous
-fragments from the official training assignment are added to validation.
-The resulting validation set contains \num{575} fragments. The official
-\num{529}-fragment test set remains separate.
+Only nominal fragments of the official training assignment are used to
+optimize the network weights. Within each channel, about \num{20}\% of them
+are held out for validation, giving \num{254} validation fragments and
+\num{1019} optimization fragments. All \num{321} anomalous training fragments
+are added to validation, which therefore contains \num{575} fragments. The
+official test set of \num{529} fragments is kept separate.
 
-Figure~\ref{fig:datasets-opssat-split} summarizes the construction. The split
-seed is fixed at \num{2026}, independently of the seeds used to initialize
-network weights. The same fragment assignments are used across configurations.
-Fragment identifiers are checked for overlap between optimization, validation
-and test sets. Labels are used to identify nominal optimization data and to
-select scoring settings on validation; they are not targets in the numerical
-reconstruction loss.
-% Sources: opssat_pipeline.py prepare_data, split_seed+13579 per-channel
-% holdout; results/v13/architectures/OPS-SAT/reference/reference/seed_2026/
-% metrics.json dataset_inventory.split. Model train/validation/test points:
-% 123313 / 101865 / 78315, respectively.
+Figure~\ref{fig:datasets-opssat-split} summarizes this construction. The split
+uses the fixed seed \num{2026}, independent of the seeds that initialize the
+networks, so all configurations share the same fragments. The three sets
+are checked to contain no common fragment. Labels are used only to select
+nominal optimization data and to choose scoring settings on validation;
+they never enter the reconstruction loss.
+% Source: tranad_plus/opssat_pipeline.py prepare_data (per-channel holdout,
+% generator seed split_seed+13579); results/v13/architectures/OPS-SAT/reference/
+% reference/seed_2026/metrics.json, dataset_inventory.split. Points in the
+% optimization / validation / test sets: 123313 / 101865 / 78315.
 
-% Intent: distinguish optimization fragments from validation annotations and
-% the untouched official test assignment. Counts are from the audited CSV.
 \begin{figure}[htbp]
   \centering
   \begin{tikzpicture}[
@@ -175,19 +168,18 @@ reconstruction loss.
     smallbox/.style={box,text width=2.1cm},
     result/.style={box,text width=3.6cm},
     >=Stealth,line width=.8pt]
-    % Coordinates in cm: source x=0, classes x=4, destinations x=8.4.
     \node[box,fill=black!8] (official) at (0,1.1)
       {Official training\\\num{1594} fragments};
     \node[smallbox] (normal) at (4,2.2) {Nominal\\\num{1273}};
     \node[smallbox] (anomaly) at (4,0) {Anomalous\\\num{321}};
     \node[result,fill=blue!10] (training) at (8.4,2.2)
       {Weight optimization\\\num{1019} nominal};
-    \node[result,fill=orange!18] (validation) at (8.4,0)
+    \node[result,fill=black!12] (validation) at (8.4,0)
       {Validation\\\num{254} nominal + \num{321} anomalous};
     \node[box,fill=black!8] (officialtest) at (0,-1.9)
       {Official test\\\num{529} fragments};
     \node[result,fill=black!8] (test) at (8.4,-1.9)
-      {Test evaluation\\\num{416} nominal + \num{113} anomalous};
+      {Test\\\num{416} nominal + \num{113} anomalous};
     \draw[->] (official.east) -- ++(.45,0) |- (normal.west);
     \draw[->] (official.east) -- ++(.45,0) |- (anomaly.west);
     \draw[->] (normal.east) -- (training.west);
@@ -196,137 +188,127 @@ reconstruction loss.
     \draw[->] (anomaly.east) -- (validation.west);
     \draw[->] (officialtest.east) -- (test.west);
   \end{tikzpicture}
-  \caption{Construction of the \acs{OPS-SAT} learning sets. Network weights
-  are optimized on nominal fragments. Validation contains nominal and anomalous
-  fragments and selects scoring settings. The three destination sets are
-  disjoint; the official test assignment is retained.}
+  \caption{Construction of the \acs{OPS-SAT} sets. Weights are optimized on
+  nominal fragments only; validation contains nominal and anomalous fragments
+  and is used to choose scoring settings; the official test assignment is
+  unchanged. The three sets are disjoint.}
   \label{fig:datasets-opssat-split}
 \end{figure}
 
 \section{SMAP and MSL}
 \label{sec:datasets-smap-msl}
-The \ac{SMAP} and \ac{MSL} data originate from the spacecraft anomaly study
-of Hundman et al.~\cite{Hundman2018Spacecraft}. Each track describes one
-telemetry channel together with numerical encodings of command information.
-The supplied input width is \(F=25\) for \ac{SMAP} and \(F=55\) for
-\ac{MSL}. These are input coordinates, not counts of independent physical
-sensors. The telemetry value occupies the first coordinate; the additional
-coordinates represent command-related inputs~\cite{TelemanomReferenceData}.
-Our reference reconstruction objective includes all coordinates.
 
-The processed files contain \num{54} distinct \ac{SMAP} track identifiers
-and \num{27} \ac{MSL} identifiers. The original annotation table lists
-\num{55} \ac{SMAP} entries, with identifier \texttt{P-2} appearing twice;
-file-based counts therefore distinguish entries from unique tracks.
-Each identifier has official training and test sequences. Training labels
-in the processed data are nominal. Test annotations identify intervals,
-from which the binary sample labels used by the benchmark are constructed.
-We preserve the provided assignments rather than creating a new temporal
-split.
-% Source: data/raw/SMAP_MSL/labeled_anomalies.csv, source annotation table;
-% processed native Tracks/Labels files, and helpers.get_SMAP_channel_names.
+The \ac{SMAP} and \ac{MSL} data come from the spacecraft anomaly study of
+Hundman et al.~\cite{Hundman2018Spacecraft}. Each track describes one
+telemetry channel together with numerical encodings of commands. The input
+width is \(F=25\) for \ac{SMAP} and \(F=55\) for \ac{MSL}. These are input
+coordinates, not independent sensors: the first coordinate is the
+telemetry value and the others encode command
+information~\cite{TelemanomReferenceData}. The reconstruction objective
+includes all coordinates.
 
-The operating conditions differ between the two missions. The source study
-describes \ac{SMAP} operations as comparatively routine, while \ac{MSL}
-performs a wider variety of activities, some absent from the training
-period~\cite{Hundman2018Spacecraft}. These observations motivate testing
-across both datasets. They do not establish the cause of a performance
-difference for a particular architecture.
+The processed files contain \num{54} \ac{SMAP} tracks and \num{27} \ac{MSL}
+tracks. The original annotation table lists \num{55} \ac{SMAP} entries
+because the identifier \texttt{P-2} appears twice. Each track has an
+official training sequence, which is nominal, and an official test sequence.
+Test annotations mark anomalous intervals, from which the benchmark builds
+binary sample labels. We keep the official assignments and do not create a
+new temporal split.
+% Source: data/raw/SMAP_MSL/labeled_anomalies.csv; processed files in
+% data/processed/tranad_plus/{SMAP,MSL}/{Train,Test}/{Tracks,Labels}.
 
-The preprocessing history of the public release is also relevant. Its
-maintainers state that the distributed telemetry values were already scaled
-to \((-1,1)\) using test-set extrema~\cite{TelemanomReferenceData}. The
-local pipeline applies an additional training-fitted scaler, described
-below. For nonconstant features, this can cancel a preceding affine
-transformation if no clipping or other nonlinear operation intervenes.
-The original unscaled telemetry and its full preprocessing history are
-not reconstructed here. We document this inherited convention and use
-the same supplied inputs across models.
+The two missions operate differently. The source study describes \ac{SMAP}
+operations as comparatively routine, while \ac{MSL} performs a wider variety
+of activities, some of which do not appear in the training
+period~\cite{Hundman2018Spacecraft}. This motivates testing on both datasets,
+but does not explain by itself any difference observed for a given model.
 
-\section{Preprocessing and temporal windowing}
+The public data were already preprocessed. According to their maintainers,
+telemetry values were scaled to \((-1,1)\) using the extrema of the test
+set~\cite{TelemanomReferenceData}. Our pipeline applies a further min--max
+scaling fitted on training data (Section~\ref{sec:datasets-preprocessing}).
+For non-constant coordinates this second affine map cancels the first one,
+since no clipping occurs in between. The original unscaled telemetry is not
+available; all models use the same supplied inputs.
+
+\section{Preprocessing and windowing}
 \label{sec:datasets-preprocessing}
-For the main study, normalization uses a min--max transformation. For feature
-\(j\), the local transform is
+
+Inputs are normalized with a min--max transformation. For feature \(j\),
 \begin{equation}
   \widetilde{x}_{t,j} =
-  \frac{x_{t,j}-m_j}{M_j-m_j}.
+  \frac{x_{t,j}-m_j}{M_j-m_j},
   \label{eq:datasets-normalization}
 \end{equation}
-Here, \(x_{t,j}\) is the supplied value, \(m_j\) and \(M_j\) are the
-minimum and maximum fitted to optimization data, and
-\(\widetilde{x}_{t,j}\) is the dimensionless model input. The scaler handles
-constant coordinates without division by zero. Subsequent test values are
-transformed with the fitted parameters and are not clipped to \([0,1]\).
-A test value can therefore lie outside that interval. This matters because
-the sigmoid reconstruction head described in Chapter~\ref{chap:background}
-is bounded.
+where \(x_{t,j}\) is the supplied value, \(m_j\) and \(M_j\) are the minimum
+and maximum on the optimization data, and \(\widetilde{x}_{t,j}\) is the
+dimensionless model input. Constant coordinates are handled without division
+by zero. Test values are transformed with the same parameters and are not
+clipped, so they can fall outside \([0,1]\), while the sigmoid output of
+TranAD+ cannot (Chapter~\ref{chap:background}).
 
-For \ac{SMAP} and \ac{MSL}, one scaler is fitted across the training tracks
-for each input coordinate and reused on the test tracks. Files are ordered
-by name. For \ac{OPS-SAT}, each channel has its own scaler, fitted only to
-values in the nominal optimization fragments of that channel. Neither
-validation nor test values enter that local fit. All values entering model
-scoring are checked for finiteness. Dataset-specific missing-value handling
-in the secondary reproduction benchmarks is kept separate from these main
-study adapters.
-% Sources: tranad_variants/data.py; TranADPlus/src/datasets.py;
-% opssat_pipeline.py prepare_data; sklearn MinMaxScaler, clip=False default.
+For \ac{SMAP} and \ac{MSL}, one scaler per coordinate is fitted on all
+training tracks together and applied to the test tracks. For \ac{OPS-SAT},
+each channel has its own scaler, fitted only on its nominal optimization
+fragments; validation and test values are not used. All values that reach
+the model are checked to be finite.
+% Source: tranad_plus/core/data.py; tranad_plus/TranADPlus/src/datasets.py;
+% tranad_plus/opssat_pipeline.py prepare_data; sklearn MinMaxScaler (clip=False).
 
-The window \(\mathbf{W}_t\) defined in
-Equation~\eqref{eq:background-window} ends at the reconstructed sample.
-It contains no observation later than that sample. At the start of an
-\ac{OPS-SAT} fragment, the first value is repeated to supply the missing
-history. Windows are constructed independently for every fragment, so no
-window combines samples from different fragments. A fragment with
-\(L\) samples produces \(L\) windows, whatever the selected window length.
+The window \(\mathbf{W}_t\) of Equation~\eqref{eq:background-window} ends at
+the reconstructed sample and contains no later observation. For
+\ac{OPS-SAT}, windows are built separately inside each fragment, and the
+first value is repeated to supply the missing history at its start. No
+window mixes samples from different fragments, and a fragment of \(L\)
+samples gives \(L\) windows for any window length.
 
-The native \ac{SMAP}/\ac{MSL} adapter follows a different convention in the
-reference code~\cite{TranADPlusReferenceCode}. It first prepends
-\(w-1\) copies of the first sample to each track, concatenates the padded
-tracks, and then forms windows over that global array. For \(K\) tracks
-with a total of \(N\) real samples, this gives
+For \ac{SMAP} and \ac{MSL}, the reference code follows a different
+convention~\cite{TranADPlusReferenceCode}. It prepends \(w-1\) copies of the
+first sample to each track, concatenates the padded tracks and builds windows
+over the resulting array. With \(K\) tracks and \(N\) real samples, the
+number of reconstruction targets is
 \begin{equation}
   N_{\mathrm{windows}} = N+(K-1)(w-1).
   \label{eq:datasets-native-window-count}
 \end{equation}
-Here, \(N_{\mathrm{windows}}\) is the number of reconstruction targets,
-\(K\) is the number of tracks and \(w\) is the window length. After the
-first track, the prepended rows also become targets. Some windows near a
-join contain the preceding track and the next track's repeated initial
-values. This behavior is retained for reference-protocol comparisons.
-It is not the independent-fragment construction used for \ac{OPS-SAT}.
-% Sources: helpers.merge_tracks and TSDataset_tracks.__len__/__getitem__.
+After the first track, the prepended copies also become targets, and some
+windows near a junction contain samples of two consecutive tracks. We keep
+this behaviour for comparisons with the reference protocol.
+% Source: tranad_plus/TranADPlus/src/helpers.py merge_tracks;
+% TranADPlus/src/datasets.py TSDataset_tracks. Check: MSL, w=50, K=27,
+% N=73729 gives 75003 targets, the length of the saved v13 test scores.
 
-Changing \(w\) consequently changes the number of native padded targets.
-The supplementary window controls compare the same real samples after
-removing those target copies. A further common subset excludes the first
-\(w_{\max}-1\) real samples of every track or fragment, where \(w_{\max}\)
-is the largest window in the comparison. This distinguishes changes in the
-padding-affected region from changes on samples with a full observed history.
-The reference results and these controls are reported separately.
-% Source: tranad_v14/windows.py interior_mask and run_window_study;
-% tranad_v14/metrics.py real_point_mask. These controls do not retrain models.
+Because the number of padded targets depends on \(w\), comparisons between
+window lengths also use two controls. The first evaluates only real samples,
+after removing the padded copies. The second further excludes the first
+\(w_{\max}-1\) samples of every track or fragment, where \(w_{\max}\) is the
+largest window compared, so that all models are evaluated on samples with
+a complete history. These controls are reported separately from the
+reference results.
+% Source: tranad_plus/campaigns/exploration/windows.py (interior_mask,
+% run_window_study); campaigns/exploration/metrics.py (real_point_mask).
+% These controls reuse trained models; no retraining.
 
-\section{Training, validation and test protocols}
+\section{Training, validation and test}
 \label{sec:datasets-training}
-\subsection{Original benchmark protocol}
-\label{sec:datasets-original-protocol}
-The native benchmark procedure uses the provided training and test
-assignments, with tracks concatenated within each split. It does not define
-an additional validation set. The distinction is important: the label-based
-searches described in Section~\ref{sec:datasets-original-thresholds} are
-performed during test evaluation. They are not validation-based estimates
-of a threshold that was fixed before observing test labels.
 
-The main hyperparameter and architecture studies use ordered minibatches,
-without shuffling or downsampling. The optimization target is the final
-sample already contained in the input window. The reference two-output
-objective is given in Equation~\eqref{eq:background-tranadplus-loss};
-single-output variants use one mean squared reconstruction error. Adam
-updates the weights, and a step scheduler multiplies the learning rate by
-\num{0.9} every \num{5} epochs. The initial studies use \num{50} epochs.
-The reference and reduced settings used in the architectural study are
-listed in Table~\ref{tab:datasets-study-settings}.
+\subsection{Benchmark protocol}
+\label{sec:datasets-original-protocol}
+
+The benchmark procedure uses the official training and test assignments,
+with tracks concatenated within each split. It has no validation set. As a
+consequence, the label-based searches of
+Section~\ref{sec:datasets-original-thresholds} take place on the test set:
+they are not estimates of a threshold fixed before seeing the test labels.
+
+The hyperparameter and architecture studies train with ordered minibatches,
+without shuffling or downsampling. The target is the last sample of the
+input window. The two-output objective is
+Equation~\eqref{eq:background-tranadplus-loss}; single-output variants use
+one mean squared reconstruction error. Weights are updated with Adam, and
+the learning rate is multiplied by \num{0.9} every \num{5} epochs. Training
+lasts \num{50} epochs. Table~\ref{tab:datasets-study-settings} lists the
+settings of the architectural study.
 
 \begin{table}[htbp]
   \centering
@@ -341,200 +323,171 @@ listed in Table~\ref{tab:datasets-study-settings}.
     \acs{MSL} & 55 & 50 & 25 & 110 & 55 & 128 & \num{0.0001} & \num{0.01} \\
     \bottomrule
   \end{tabular}
-  \caption{Architectural-study settings. Here \(B\) is training batch size,
-  \(\eta\) the initial learning rate and \(q\) the supplied \acs{POT} risk
-  parameter. The reference uses \((w_0,d_{\mathrm{ff},0})\); single-factor
-  reductions change one coordinate to its subscript-1 value, and the compact
-  setting changes both. Each Transformer stack has one layer. Widths are
-  effective integer dimensions. These are
-  study controls, rather than the paper-best reproduction configurations.}
+  \caption{Settings of the architectural study: batch size \(B\), initial
+  learning rate \(\eta\) and \acs{POT} risk parameter \(q\). The reference
+  uses \((w_0,d_{\mathrm{ff},0})\); the single-factor reductions change one
+  of the two to its value with subscript \(1\), and the compact setting
+  changes both. Each transformer stack has one layer. These are study
+  settings, not the best configurations of the reproduction.}
   \label{tab:datasets-study-settings}
 \end{table}
-% Source: tranad_variants/configs/baselines.json; complete matching profiles
-% in results/v13/architectures. Reproduction profiles remain distinct.
+% Source: tranad_plus/core/configs/baselines.json; matching profiles in
+% results/v13/architectures.
 
-Benchmark reproduction can involve different layer counts, batch sizes,
-learning rates and epoch budgets, as recovered from the authors' records.
-Those settings are recorded separately from the study controls in
-Table~\ref{tab:datasets-study-settings} and documented in
-Chapter~\ref{chap:replication}.
+The reproduction runs may use different numbers of layers, batch sizes,
+learning rates and epochs, recovered from the authors' records. They are
+documented in Chapter~\ref{chap:replication}.
 
-\subsection{OPS-SAT validation and test protocol}
+\subsection{OPS-SAT validation and test}
 \label{sec:datasets-opssat-protocol}
-The \ac{OPS-SAT} reconstruction loss uses the nominal optimization set from
-Figure~\ref{fig:datasets-opssat-split}. The labeled validation set is used
-after training to choose how reconstructions become fragment scores. This
-is supervised selection of scoring settings, even though the network loss
-itself does not predict anomaly labels.
 
-For two-output models, the candidate coefficients are
-\(\alpha\in\{0,0.25,0.5,0.75,1\}\). It also considers two score calibrations:
-the identity transform and a robust transform fitted separately for each
-channel. The latter subtracts the median nominal-training score and divides
-by its interquartile range, with a numerical floor for a vanishing range.
-Finally, each fragment is summarized by either its maximum calibrated score
-or its \num{95}th percentile. This gives \num{20} candidates for a
-two-output model and \num{4} for a single-output model, which has no alpha.
-% Sources: opssat_scoring.py ALPHAS/CALIBRATIONS/AGGREGATIONS,
-% fit_calibrator (IQR floor 1e-12), selected_scoring;
-% tranad_variants/evaluation/selection.py for single-output variants.
+The \ac{OPS-SAT} network is trained on the nominal optimization fragments of
+Figure~\ref{fig:datasets-opssat-split}. After training, the labelled
+validation set is used to choose how point errors become fragment scores.
+This choice uses labels, although the network itself is not trained to
+predict them.
 
-The combination with the largest continuous-score \ac{ROC} area on
-validation fragments is selected. Exact ties retain the first candidate
-in a fixed enumeration. The chosen combination is applied to the test
-fragments, using calibrator parameters fitted on optimization data.
-Selection is repeated for each trained run, including a continued-training
-checkpoint; its rule is fixed, but the selected alpha, calibration and
-aggregation can change. Test labels are used to calculate the final metrics,
-not to choose that combination.
-
-For a fragment \(g\), the two aggregation candidates are
+Three settings are chosen. For two-output models, the coefficient is
+\(\alpha\in\{0,0.25,0.5,0.75,1\}\). The score is either used as it is or
+calibrated for each channel, by subtracting the median score of nominal
+optimization fragments and dividing by its interquartile range (with a
+floor of \(10^{-12}\)). Finally, each fragment is summarized by the maximum
+or by the \num{95}th percentile of its calibrated scores:
 \begin{equation}
   S_g^{\max}=\max_{t\in g} z_t,
   \qquad
-  S_g^{95}=Q_{0.95}\!\left(\{z_t:t\in g\}\right).
+  S_g^{95}=Q_{0.95}\!\left(\{z_t:t\in g\}\right),
   \label{eq:datasets-fragment-score}
 \end{equation}
-Here, \(z_t\) is the calibrated point score, \(S_g^{\max}\) and \(S_g^{95}\)
-are scalar fragment scores, and \(Q_{0.95}\) is the empirical \num{95}th
-percentile. Every fragment supplies one score and one label. Aggregation
-uses only scores and fragment boundaries; it does not use the test label
-to fill in positive decisions. The ranking metrics for this protocol do
-not require a classification threshold.
+where \(z_t\) is the calibrated score of sample \(t\), \(g\) is a fragment
+and \(Q_{0.95}\) is the empirical \num{95}th percentile. This gives \num{20}
+candidates for a two-output model and \num{4} for a single-output model.
+% Source: tranad_plus/opssat_scoring.py (ALPHAS, CALIBRATIONS, AGGREGATIONS,
+% fit_calibrator, selected_scoring); tranad_plus/core/evaluation/selection.py
+% for single-output variants.
 
-The validation composition differs from the test composition because all
-anomalous official-training fragments were retained for selection. Metrics
-sensitive to prevalence, such as average precision, should therefore not
-be interpreted as directly comparable between those sets. The separate
-paper-style pointwise evaluations are defined next; they are not the
-validation-selected fragment protocol.
+The candidate with the largest \ac{ROC} area on validation fragments,
+computed from continuous scores, is selected; ties keep the first candidate
+in a fixed order. The selection is repeated for every trained run and then
+applied to the test fragments. Test labels are used only to compute the
+final metrics. The ranking metrics of this protocol need no threshold.
 
-\section{Anomaly scores, thresholds and detection metrics}
+Validation and test have different compositions, because validation
+contains all anomalous training fragments. Metrics that depend on
+prevalence, such as average precision, are therefore not directly
+comparable between the two sets.
+
+\section{Anomaly scores, thresholds and metrics}
 \label{sec:datasets-metrics}
-\subsection{Decoder combination and anomaly scoring}
+
+\subsection{Anomaly score}
 \label{sec:datasets-scoring}
-The reference score is the mean squared error after combining the two
-reconstructions, as defined in Equation~\eqref{eq:background-tranadplus-score}.
-The outputs are mixed before squaring; the score is not an average of the
-two squared branch errors. A single-output variant uses the corresponding
-single reconstruction error and has no mixing coefficient.
 
-The coefficient \(\alpha\) belongs to evaluation and is independent of
-the epoch-dependent weights in the training loss. The original-style
-POT and Best F1 evaluations inspect \num{21} equally spaced values from
-\num{0} to \num{1}, separately retaining the alpha that maximizes each
-method's test F1~\cite{TranADPlusReferenceCode}. The retained alpha can
-therefore differ between POT and Best F1. This is distinct from the
-\num{5}-value validation search for \ac{OPS-SAT} fragments.
+The reference score is the mean squared error of the combined reconstruction
+(Equation~\eqref{eq:background-tranadplus-score}): the two outputs are mixed
+before squaring. Single-output variants use their only reconstruction and
+have no coefficient \(\alpha\).
 
-A supplementary fixed-score evaluation uses \(\alpha=0.5\) for two-output
-models and the single output otherwise. Its classification threshold is
-the \num{99.5}th percentile of nominal-training scores. This rule avoids
-choosing a threshold from test labels, but does not guarantee the same
-false-positive rate on a different test distribution. Continuous-score
-ranking metrics are computed before thresholding and point adjustment.
+The coefficient \(\alpha\) is an evaluation setting, unrelated to the
+epoch-dependent weights of the training loss. Following the reference
+code, the \ac{POT} and Best F1 evaluations try \num{21} equally spaced values
+between \num{0} and \num{1} and keep, for each method, the value that
+maximizes the test F1~\cite{TranADPlusReferenceCode}. The two methods can
+therefore use different values of \(\alpha\).
+
+A fixed-score control avoids test labels altogether. It uses \(\alpha=0.5\)
+(or the single output) and sets the threshold at the \num{99.5}th percentile
+of the training scores. This does not guarantee the same false-alarm rate
+on test data with a different distribution.
+% Source: tranad_plus/opssat_scoring.py evaluate_selected (train_quantile=0.995);
+% tranad_plus/campaign_plan.py (threshold_train_quantile).
 
 \subsection{POT and the original Best F1 search}
 \label{sec:datasets-original-thresholds}
-\ac{POT} models the tail of a score distribution using exceedances above a
-preliminary high threshold. In the extreme-value formulation, these excesses
-are approximated by a generalized Pareto distribution~\cite{Siffer2017POT}.
-For an initial threshold \(u\), its conditional survival function is
+
+\ac{POT} models the tail of the score distribution with the exceedances over
+a high preliminary threshold \(u\). By extreme-value theory, these excesses
+approximately follow a generalized Pareto distribution~\cite{Siffer2017POT}:
 \begin{equation}
   \Pr(X-u>z\mid X>u)
   \simeq
   \begin{cases}
     \left(1+\xi z/\sigma\right)^{-1/\xi}, & \xi\ne0,\\
-    \exp(-z/\sigma), & \xi=0.
+    \exp(-z/\sigma), & \xi=0,
   \end{cases}
   \label{eq:datasets-gpd}
 \end{equation}
-Here, \(X\) is a score-valued random variable, \(z\geq0\) is an excess,
-\(\xi\) is the dimensionless shape parameter and \(\sigma>0\) is the
-scale in score units. The distribution is defined where
-\(1+\xi z/\sigma>0\). A fitted tail and the supplied risk parameter \(q\)
-provide an estimate of an extreme score quantile. This is not a Gaussian
-fit to all reconstruction errors.
+where \(X\) is the score, \(z\geq0\) the excess, \(\xi\) the shape parameter
+and \(\sigma>0\) the scale, defined where \(1+\xi z/\sigma>0\). The fitted
+tail and the risk parameter \(q\) give an estimate of an extreme quantile
+of the score, which is used as threshold.
 
-The benchmark computation follows the inspected reference code, including
-its static execution mode~\cite{TranADPlusReferenceCode}. Initialization
-uses training scores and starts at an empirical level of \num{0.98}. Failed
-initializations lower that level by a factor of \num{0.999}; the local
-adapters bound the number of attempts. The routine then runs over the test
-scores with \texttt{dynamic=False}, and the final scalar threshold is the
-mean of the recorded thresholds.
+We follow the reference code in its static mode~\cite{TranADPlusReferenceCode}.
+The tail is initialized on training scores at the empirical level \num{0.98};
+if the initialization fails, the level is multiplied by \num{0.999}, with a
+bounded number of attempts in our adapters. The routine then runs over the
+test scores, and the final threshold is the mean of the recorded thresholds.
 
-This static implementation has a specific behavior that matters for
-reproduction. At the first test score above the preliminary threshold
-\(u\), it resets its recorded extreme quantile to \(u\), retaining that
-value afterwards. The resulting threshold is therefore not simply the
-initial generalized-Pareto quantile. It can depend on the unlabeled test
-score sequence through this reset and the final averaging. Test labels
-do not enter that fit or reset, but they enter the subsequent point
-adjustment and the alpha search. This implementation behavior is kept
-separate from the theoretical tail model in Equation~\eqref{eq:datasets-gpd}.
-% Sources: TranADPlus/src/spot.py initialize, _quantile, run static branch;
-% src/omnianomaly.py pot_eval; bounded adapters cap initialization at35.
+This implementation differs from the model of
+Equation~\eqref{eq:datasets-gpd} in one respect. At the first test score
+above \(u\), it resets the recorded quantile to \(u\) and keeps that value.
+The final threshold therefore depends on the sequence of unlabelled test
+scores. Test labels do not enter the fit, but they enter the point
+adjustment and the choice of \(\alpha\).
+% Source: tranad_plus/TranADPlus/src/spot.py (SPOT.initialize, _quantile,
+% static branch of run); TranADPlus/src/omnianomaly.py pot_eval. Our adapters
+% cap the initialization at 35 attempts.
 
-The original Best F1 search instead evaluates \num{200} linearly spaced
-thresholds between the minimum test score and the test mean plus
-\num{3} population standard deviations. Every threshold is evaluated with
-point adjustment, and the threshold giving the largest test F1 is retained.
-Combined with the alpha search, this is an oracle evaluation using test
-labels. The TranAD+ paper itself notes that its finite search can miss a
-better threshold and can therefore be outperformed by POT on some
-datasets~\cite{Yermakov2025TranADPlus}.
+The original Best F1 search evaluates \num{200} thresholds equally spaced
+between the minimum test score and the test mean plus three standard
+deviations. Each threshold is evaluated with point adjustment, and the one
+with the largest test F1 is kept. Together with the choice of \(\alpha\),
+this is an oracle evaluation based on test labels. The TranAD+ authors note
+that this finite search can miss a better threshold, so that \ac{POT} can
+outperform it on some datasets~\cite{Yermakov2025TranADPlus}.
+% Source: tranad_plus/TranADPlus/src/omnianomaly.py bf_search.
 
 \subsection{Dense Best F1 search}
 \label{sec:datasets-dense-thresholds}
-The supplementary dense search replaces the uniform threshold grid with
-thresholds at the distinct observed score values, together with the
-all-positive decision. As the rule is \(s_t>\tau\), thresholds between adjacent distinct
-scores give the same direct binary predictions. Searching score values
-therefore avoids the resolution and upper-range restrictions of the
-original linear grid.
 
-The score formula and the point-adjustment definition remain unchanged.
-For a two-output model the dense search retains its own best alpha from
-the same \num{21}-value grid. Its precision, recall and adjusted binary
-\ac{ROC} area are reported at that alpha and threshold, rather than
-optimized independently. This search still uses test labels and is not
-an estimate of a threshold chosen for deployment.
+The dense search replaces the grid with all distinct observed score values,
+plus the decision that labels every sample as anomalous. Since the decision
+rule is \(s_t>\tau\), any threshold between two consecutive distinct scores
+gives the same predictions, so this search covers every possible outcome.
+Score, point adjustment and the \num{21} values of \(\alpha\) are unchanged.
+Precision, recall and the adjusted \ac{ROC} area are reported at the
+selected \(\alpha\) and threshold.
 
-The original and dense searches are reported as different protocols.
-An improvement caused only by the denser search is an evaluation effect,
-not a change in the network. Numerical boundary cases are checked against
-the saved scores, including the all-positive alternative.
-% Read-only 2026-11-06 audit:270hyperparameter+240architecture+30continued
-% reports all satisfy denseF1>2P/(N+P). Smallest margin0.18577881966268162.
-% Historical source: paper_metrics.py dense_best_f1; explicit dtype-aware
-% boundary in tranad_v14/metrics.py dense_pa_f1. No experiment code changed.
+The dense search still uses test labels and does not estimate a deployable
+threshold. A gain due only to the denser search is an effect of the
+evaluation, not of the network; the original and dense searches are
+therefore reported as different protocols.
+% Source: tranad_plus/paper_metrics.py dense_best_f1;
+% tranad_plus/campaigns/exploration/metrics.py dense_pa_f1.
+% Audit 2026-11-06 (270 hyperparameter + 240 architecture + 30 continued runs):
+% dense F1 > 2P/(N+P) in every report; smallest margin 0.18577881966268162.
 
-\subsection{Point adjustment, label granularity and ROC-AUC}
+\subsection{Point adjustment, label granularity and ROC area}
 \label{sec:datasets-point-adjustment}
-Precision, recall and F1 are calculated from the confusion counts as
+
+Precision, recall and F1 are
 \begin{equation}
   \mathrm{Precision}=\frac{TP}{TP+FP},\qquad
   \mathrm{Recall}=\frac{TP}{TP+FN},\qquad
-  F_1=\frac{2TP}{2TP+FP+FN}.
+  F_1=\frac{2TP}{2TP+FP+FN},
   \label{eq:datasets-classification-metrics}
 \end{equation}
-Here, \(TP\), \(FP\) and \(FN\) denote true positives, false positives and
-false negatives for the declared evaluation unit; \(TN\) denotes true
-negatives. These dimensionless ratios must be associated with either
-points or fragments. A correctly identified fragment contributes one
-positive observation to a fragment-level confusion matrix, regardless of
-its length.
+where \(TP\), \(FP\), \(FN\) and \(TN\) are true positives, false positives,
+false negatives and true negatives. The unit, sample or fragment, must
+always be stated: at fragment level, a detected fragment counts once,
+whatever its length.
 
-Point adjustment transforms thresholded predictions using the ground-truth
-anomaly intervals. If at least one score exceeds the threshold inside a
-positive interval, all its samples are credited as detected. Predictions
-on nominal samples are retained. The interval boundaries come from the
-annotations, not from a manually chosen window length. Figure~\ref{fig:datasets-pa}
-illustrates the operation.
+Point adjustment modifies the thresholded predictions using the annotated
+anomalous intervals: if at least one score inside an interval exceeds the
+threshold, all samples of that interval are counted as detected. Predictions
+on nominal samples are unchanged. Figure~\ref{fig:datasets-pa} shows an
+example.
 
-% Intent: show label-based backfilling and preservation of a false alarm.
-% This is a schematic of omnianomaly.adjust_predicts, not measured data.
 \begin{figure}[htbp]
   \centering
   \begin{tikzpicture}[font=\small]
@@ -562,170 +515,144 @@ illustrates the operation.
     }
     \draw[dashed,black!60] (1.12,-.35) rectangle (3.92,1.75);
   \end{tikzpicture}
-  \caption{Illustrative point adjustment. The annotated positive interval
-  comprises samples \num{3}--\num{6}. A direct hit at sample \num{5} gives
-  credit for that whole interval, while the false alarm at sample \num{2}
-  remains. The dashed boundary identifies the annotated interval.}
+  \caption{Point adjustment (schematic, not measured data). The annotated
+  interval covers samples \num{3}--\num{6}. One alarm at sample \num{5}
+  credits the whole interval, while the false alarm at sample \num{2}
+  remains.}
   \label{fig:datasets-pa}
 \end{figure}
+% Source: schematic of tranad_plus/TranADPlus/src/omnianomaly.py adjust_predicts.
 
-For the native benchmarks, positive intervals are contiguous runs in the
-concatenated labels. For \ac{OPS-SAT}, adjustment respects fragment boundaries:
-adjacent anomalous fragments are separate intervals. Each positive fragment
-uses its repeated weak label. The exact native first-index convention is
-retained for reproduction, while the fragment routine handles the first
-sample of each fragment through an explicit nominal sentinel.
-% Source: omnianomaly.adjust_predicts; opssat_pipeline.adjust_per_fragment.
+For \ac{SMAP} and \ac{MSL}, intervals are the contiguous runs of positive
+labels in the concatenated test set. For \ac{OPS-SAT}, adjustment respects
+fragment boundaries, so adjacent anomalous fragments are separate intervals.
+% Source: omnianomaly.py adjust_predicts; tranad_plus/opssat_pipeline.py
+% adjust_per_fragment (explicit nominal sentinel before each fragment).
 
-Adjustment is an evaluation transformation, not a learned capability of
-the model. It can assign credit before the first actual alarm and can
-strongly increase recall on long intervals. The \ac{OPS-SAT} pointwise
-counts additionally weight longer fragments more heavily. These properties
-motivate reporting unadjusted score discrimination and fragment-level
-metrics alongside the adjusted benchmark values. The adjustment is explicit
-in the authors' code, although the TranAD+ article does not describe the
-procedure in its evaluation-metrics section~\cite{TranADPlusReferenceCode,Yermakov2025TranADPlus}.
+Point adjustment is a property of the evaluation, not of the model. It can
+credit samples before the first alarm and can strongly increase recall on
+long intervals; for \ac{OPS-SAT}, pointwise counts also give more weight to
+longer fragments. For these reasons we also report metrics computed without
+adjustment. The adjustment is explicit in the authors' code, but the TranAD+
+article does not describe it among its evaluation
+metrics~\cite{TranADPlusReferenceCode,Yermakov2025TranADPlus}.
 
-Two different quantities are commonly called \ac{ROC} area in the saved
-reports. The continuous-score area evaluates the ordering of scores across
-nominal and anomalous observations, without selecting a classification
-threshold. The authors' implementation instead applies the area calculation
-to binary predictions after adjustment. For a test set containing both
-classes, the latter reduces to
+The name \ac{ROC} area is used for two different quantities. The
+continuous-score area measures how well the scores rank anomalous above
+nominal observations, without any threshold. The authors' code instead
+computes the area from binary predictions after adjustment. With both
+classes present, this reduces to
 \begin{equation}
   \mathrm{AUC}_{\mathrm{binary,adjusted}}
   =\frac{1}{2}\left(
       \frac{TP}{TP+FN}+\frac{TN}{TN+FP}
-    \right).
+    \right),
   \label{eq:datasets-binary-auc}
 \end{equation}
-Here the confusion counts refer to adjusted point predictions. The two
-terms are sensitivity and specificity, so this quantity is balanced
-accuracy at one operating point. It is not the area obtained by ranking
-the original continuous scores. The same distinction applies to the
-continuous-score area computed from one score per \ac{OPS-SAT} fragment.
+where the counts refer to adjusted predictions. This is the balanced
+accuracy at a single operating point, not a measure of ranking. For
+\ac{OPS-SAT} fragments we use the continuous-score area, computed from one
+score per fragment.
+% Source: tranad_plus/TranADPlus/src/omnianomaly.py calc_point2point
+% (roc_auc_score applied to adjusted binary predictions).
 
-We also report average precision, calculated from the precision--recall
-sequence induced by the score ranking. It is distinct from a trapezoidal
-integral of that curve and depends on class prevalence. Table~\ref{tab:datasets-evaluations}
-summarizes the evaluation paths used in the thesis. Their names and units
-are retained in the result tables, rather than placing different quantities
-under an unqualified AUC heading.
+We also report average precision, computed from the precision--recall
+sequence of the score ranking. Unlike the \ac{ROC} area, it depends on the
+fraction of anomalous observations. Table~\ref{tab:datasets-evaluations}
+summarizes the evaluations used in this thesis; result tables always state
+which one is reported.
 
 \begin{table}[htbp]
   \centering
   \small
   \begin{tabularx}{\textwidth}{@{}l*{3}{>{\raggedright\arraybackslash}X}@{}}
     \toprule
-    Evaluation & Threshold or scoring choice & Labels used for selection & Reporting unit \\
+    Evaluation & Threshold or scoring choice & Labels used for the choice & Unit \\
     \midrule
-    Original POT & Tail routine; best test-F1 alpha & Test labels for alpha and adjustment & Points after adjustment \\
-    Original Best F1 & \num{200} thresholds; best test-F1 alpha & Test labels for threshold, alpha and adjustment & Points after adjustment \\
-    Dense Best F1 & Distinct-score thresholds; best test-F1 alpha & Test labels for threshold, alpha and adjustment & Points after adjustment \\
-    Fixed-score control & Alpha \num{0.5}; training-quantile threshold & None from test; training scores set threshold & Unadjusted points \\
-    \acs{OPS-SAT} selection & Alpha, calibration and max/p95 aggregation & Validation fragment labels & Unadjusted fragment scores \\
+    Original \acs{POT} & Tail routine; \(\alpha\) with best test F1 & Test labels (\(\alpha\), adjustment) & Samples, adjusted \\
+    Original Best F1 & \num{200} thresholds; \(\alpha\) with best test F1 & Test labels (threshold, \(\alpha\), adjustment) & Samples, adjusted \\
+    Dense Best F1 & All distinct scores; \(\alpha\) with best test F1 & Test labels (threshold, \(\alpha\), adjustment) & Samples, adjusted \\
+    Fixed-score control & \(\alpha=0.5\); training quantile & None & Samples, not adjusted \\
+    \acs{OPS-SAT} selection & \(\alpha\), calibration, aggregation & Validation labels & Fragments \\
     \bottomrule
   \end{tabularx}
-  \caption{Evaluation paths. Alpha is absent for single-output models.
-  Ranking metrics use continuous scores unless explicitly identified as
-  binary-after-adjustment. \acs{OPS-SAT} pointwise paths use repeated weak
-  fragment labels. The validation-selected fragment path is separate from
-  the test-oracle searches.}
+  \caption{Evaluations used in this thesis. \(\alpha\) is absent for
+  single-output models. Ranking metrics use continuous scores unless marked
+  as binary after adjustment. Pointwise \acs{OPS-SAT} evaluations use the
+  fragment label repeated on each sample.}
   \label{tab:datasets-evaluations}
 \end{table}
 
-\section{Computational cost and runtime measurements}
+\section{Computational cost and runtime}
 \label{sec:datasets-resources}
-Resource assessment separates storage, arithmetic estimates and measured
-execution time. Parameter counts include trainable weights and biases.
-With \num{32}-bit floating-point parameters, their storage is
+
+We measure storage, arithmetic and execution time separately. Parameter
+counts include weights and biases. With \num{32}-bit floating-point values,
+their storage is
 \begin{equation}
   M_{\theta}=4N_{\theta}\ \text{bytes},
   \label{eq:datasets-parameter-storage}
 \end{equation}
-where \(N_{\theta}\) is the number of stored parameter elements and
-\(M_{\theta}\) is their memory in bytes. Buffers, intermediate activations
-and optimizer states are separate quantities. A resumable checkpoint
-contains more than the inference weights and is not used as a direct
-estimate of deployed parameter storage.
+where \(N_{\theta}\) is the number of parameters. Buffers, activations and
+optimizer states are not included. A checkpoint contains more than the
+inference weights and is not used to estimate model storage.
 
-Multiply--accumulate counts are analytical estimates for the implemented
-matrix operations: attention projections and products, feed-forward maps
-and the output linear layer. They exclude nonlinear functions, softmax,
-elementwise operations and data movement. These estimates describe changes
-in arithmetic demand; they are not measured energy consumption or a
-complete hardware instruction count. Parameter sharing and pass removal
-also have different effects: sharing a decoder reduces storage, whereas
-removing a pass additionally avoids its execution.
+Multiply--accumulate counts are analytical estimates of the matrix operations:
+attention projections and products, feed-forward layers and the output layer.
+They exclude non-linear functions, softmax, element-wise operations and data
+movement, so they describe changes in arithmetic demand, not energy or a
+complete instruction count. Sharing parameters and removing a pass have
+different effects: a shared decoder reduces storage, while removing a pass
+also avoids its computation.
 
-Runtime is measured on the declared server platform. The architectural
-campaign uses an NVIDIA A100 PCIe, \SI{40}{\giga\byte} model, with PyTorch
-\texttt{2.8.0} and CUDA \texttt{12.8}. Parameters and operations use FP32, with
-TensorFloat-32 disabled. Forward latency is measured at batch size
-\num{1}, after \num{10} warm-up calls and over \num{100} timed calls.
-CUDA synchronization brackets each measurement. The reported median,
-mean and upper percentile describe those repeated calls for each run.
-The earlier hyperparameter profiling uses \num{50} timed calls after the
-same number of warm-ups; that difference is recorded with the results.
-% Sources: resources.py measure, baselines.json; v10/v12 measurement_settings;
-% v13/v14 manifest.execution (A100-PCIE-40GB, torch2.8.0+cu128, CUDA12.8).
+Runtime is measured on an NVIDIA A100 PCIe (\SI{40}{\giga\byte}) with PyTorch
+\texttt{2.8.0} and CUDA \texttt{12.8}, in FP32 with TensorFloat-32 disabled.
+Forward latency is measured at batch size \num{1}, over \num{100} calls after
+\num{10} warm-up calls, with CUDA synchronization around each call; we report
+median, mean and an upper percentile. The earlier hyperparameter profiling
+used \num{50} timed calls; this is recorded with its results. The batch-one
+time includes launch and synchronization overhead but not input transfer or
+score computation. Training logs record epoch duration and peak GPU memory.
+% Source: tranad_plus/core/evaluation/resources.py measure;
+% tranad_plus/core/configs/baselines.json; measurement_settings in v10/v12;
+% manifest.execution in v13/v14 (A100-PCIE-40GB, torch 2.8.0+cu128, CUDA 12.8).
 
-The batch-one measurement includes host launch and synchronization overhead,
-but excludes input transfer and anomaly-score calculation. Batched scoring
-has a separate elapsed time including transfer and score production.
-Training telemetry records epoch duration and peak allocated accelerator
-memory. GPU-resident input caching can reduce transfer overhead while
-retaining the batch order and numerical settings. It is recorded as part
-of the execution configuration.
+Repeated calls measure timing variation within a run; different seeds
+measure variation between trained models. Both are reported separately.
+Measurements on this server do not establish latency, power or memory on
+onboard processors or \ac{FPGA} hardware~\cite{Sze2017EfficientDNN}.
 
-Repeated forward calls measure timing variation within a run; training
-seeds measure variation across trained models. These sources of uncertainty
-are reported separately. Measurements on this server do not establish
-latency, power or memory feasibility on onboard processors or
-\ac{FPGA} hardware~\cite{Sze2017EfficientDNN}.
-
-\section{Reproducibility and experimental controls}
+\section{Reproducibility and controls}
 \label{sec:datasets-reproducibility}
-The hyperparameter study combines the window-size and feed-forward grids
-from two recorded campaigns. For each dataset, it contains \num{6} window
-lengths and \num{5} feed-forward widths, with seeds
-\num{2026}, \num{2027} and \num{2028}. Effective integer dimensions are
-used when matching settings. The architectural study evaluates the
-reference, shared-decoder, single-pass and encoder-only implementations
-at the four settings in Table~\ref{tab:datasets-study-settings}, using
-seeds \num{2026}--\num{2030}. Model definitions and changes in objectives
-are discussed in Chapter~\ref{chap:architecture}.
 
-A common seed fixes the initial state of the random-number generators.
-Architectures with different computation graphs need not share corresponding
-parameter values or optimizer trajectories. The main study reports means
-and sample standard deviations across the declared seeds. The dataset split
-is fixed, so seed variation does not measure uncertainty due to acquiring
-a different telemetry sample.
-% Sources: results/analysis_v10_v12/runs_270.csv; configs/baselines.json;
-% tranad_variants/configs/campaigns/additional.json; v13 profile manifests.
+The hyperparameter study combines the window and feed-forward grids of two
+campaigns: for each dataset, \num{6} window lengths and \num{5} feed-forward
+widths, with seeds \num{2026}, \num{2027} and \num{2028}. The architectural
+study evaluates the reference, shared-decoder, single-pass and encoder-only
+models at the four settings of Table~\ref{tab:datasets-study-settings}, with
+seeds \num{2026}--\num{2030}. The models are described in
+Chapter~\ref{chap:architecture}.
+% Source: results/analysis_v10_v12/runs_270.csv;
+% tranad_plus/core/configs/baselines.json and configs/campaigns/additional.json;
+% profile manifests in results/v13.
 
-Each experiment records its configuration, input-file hashes, source hashes,
-execution environment and checkpoint origin. Model and optimizer state,
-learning-rate scheduler state and random-generator state are saved for
-recovery. Continued-training controls start from the completed
-\num{50}-epoch recovery state and run to a fixed \num{100}-epoch endpoint.
-They retain the scheduler and absolute epoch index in the loss, rather
-than restarting either. The source experiment remains unchanged and the
-continued result is stored separately.
+A seed fixes the initial state of the random-number generators. Models with
+different computation graphs do not share parameter values or optimization
+paths even with the same seed. We report means and sample standard
+deviations over seeds. Since the data split is fixed, this variation does
+not include the uncertainty due to a different sample of telemetry.
 
-Evaluation controls reuse stored scores or frozen checkpoints. They can
-compare threshold searches, remove padded target copies, or perturb the
-past while retaining the current reconstruction target. These are diagnostic
-comparisons, not new training samples. Their selection rules and scoring
-settings are declared before interpreting the examples or differences.
-They do not replace the aggregate test evaluation.
+Each experiment records its configuration, the hashes of input files and
+source code, the execution environment and the origin of its checkpoint.
+Model, optimizer, scheduler and random-generator states are saved. The
+continued-training controls restart from the \num{50}-epoch state and run to
+\num{100} epochs, keeping the scheduler and the epoch index of the loss; the
+original experiment is not modified and the new result is stored separately.
 
-Comparisons across campaigns are checked for preprocessing, label alignment,
-score definition and numerical implementation. Source hashes alone identify
-a difference; they do not prove numerical agreement or disagreement. Boundary
-cases and saved-score checks are therefore documented with the relevant
-comparison in Chapters~\ref{chap:replication} and~\ref{chap:ablation}.
-Complete identifiers, configuration records and execution commands belong
-in Appendix~\ref{app:reproducibility}. This provenance allows model changes
-to be distinguished from changes in the data or evaluation procedure.
+Evaluation controls reuse stored scores or frozen checkpoints: they compare
+threshold searches, remove padded targets or perturb the past of a window
+while keeping its target. They are diagnostics, not new training data, and
+their rules are fixed before the results are examined. Comparisons between
+campaigns are checked for preprocessing, label alignment, score definition
+and numerical implementation; the checks are reported with each comparison
+in Chapters~\ref{chap:replication} and~\ref{chap:ablation}.

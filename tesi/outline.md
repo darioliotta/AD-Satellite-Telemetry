@@ -2,7 +2,9 @@
 
 **Title:** Towards Lightweight AI Models for Anomaly Detection in Satellite Telemetry Data
 
-The seven-chapter structure was approved on 2026-11-02. This is a writing plan,
+The initial structure was approved on 2026-11-02. On 2026-11-10, the author
+added a separate quantization chapter and removed the reproducibility appendix.
+The resulting eight-chapter structure is a writing plan,
 not a claim that the scientific prose or planned experiments are complete.
 The personalized title page, its metadata and the existing visual style are preserved.
 
@@ -31,6 +33,8 @@ Dataset roles are distinct:
   resource requirements and variability on the selected telemetry datasets?
 - Which architectural simplifications offer useful detection--cost trade-offs,
   especially on OPS-SAT, within the limits of the evaluated platform and protocol?
+- How does quantization affect model storage and detection performance, both
+  with dequantized weights and with integer matrix operations?
 
 ## Chapter status
 
@@ -40,13 +44,13 @@ An approved outline does not imply a completed chapter.
 | Chapter | Title | Source | Writing status |
 | --- | --- | --- | --- |
 | 1 | Introduction | [chapter-introduction.tex](chapters/chapter-introduction.tex) | [draft] |
-| 2 | Background and Reference Models | [chapter-background.tex](chapters/chapter-background.tex) | [draft] |
+| 2 | Reference Models | [chapter-background.tex](chapters/chapter-background.tex) | [draft] |
 | 3 | Datasets and Experimental Protocol | [chapter-datasets.tex](chapters/chapter-datasets.tex) | [draft] |
-| 4 | Baseline Reproduction and Adaptation | [chapter-replication.tex](chapters/chapter-replication.tex) | [todo] |
-| 5 | Window Size and Feed-Forward Dimension Ablation | [chapter-ablation.tex](chapters/chapter-ablation.tex) | [todo] |
+| 4 | Baseline Reproduction and Adaptation | [chapter-replication.tex](chapters/chapter-replication.tex) | [draft] |
+| 5 | Ablation Study | [chapter-ablation.tex](chapters/chapter-ablation.tex) | [draft] |
 | 6 | Architectural Simplification | [chapter-architecture.tex](chapters/chapter-architecture.tex) | [todo] |
-| 7 | Discussion and Conclusions | [conclusions.tex](chapters/conclusions.tex) | [todo] |
-| A | Reproducibility Materials | [appendix.tex](appendix/appendix.tex) | [todo] |
+| 7 | Quantization | [chapter-quantization.tex](chapters/chapter-quantization.tex) | [todo] |
+| 8 | Discussion and Conclusions | [conclusions.tex](chapters/conclusions.tex) | [todo] |
 
 ## Detailed outline
 
@@ -62,16 +66,15 @@ Establish the application, the scientific questions and the boundary between the
 thesis and later TOAST activities. State contributions according to their actual
 completion status.
 
-### 2. Background and Reference Models
+### 2. Reference Models
 
 2.1 Anomaly detection in time series  
 2.2 Reconstruction-based detection and anomaly scores  
-2.3 Attention and transformer architectures  
-2.4 TranAD  
-2.5 TranAD+  
-2.5.1 Reference architecture and training objective  
-2.5.2 Changes relative to TranAD  
-2.6 Model simplification and resource-aware inference
+2.3 TranAD  
+2.4 TranAD+  
+2.4.1 Reference architecture and training objective  
+2.4.2 Changes relative to TranAD  
+2.5 Model simplification and resource-aware inference
 
 Provide the mathematics and verified literature needed to understand the reference
 implementation and subsequent interventions. Keep the original paper descriptions
@@ -102,34 +105,41 @@ measured runtime as separate quantities.
 
 ### 4. Baseline Reproduction and Adaptation
 
-4.1 Initial reproduction attempts with TranAD  
-4.2 TranAD+ implementation and configuration reconstruction  
-4.3 Reproduction of the original benchmarks  
-4.4 Sensitivity to the threshold-search protocol  
-4.5 Adaptation of TranAD+ to OPS-SAT  
-4.6 Reproduction assessment and remaining discrepancies
+4.1 TranAD+ implementation and configurations  
+4.2 Reproduction of the original benchmarks  
+4.3 Evaluation checks and the WADI discrepancy  
+4.4 Adaptation of TranAD+ to OPS-SAT  
+4.5 Reproduction assessment
 
-Explain the choice of reference implementation using documented attempts and
-source comparisons. Map each reported benchmark result to its actual configuration;
-the best POT and BF can originate from different runs. Preserve existing runs when
-additional configurations are evaluated. Compare threshold searches on the same
-checkpoint before interpreting score changes as model improvements.
+Start directly from TranAD+; the earlier TranAD-attempts section was removed at
+the author's request. Map each selected benchmark result to its actual configuration.
+The draft compares single-run values selected retrospectively for closeness to
+the published F1, independently for POT and original BF200. Configuration agreement
+and numerical agreement remain distinct. SMD POT is updated to the verified 68.61% from the received v16 seed-3
+replication (same author configuration). Mark WADI's 53.39% NaN-mask diagnostic and
+retain its finite-output control alongside it. No new bibliography entries are
+needed. Preserve existing runs when additional configurations are evaluated.
 
-### 5. Window Size and Feed-Forward Dimension Ablation
+### 5. Ablation Study
 
-5.1 Research hypotheses and experimental design  
-5.2 Reference configurations and controlled comparisons  
-5.3 Window-size reduction at fixed feed-forward dimension  
-5.4 Feed-forward reduction at fixed window size  
-5.5 Joint reduction of window size and feed-forward dimension  
-5.6 Variability and comparison across datasets  
-5.7 Detection performance versus resource requirements  
+5.1 Experimental design  
+5.2 Reference settings and comparisons  
+5.3 Window-size reduction  
+5.4 Feed-forward reduction  
+5.5 Joint reduction and interaction  
+5.6 Variability across datasets  
+5.7 Detection performance and computational cost  
 5.8 Implications for architectural simplification
 
-Use the existing study results after verifying evaluation compatibility between
-campaigns. Distinguish study baselines from paper-best configurations. Analyze
-isolated effects, interactions and seed variability without assuming monotonic
-performance loss. Give OPS-SAT a central role in the interpretation.
+The draft uses the 270 verified v10/v12 reports and original BF200/POT with PA
+and binary AUC-PA; no dense-search results replace these metrics. Tables report
+three-seed means and sample standard deviations. The main four-corner contrasts
+all use v10; the extended combined grid is descriptive because matching model
+hashes alone do not certify full pipeline identity. Two vector figures show
+grid means/variability and isolated W/FF sweeps. OPS-SAT supports a favorable
+joint reduction; SMAP improves at the joint endpoint; MSL preserves POT with
+lower computed cost but has unstable BF200. Physical explanations remain
+qualified. Distinguish arithmetic/weight reductions from A100 latency.
 
 ### 6. Architectural Simplification
 
@@ -146,23 +156,31 @@ remains unwritten. Document accompanying changes to
 training objectives and evaluation. Include negative findings and retain the
 distinction between exploratory test-based comparisons and validation-based selection.
 
-### 7. Discussion and Conclusions
+### 7. Quantization
 
-7.1 Answers to the research questions  
-7.2 Main methodological and experimental findings  
-7.3 Limitations and validity of the conclusions  
-7.4 Future work within TOAST
+7.1 Quantization methods and experimental protocol  
+7.2 Quantized weight storage and floating-point calculations  
+7.3 Integer matrix operations with quantized weights and activations  
+7.4 Anomaly-detection performance  
+7.5 Storage and computational requirements  
+7.6 Limitations and implications for onboard inference
+
+The chapter has its own outline. Use the completed precision and integer studies
+under `../results/v16/`, `../results/v17/` and the no-PA analysis under
+`../results/v18/`. Distinguish weight-only quantization with dequantized FP32
+computation from quantized weights/activations with real integer matrix products.
+Four-bit operand precision does not establish native INT4 instruction execution.
+Keep stored bytes, operation counts and measured runtime distinct.
+
+### 8. Discussion and Conclusions
+
+8.1 Answers to the research questions  
+8.2 Main methodological and experimental findings  
+8.3 Limitations and validity of the conclusions  
+8.4 Future work within TOAST
 
 Tie conclusions to completed experiments. Relate the model-level findings to future
 deployment work without claiming onboard readiness from server measurements alone.
-
-### Appendix A. Reproducibility Materials
-
-A.1 Experiment identifiers and configurations  
-A.2 Software versions and execution commands  
-A.3 Additional benchmark details and reproduction results  
-A.4 Additional tables and diagnostic plots  
-A.5 Computational cost and profiling details
 
 ## Evidence and writing boundaries
 
@@ -176,5 +194,6 @@ A.5 Computational cost and profiling details
   `../results/v12/study/` and `../results/analysis_v10_v12/` are evidence to verify,
   not automatically approved thesis prose.
 - Attribute every numerical claim to its experiment or source in a comment or the journal.
-- Keep hardware cost analysis within the experimental chapters. Deployment,
-  quantization and radiation studies belong in future work unless actually performed.
+- Keep hardware cost analysis within the experimental chapters. Quantization has
+  completed experiments and a dedicated chapter. Target-device deployment and
+  radiation studies remain future work unless actually performed.

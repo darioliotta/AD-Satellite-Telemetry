@@ -8,25 +8,26 @@ Adapted from the *structure and layout* of a shared Physics of Data thesis repos
    Preserve the personalized title page and its metadata unless the author requests changes.
 2. Develop one section at a time in `chapters/`: propose scientific prose for review
    before applying it. Replace draft markers only with verified thesis content.
-3. Run `latexmk -pdf main.tex` in this directory. Output: `main.pdf`. Requires a reasonably complete TeX Live distribution (`acro`, `tikz/pgfplots`, `todonotes`, `siunitx`, etc.).
+3. Run `latexmk -pdf main.tex` in this directory. Output: `main.pdf`. Requires a reasonably complete TeX Live distribution (`acro`, `tikz/pgfplots`, `siunitx`, etc.).
 
 ## Agreed chapter structure
 
 1. Introduction — `chapters/chapter-introduction.tex`
-2. Background and Reference Models — `chapters/chapter-background.tex`
+2. Reference Models — `chapters/chapter-background.tex`
 3. Datasets and Experimental Protocol — `chapters/chapter-datasets.tex`
 4. Baseline Reproduction and Adaptation — `chapters/chapter-replication.tex`
-5. Window Size and Feed-Forward Dimension Ablation — `chapters/chapter-ablation.tex`
+5. Ablation Study — `chapters/chapter-ablation.tex`
 6. Architectural Simplification — `chapters/chapter-architecture.tex`
-7. Discussion and Conclusions — `chapters/conclusions.tex`
+7. Quantization — `chapters/chapter-quantization.tex`
+8. Discussion and Conclusions — `chapters/conclusions.tex`
 
-The first three chapters have drafts. The remaining chapters and Appendix A
+The first five chapters have drafts. The remaining chapters
 retain the agreed section outline. Experimental completion and writing status
 are tracked separately.
 
 `latexmk -c` cleans auxiliary build files. Line numbering is disabled throughout
-the document. To print without draft comments, comment `\listoftodos` in
-`main.tex` and remove/disable the `todonotes` entries.
+the document. The draft to-do list and visible work-in-progress boxes have been
+removed; writing notes remain only in source comments and the outline.
 
 ## Folder map
 
@@ -34,8 +35,10 @@ the document. To print without draft comments, comment `\listoftodos` in
 - `metadata.tex`: personalized titlepage fields; preserved by the outline update.
 - `preamble/`: typographic configuration and abbreviations.
 - `frontmatter/`: title page, abstract, acknowledgements.
-- `chapters/`: the introduction, background and dataset/protocol chapters have first drafts; the other chapters remain section outlines.
-- `appendix/`: reproducibility materials.
+- `chapters/`: Chapters 1--5 have first drafts; architecture, quantization and conclusions have section outlines.
+- `data/chapter4/benchmark-evidence.json`: selected result paths/hashes, effective configurations, published values and the recomputed WADI diagnostic supporting Chapter 4.
+- `data/chapter5/`: verified per-run BF200/POT metrics and evidence for the hyperparameter study.
+- `tables/chapter5/` and `figures/chapter5/`: generated tables and vector plots for Chapter 5; rebuild with `python -B tesi/scripts/prepare_chapter5.py` and `python -B tesi/scripts/plot_chapter5.py` from the project root.
 - `figures/`: institutional art and verified scientific figures; simple diagrams may also be drawn directly in the chapter sources.
 - `references.bib`: verified sources cited in the drafted chapters. Bibliography output is enabled in `main.tex`, preserving the personalized `metadata.tex`.
 - `outline.md`, `AGENTS.md`, `docs/journal.md`: plan and collaboration rules.
@@ -52,7 +55,8 @@ compatibility before combining results from different campaigns.
 
 ## Notes
 
-The seven-chapter outline was approved on 2026-11-02; writing and experimental
+The initial outline was approved on 2026-11-02 and extended to eight chapters
+on 2026-11-10; writing and experimental
 completion remain separate statuses. The thesis addresses the initial TOAST
 data/protocol and compact-model activities. Hardware cost analysis is included
 within the experimental chapters; target-device implementation and radiation

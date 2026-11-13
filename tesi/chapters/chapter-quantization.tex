@@ -1,0 +1,33 @@
+\chapter{Quantization}
+\label{chap:quantization}
+
+% Separate chapter approved by the author on 2026-11-10.
+% Outline only: no experimental conclusions are asserted here.
+% Sources for subsequent writing: results/v16, results/v17, results/v18;
+% tranad_plus/campaigns/precision and tranad_plus/campaigns/integer.
+
+\section{Quantization methods and experimental protocol}
+\label{sec:quantization-protocol}
+% Identify parent checkpoints, datasets, architectures, configurations and seeds.
+% Distinguish quantization schemes as well as storage and execution formats.
+
+\section{Quantized weight storage and floating-point calculations}
+\label{sec:quantization-weight-storage}
+% Explain weight quantization followed by dequantization for FP32 computation.
+
+\section{Integer matrix operations with quantized weights and activations}
+\label{sec:quantization-integer-operations}
+% Describe actual integer matrix products and the remaining floating-point steps.
+% Distinguish four-bit operand precision from native INT4 hardware instructions.
+
+\section{Anomaly-detection performance}
+\label{sec:quantization-detection}
+% Compare with paired FP32 parents under explicit threshold and PA protocols.
+
+\section{Storage and computational requirements}
+\label{sec:quantization-resources}
+% Separate parameter counts, stored bytes, operation estimates and measured runtime.
+
+\section{Limitations and implications for onboard inference}
+\label{sec:quantization-onboard}
+% State which results depend on the quantization scheme and evaluated platform.

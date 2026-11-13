@@ -1,0 +1,1499 @@
+{
+  "date": "2026-11-08",
+  "chapter": "Baseline Reproduction and Adaptation",
+  "selection": "Closest available per-run F1 to rounded published row, independently for POT and BF200; retrospective descriptive comparison, not means or unbiased seed estimates.",
+  "paper_source": {
+    "file": "docs/papers/TranAD+.pdf",
+    "sha256": "c3d6400236b4cdb28954cbc4fc9df2571de1648823ec6c9170614f2f42dad901",
+    "tables": "2\u20137",
+    "pdf_pages": [
+      6,
+      7
+    ],
+    "column_order": [
+      "f1",
+      "precision",
+      "recall",
+      "ROC/AUC"
+    ],
+    "values": {
+      "DSN_1k": {
+        "pot": [
+          0.9247,
+          0.8653,
+          0.9929,
+          0.9698
+        ],
+        "bf": [
+          0.8044,
+          0.9662,
+          0.689,
+          0.8403
+        ]
+      },
+      "SMAP": {
+        "pot": [
+          0.8424,
+          0.8777,
+          0.8099,
+          0.8966
+        ],
+        "bf": [
+          0.8491,
+          0.7838,
+          0.9263,
+          0.9445
+        ]
+      },
+      "MSL": {
+        "pot": [
+          0.8901,
+          0.8487,
+          0.9356,
+          0.958
+        ],
+        "bf": [
+          0.8196,
+          0.7352,
+          0.9258,
+          0.9437
+        ]
+      },
+      "SWaT": {
+        "pot": [
+          0.329,
+          0.2003,
+          0.9201,
+          0.7063
+        ],
+        "bf": [
+          0.8239,
+          0.9865,
+          0.7074,
+          0.853
+        ]
+      },
+      "SMD": {
+        "pot": [
+          0.7129,
+          0.5784,
+          0.9289,
+          0.9498
+        ],
+        "bf": [
+          0.8509,
+          0.8272,
+          0.8759,
+          0.934
+        ]
+      },
+      "WADI": {
+        "pot": [
+          0.5084,
+          0.5739,
+          0.4563,
+          0.7178
+        ],
+        "bf": [
+          0.2788,
+          0.9975,
+          0.1621,
+          0.581
+        ]
+      }
+    }
+  },
+  "benchmark_rows": [
+    {
+      "dataset": "DSN_1k",
+      "method": "pot",
+      "source": "results/legacy/DSN_1k/dsn_1k_plus_ws10_dff16_evaluation_20261029T041832011551Z_68109133_pot.pkl",
+      "sha256": "8cbd920519b1973ae3db8037e8a26d47482769b55f15033f0d42388a084b8874",
+      "metrics": {
+        "f1": 0.923432099416902,
+        "precision": 0.8648256532267744,
+        "recall": 0.9905590956139216,
+        "ROC/AUC": 0.9685869039156748,
+        "TP": 244993.0,
+        "TN": 679002.0,
+        "FP": 38293.0,
+        "FN": 2335.0
+      },
+      "profile": {
+        "features": 129,
+        "window": 10,
+        "ff": 16,
+        "layers": 1,
+        "epochs": 500,
+        "batch": 8192,
+        "lr": 0.0001,
+        "q": 0.01,
+        "seed": null
+      },
+      "uncertainty": "Selected single run; no between-run uncertainty estimated",
+      "diagnostic": false,
+      "training_identifier": "dsn_1k_plus_ws10_dff16",
+      "configuration_evidence": [
+        {
+          "file": "results/legacy/DSN_1k/dsn_1k_plus_ws10_dff16.ckpt",
+          "sha256": "25268ada446dd1d804eb4e65e422d5a8ce0da75cc2796dae60bcdf9db9476b6e"
+        }
+      ]
+    },
+    {
+      "dataset": "DSN_1k",
+      "method": "bf",
+      "source": "results/legacy/DSN_1k/dsn_1k_plus_ws10_dff2x_evaluation_20261031T130306045612Z_b377f1bb_bf.pkl",
+      "sha256": "d9de1fef754a4f3d71bfed70a5966f13c25c6640dd61166fe420df3623e0846e",
+      "metrics": {
+        "f1": 0.8072652127454257,
+        "precision": 0.9659074268077006,
+        "recall": 0.6933828761806184,
+        "ROC/AUC": 0.842472114102271,
+        "TP": 171493.0,
+        "TN": 711242.0,
+        "FP": 6053.0,
+        "FN": 75835.0
+      },
+      "profile": {
+        "features": 129,
+        "window": 10,
+        "ff": 258,
+        "layers": 1,
+        "epochs": 500,
+        "batch": 8192,
+        "lr": 0.0001,
+        "q": 0.01,
+        "seed": null
+      },
+      "uncertainty": "Selected single run; no between-run uncertainty estimated",
+      "diagnostic": false,
+      "training_identifier": "dsn_1k_plus_ws10_dff2x",
+      "configuration_evidence": [
+        {
+          "file": "results/legacy/DSN_1k/dsn_1k_plus_ws10_dff2x.ckpt",
+          "sha256": "16b8f32bf90ab062fbdf0a2ee06db57266e999b7440a2cb259e6db8c00a33ad3"
+        }
+      ]
+    },
+    {
+      "dataset": "SMAP",
+      "method": "pot",
+      "source": "results/legacy/SMAP/smap_plus_ws10_evaluation_20261021T074628826508Z_fa8e45b8_pot.pkl",
+      "sha256": "19b33e3151c971e1a26eaa6fde0c3b8c517461fd4eec14695a8bb20418595ad3",
+      "metrics": {
+        "f1": 0.8421503933191664,
+        "precision": 0.8794627214327428,
+        "recall": 0.8078752548192125,
+        "ROC/AUC": 0.8957984196153158,
+        "TP": 45178.0,
+        "TN": 374189.0,
+        "FP": 6192.0,
+        "FN": 10744.0
+      },
+      "profile": {
+        "features": 25,
+        "window": 10,
+        "ff": 50,
+        "layers": 1,
+        "epochs": 50,
+        "batch": 8192,
+        "lr": 0.001,
+        "q": 0.07,
+        "seed": null
+      },
+      "uncertainty": "Selected single run; no between-run uncertainty estimated",
+      "diagnostic": false,
+      "training_identifier": "smap_plus_ws10",
+      "configuration_evidence": [
+        {
+          "file": "results/legacy/SMAP/smap_plus_ws10.ckpt",
+          "sha256": "a950b3def5a509dc3a5a323b24c4705e00f6d093d8b63bb7088962eeb29b2d61"
+        }
+      ]
+    },
+    {
+      "dataset": "SMAP",
+      "method": "bf",
+      "source": "results/legacy/SMAP/smap_plus_ws10_evaluation_20261021T074628826508Z_fa8e45b8_bf.pkl",
+      "sha256": "19b33e3151c971e1a26eaa6fde0c3b8c517461fd4eec14695a8bb20418595ad3",
+      "metrics": {
+        "f1": 0.8470132840679159,
+        "precision": 0.833621943617095,
+        "recall": 0.8608418869139158,
+        "ROC/AUC": 0.9177915008717604,
+        "TP": 48140.0,
+        "TN": 370773.0,
+        "FP": 9608.0,
+        "FN": 7782.0
+      },
+      "profile": {
+        "features": 25,
+        "window": 10,
+        "ff": 50,
+        "layers": 1,
+        "epochs": 50,
+        "batch": 8192,
+        "lr": 0.001,
+        "q": 0.07,
+        "seed": null
+      },
+      "uncertainty": "Selected single run; no between-run uncertainty estimated",
+      "diagnostic": false,
+      "training_identifier": "smap_plus_ws10",
+      "configuration_evidence": [
+        {
+          "file": "results/legacy/SMAP/smap_plus_ws10.ckpt",
+          "sha256": "a950b3def5a509dc3a5a323b24c4705e00f6d093d8b63bb7088962eeb29b2d61"
+        }
+      ]
+    },
+    {
+      "dataset": "MSL",
+      "method": "pot",
+      "source": "results/legacy/MSL/_native_pickles/msl_paper_bf_ws50_ff16_l2_bs2048_pot.pkl",
+      "sha256": "1311a00cc83cc3d854a9f8c597ccd876024de35e073eab186b5dd851390b3d7c",
+      "metrics": {
+        "f1": 0.8928013985140788,
+        "precision": 0.8665616288934674,
+        "recall": 0.9206798866855525,
+        "ROC/AUC": 0.9521524870315191,
+        "TP": 7150.0,
+        "TN": 66136.0,
+        "FP": 1101.0,
+        "FN": 616.0
+      },
+      "profile": {
+        "features": 55,
+        "window": 50,
+        "ff": 16,
+        "layers": 2,
+        "epochs": 100,
+        "batch": 2048,
+        "lr": 0.0001,
+        "q": 0.01,
+        "seed": 1
+      },
+      "uncertainty": "Selected single run; no between-run uncertainty estimated",
+      "diagnostic": false,
+      "training_identifier": "msl_paper_bf_ws50_ff16_l2_bs2048",
+      "configuration_evidence": [
+        {
+          "file": "results/legacy/MSL/msl_paper_bf_ws50_ff16_l2_bs2048.ckpt",
+          "sha256": "80087ecd9eb950f0c2ac4e025f3d911fbcc5365873261a3d1a2b23c0767377c2"
+        },
+        {
+          "file": "results/legacy/MSL/msl_paper_bf_ws50_ff16_l2_bs2048.resume.ckpt",
+          "sha256": "57f7d967ea8bad0db0ef2ea5575de46d1c22fdc18f3163598f526195b15a3aec"
+        },
+        {
+          "file": "results/legacy/MSL/msl_paper_bf_ws50_ff16_l2_bs2048_train.log",
+          "sha256": "e28f5a48c0bf97ac041f116bc6868bb736d633cde4fe34df9729cd1b633d476e"
+        }
+      ]
+    },
+    {
+      "dataset": "MSL",
+      "method": "bf",
+      "source": "results/legacy/MSL/_native_pickles/papercheck_MSL_pot_w10_ff110_l3_bs8192_s1_bf.pkl",
+      "sha256": "fc002ae7e74327a3aa2ef71cffcf73246cae3b7f82edc0b1e71f8b1b17d9b9c7",
+      "metrics": {
+        "f1": 0.7903225806451613,
+        "precision": 0.669016598250937,
+        "recall": 0.9653618336337884,
+        "ROC/AUC": 0.9546660520949279,
+        "TP": 7497.0,
+        "TN": 62488.0,
+        "FP": 3709.0,
+        "FN": 269.0
+      },
+      "profile": {
+        "features": 55,
+        "window": 10,
+        "ff": 110,
+        "layers": 3,
+        "epochs": 100,
+        "batch": 8192,
+        "lr": 0.0001,
+        "q": 0.01,
+        "seed": 1
+      },
+      "uncertainty": "Selected single run; no between-run uncertainty estimated",
+      "diagnostic": false,
+      "training_identifier": "papercheck_MSL_pot_w10_ff110_l3_bs8192_s1",
+      "configuration_evidence": [
+        {
+          "file": "results/legacy/MSL/papercheck_MSL_pot_w10_ff110_l3_bs8192_s1.ckpt",
+          "sha256": "da5f1e5ce9f86b5bb42e4a0018e996497337c5f90fc8d34415a9ce20a6ef3deb"
+        },
+        {
+          "file": "results/legacy/MSL/papercheck_MSL_pot_w10_ff110_l3_bs8192_s1.resume.ckpt",
+          "sha256": "2982a709a1fb9aa460b17c2c87e7cd3aba386b352f42d2a1a127f14e09f67dcd"
+        },
+        {
+          "file": "results/legacy/MSL/papercheck_MSL_pot_w10_ff110_l3_bs8192_s1_train.log",
+          "sha256": "c8d69c4ea7a38c76f265b5a3476cab8a03f37310b8a2914661ae617c26ef13bc"
+        }
+      ]
+    },
+    {
+      "dataset": "SWaT",
+      "method": "pot",
+      "source": "results/legacy/SWaT/_native_pickles/papercheck_SWaT_pot_w10_ff816_l4_bs8192_s1_pot.pkl",
+      "sha256": "feea7562c87ec2bc1397c8e53b01fa79381cf2f144d36db7372cad3612d29efe",
+      "metrics": {
+        "f1": 0.324939721423305,
+        "precision": 0.19847371602679315,
+        "recall": 0.8956262243459475,
+        "ROC/AUC": 0.6979244206035755,
+        "TP": 48920.0,
+        "TN": 197737.0,
+        "FP": 197561.0,
+        "FN": 5701.0
+      },
+      "profile": {
+        "features": 51,
+        "window": 10,
+        "ff": 816,
+        "layers": 4,
+        "epochs": 50,
+        "batch": 8192,
+        "lr": 0.001,
+        "q": 0.001,
+        "seed": 1
+      },
+      "uncertainty": "Selected single run; no between-run uncertainty estimated",
+      "diagnostic": false,
+      "training_identifier": "papercheck_SWaT_pot_w10_ff816_l4_bs8192_s1",
+      "configuration_evidence": [
+        {
+          "file": "results/legacy/SWaT/papercheck_SWaT_pot_w10_ff816_l4_bs8192_s1.ckpt",
+          "sha256": "b2fdd140deea8ceb2196c23c7187b840e13efb2131acf7c697d622d1fc417f35"
+        },
+        {
+          "file": "results/legacy/SWaT/papercheck_SWaT_pot_w10_ff816_l4_bs8192_s1.resume.ckpt",
+          "sha256": "059dcfb243e1743c64fd05a194f65bf580867c9eee79076515098c703ccd94c4"
+        },
+        {
+          "file": "results/legacy/SWaT/papercheck_SWaT_pot_w10_ff816_l4_bs8192_s1_train.log",
+          "sha256": "f58656b99e1c324dba3b3c100f67a37915c99043dbe32589f654fba01b93d307"
+        }
+      ]
+    },
+    {
+      "dataset": "SWaT",
+      "method": "bf",
+      "source": "results/legacy/SWaT/swat_plus_ws50_dff2x_lr0-0001_evaluation_20261025T221658233897Z_b92e4e0f_bf.pkl",
+      "sha256": "a7586b70adde6176ac30ab59c6e521ebd542825da33ceb5de1a3d7fdf9860c55",
+      "metrics": {
+        "f1": 0.8206691402924203,
+        "precision": 0.9635205844604601,
+        "recall": 0.7147067977517805,
+        "ROC/AUC": 0.8554839231891931,
+        "TP": 39038.0,
+        "TN": 393820.0,
+        "FP": 1478.0,
+        "FN": 15583.0
+      },
+      "profile": {
+        "features": 51,
+        "window": 50,
+        "ff": 102,
+        "layers": 1,
+        "epochs": 50,
+        "batch": 2048,
+        "lr": 0.0001,
+        "q": 0.001,
+        "seed": null
+      },
+      "uncertainty": "Selected single run; no between-run uncertainty estimated",
+      "diagnostic": false,
+      "training_identifier": "swat_plus_ws50_dff2x_lr0-0001",
+      "configuration_evidence": [
+        {
+          "file": "results/legacy/SWaT/swat_plus_ws50_dff2x_lr0-0001.ckpt",
+          "sha256": "79cafd9870c6952d579c7bcac49ae9067d029f3941425bf0f0e6c72d5d3f5ae8"
+        }
+      ]
+    },
+    {
+      "dataset": "SMD",
+      "method": "pot",
+      "source": "results/v16/smd/author_pot/seed_3/metrics.json",
+      "sha256": "41a4d16d4580e92df68ca4b6bf1ac789f24c5efd269511385091460b691b6b3b",
+      "metrics": {
+        "f1": 0.6861043844384682,
+        "precision": 0.5345988280583316,
+        "recall": 0.9574446406738215,
+        "ROC/AUC": 0.9606631611746579,
+        "TP": 28191,
+        "TN": 654947,
+        "FP": 24542,
+        "FN": 1253
+      },
+      "profile": {
+        "features": 38,
+        "window": 20,
+        "ff": 76,
+        "layers": 5,
+        "epochs": 100,
+        "batch": 8192,
+        "lr": 0.0001,
+        "q": 0.001,
+        "seed": 3
+      },
+      "uncertainty": "Selected single run; no between-run uncertainty estimated",
+      "diagnostic": false,
+      "training_identifier": "v16_SMD_author_pot_w20_ff76_l5_bs8192_e100_s3",
+      "configuration_evidence": [
+        {
+          "file": "results/v16/smd/author_pot/seed_3/config.json",
+          "sha256": "6bdfb5653887530699298c9b451b887dc3200c18d6fb0aa7b405e51903f8c163"
+        },
+        {
+          "file": "results/v16/smd/author_pot/seed_3/epochs.jsonl",
+          "sha256": "70be1a5efbc871e35b4c4068ac2484f16205cb80ad03f789cb4a64d052f2283d"
+        },
+        {
+          "file": "results/v16/smd/author_pot/seed_3/manifest.json",
+          "sha256": "c504d91b739656f491d6031f1156f786c4259400ba7554d23f433bcb1f4976f6"
+        },
+        {
+          "file": "results/v16/smd/author_pot/seed_3/models/fp32.npz",
+          "sha256": "b0649bbe361ef2b42ec18d1169f36b7592b992871f77778955a9fabef28dc667"
+        }
+      ],
+      "source_selector": "formats.fp32.oracle.pot",
+      "previous_selected_run": {
+        "dataset": "SMD",
+        "method": "pot",
+        "source": "results/legacy/SMD/_native_pickles/papercheck_SMD_pot_w20_ff76_l5_bs8192_s1_pot.pkl",
+        "sha256": "a48acf63c871454b3eb29334534b41568fa61b6ee547e2a72d6a279de80136f6",
+        "metrics": {
+          "f1": 0.6703861721912263,
+          "precision": 0.5220255560814009,
+          "recall": 0.9365575329438935,
+          "ROC/AUC": 0.949699363420536,
+          "TP": 27576.0,
+          "TN": 654240.0,
+          "FP": 25249.0,
+          "FN": 1868.0
+        },
+        "profile": {
+          "features": 38,
+          "window": 20,
+          "ff": 76,
+          "layers": 5,
+          "epochs": 100,
+          "batch": 8192,
+          "lr": 0.0001,
+          "q": 0.001,
+          "seed": 1
+        },
+        "uncertainty": "Selected single run; no between-run uncertainty estimated",
+        "diagnostic": false,
+        "training_identifier": "papercheck_SMD_pot_w20_ff76_l5_bs8192_s1",
+        "configuration_evidence": [
+          {
+            "file": "results/legacy/SMD/papercheck_SMD_pot_w20_ff76_l5_bs8192_s1.ckpt",
+            "sha256": "c1f2a7ec6fd44d9a2252db0d18a59dde463028ecc5366e77275ee35ce0c411b5"
+          },
+          {
+            "file": "results/legacy/SMD/papercheck_SMD_pot_w20_ff76_l5_bs8192_s1.resume.ckpt",
+            "sha256": "8600121ea2ad8ec0fe0cd9acf5352d213e6cb2741288db9af1b10d72f00aac3a"
+          },
+          {
+            "file": "results/legacy/SMD/papercheck_SMD_pot_w20_ff76_l5_bs8192_s1_train.log",
+            "sha256": "6843d52fc9ca83f8a72affc92780b71bfdf8ac9251a0f56ea8a2e3074dab0609"
+          }
+        ]
+      }
+    },
+    {
+      "dataset": "SMD",
+      "method": "bf",
+      "source": "results/legacy/SMD/_native_pickles/papercheck_SMD_bf_w50_ff76_l2_bs2048_s1_bf.pkl",
+      "sha256": "4dc4eceb964792d6e86ec6a8b9535bc76a3afad18e1e821b8b3d588f6d53bbfe",
+      "metrics": {
+        "f1": 0.8406109554055622,
+        "precision": 0.8213903743315508,
+        "recall": 0.8607526151338133,
+        "ROC/AUC": 0.9263258826802026,
+        "TP": 25344.0,
+        "TN": 674788.0,
+        "FP": 5511.0,
+        "FN": 4100.0
+      },
+      "profile": {
+        "features": 38,
+        "window": 50,
+        "ff": 76,
+        "layers": 2,
+        "epochs": 100,
+        "batch": 2048,
+        "lr": 0.0001,
+        "q": 0.001,
+        "seed": 1
+      },
+      "uncertainty": "Selected single run; no between-run uncertainty estimated",
+      "diagnostic": false,
+      "training_identifier": "papercheck_SMD_bf_w50_ff76_l2_bs2048_s1",
+      "configuration_evidence": [
+        {
+          "file": "results/legacy/SMD/papercheck_SMD_bf_w50_ff76_l2_bs2048_s1.ckpt",
+          "sha256": "ee685c980e936075200cab5e8d7b8f004a2dbedf73527ccfe6139c6a8069e90c"
+        },
+        {
+          "file": "results/legacy/SMD/papercheck_SMD_bf_w50_ff76_l2_bs2048_s1.resume.ckpt",
+          "sha256": "8e86d14a3762860bcced86afebb4ddb257e27a7798188c69945ca9d982ed57cd"
+        },
+        {
+          "file": "results/legacy/SMD/papercheck_SMD_bf_w50_ff76_l2_bs2048_s1_train.log",
+          "sha256": "dc0652e848542cf583d99b2752e7c1d56e2a7e7638ef07c83c04808a8e1a38ed"
+        }
+      ]
+    },
+    {
+      "dataset": "WADI",
+      "method": "bf",
+      "source": "results/legacy/WADI/wadi_original_ws50_ff2x_bs2048_evaluation_20261102T100530541130Z_c87eae71_bf.pkl",
+      "sha256": "cccae107498b1e931026195cd6eb8a8e42ffd560582de114e26ce1b70b59ab2b",
+      "metrics": {
+        "f1": 0.27884117951370924,
+        "precision": 0.9975323874151758,
+        "recall": 0.16207276736493936,
+        "ROC/AUC": 0.5810241004809761,
+        "TP": 1617.0,
+        "TN": 162820.0,
+        "FP": 4.0,
+        "FN": 8360.0
+      },
+      "profile": {
+        "features": 128,
+        "window": 50,
+        "ff": 256,
+        "layers": 1,
+        "epochs": 50,
+        "batch": 2048,
+        "lr": 0.0001,
+        "q": 0.001,
+        "seed": null
+      },
+      "uncertainty": "Selected single run; no between-run uncertainty estimated",
+      "diagnostic": false,
+      "training_identifier": "wadi_original_ws50_ff2x_bs2048",
+      "configuration_evidence": [
+        {
+          "file": "results/legacy/WADI/wadi_original_ws50_ff2x_bs2048.ckpt",
+          "sha256": "0acb98fd150e7ec71846972455c4e5e04a154ced832d9e6b18eb2847dc21e448"
+        },
+        {
+          "file": "results/legacy/WADI/wadi_original_ws50_ff2x_bs2048.resume.ckpt",
+          "sha256": "8c916dd7e8fbf71ee399b3d7d200155394b225a724de70332130c3a32838de7d"
+        }
+      ]
+    },
+    {
+      "dataset": "WADI",
+      "method": "pot",
+      "source": "results/diagnostics/WADI/fp64_20261103T130744Z/scores_alpha_18.npz",
+      "sha256": "a17938924429f951c1abcd25331c9de2519e98ab7d1f0eaa5f8afd15aaf60365",
+      "metrics": {
+        "f1": 0.5339018016778985,
+        "precision": 0.8503833515881709,
+        "recall": 0.38909491831211784,
+        "ROC/AUC": 0.6924501025010203,
+        "threshold": 0.22356700584968833,
+        "TP": 3882.0,
+        "TN": 162141.0,
+        "FP": 683.0,
+        "FN": 6095.0,
+        "alpha": 0.9
+      },
+      "profile": {
+        "features": 128,
+        "window": 50,
+        "ff": 2048,
+        "layers": 2,
+        "epochs": 50,
+        "batch": 1024,
+        "lr": 0.001,
+        "q": 0.001,
+        "seed": 1
+      },
+      "diagnostic": true,
+      "mask_source": "results/diagnostics/author_weights/wadi/fp32_20261103T163516090316Z/nonfinite_masks.npz",
+      "mask_sha256": "0e1601b5f1c095b101de44c5495a50078540ef7368648767b3b851e79cdf53c7",
+      "mask_key": "test_second",
+      "uncertainty": "Single checkpoint with diagnostic test-score mask; not finite-output detector performance",
+      "training_identifier": "papercheck_WADI_pot_w50_ff2048_l2_bs1024_s1",
+      "configuration_evidence": [
+        {
+          "file": "results/legacy/WADI/papercheck_WADI_pot_w50_ff2048_l2_bs1024_s1.ckpt",
+          "sha256": "07dfeccb49f278c0984790452aabc3723f1ca323a1a0e750088038002dd1a774"
+        },
+        {
+          "file": "results/legacy/WADI/papercheck_WADI_pot_w50_ff2048_l2_bs1024_s1.resume.ckpt",
+          "sha256": "35b64ff8c5c3ca4c72286f8eb0f29498eadcfac2e9e3220699f27301e07127a5"
+        },
+        {
+          "file": "results/legacy/WADI/papercheck_WADI_pot_w50_ff2048_l2_bs1024_s1_train.log",
+          "sha256": "a304da680a01b7d38c6cc6db15b4ad3657db989e83f9227e5f1d541d070adb80"
+        }
+      ]
+    }
+  ],
+  "wadi_diagnostics": {
+    "local_unmasked": {
+      "pot_f1": 0.14351647543395116,
+      "pot_precision": 0.07900517253595975,
+      "pot_recall": 0.7822992883632355,
+      "pot_TP": 7805.0,
+      "pot_TN": 71838.0,
+      "pot_FP": 90986.0,
+      "pot_FN": 2172.0,
+      "pot_ROC/AUC": 0.6117498014065968,
+      "pot_threshold": 0.22356700584968833,
+      "bf_f1": 0.27884117951370924,
+      "bf_precision": 0.9975323874151758,
+      "bf_recall": 0.16207276736493936,
+      "bf_TP": 1617,
+      "bf_TN": 162820,
+      "bf_FP": 4,
+      "bf_FN": 8360,
+      "bf_ROC/AUC": 0.5810241004809761,
+      "bf_threshold": 565.5359898953575,
+      "bf_latency": 115.32948901703276,
+      "alpha": 0.9,
+      "beta": 0.09999999999999998
+    },
+    "local_masked": {
+      "f1": 0.5339018016778985,
+      "precision": 0.8503833515881709,
+      "recall": 0.38909491831211784,
+      "ROC/AUC": 0.6924501025010203,
+      "threshold": 0.22356700584968833,
+      "TP": 3882.0,
+      "TN": 162141.0,
+      "FP": 683.0,
+      "FN": 6095.0,
+      "alpha": 0.9
+    },
+    "author_fp32": {
+      "pot_f1": 0.507694023193577,
+      "pot_precision": 0.5720567910541525,
+      "pot_recall": 0.4563496040894056,
+      "pot_TP": 4553.0,
+      "pot_TN": 159418.0,
+      "pot_FP": 3406.0,
+      "pot_FN": 5424.0,
+      "pot_ROC/AUC": 0.7177156559728706,
+      "pot_threshold": 0.22509002121719163,
+      "alpha": 1.0,
+      "beta": 0.0
+    },
+    "author_fp64": {
+      "pot_f1": 0.15113853176655195,
+      "pot_precision": 0.0829475950481969,
+      "pot_recall": 0.8495539741405232,
+      "pot_TP": 8476.0,
+      "pot_TN": 69115.0,
+      "pot_FP": 93709.0,
+      "pot_FN": 1501.0,
+      "pot_ROC/AUC": 0.6370153548784471,
+      "pot_threshold": 0.2250900148412316,
+      "alpha": 1.0,
+      "beta": 0.0
+    },
+    "mask": {
+      "source": "results/diagnostics/author_weights/wadi/fp32_20261103T163516090316Z/nonfinite_masks.npz",
+      "sha256": "0e1601b5f1c095b101de44c5495a50078540ef7368648767b3b851e79cdf53c7",
+      "key": "test_second",
+      "count": 94226,
+      "first": 78575,
+      "last": 172800,
+      "test_points": 172801,
+      "nominal": 90303,
+      "anomalous": 3923,
+      "action": "Set local finite FP64 test scores to NaN. Train scores, labels and observations remain unchanged. No rows dropped."
+    },
+    "all_alpha_diagnostic_results": [
+      {
+        "f1": 0.44643781266172156,
+        "precision": 0.5236039924467224,
+        "recall": 0.38909491831211784,
+        "ROC/AUC": 0.6837013922371772,
+        "threshold": 0.23761580954823255,
+        "TP": 3882.0,
+        "TN": 159292.0,
+        "FP": 3532.0,
+        "FN": 6095.0,
+        "alpha": 0.0
+      },
+      {
+        "f1": 0.45493964607992504,
+        "precision": 0.5476089716462125,
+        "recall": 0.38909491831211784,
+        "ROC/AUC": 0.6846994023585352,
+        "threshold": 0.2242959353699337,
+        "TP": 3882.0,
+        "TN": 159617.0,
+        "FP": 3207.0,
+        "FN": 6095.0,
+        "alpha": 0.05
+      },
+      {
+        "f1": 0.45544670616530764,
+        "precision": 0.5490806223479491,
+        "recall": 0.38909491831211784,
+        "ROC/AUC": 0.68475774756563,
+        "threshold": 0.21137885584731855,
+        "TP": 3882.0,
+        "TN": 159636.0,
+        "FP": 3188.0,
+        "FN": 6095.0,
+        "alpha": 0.1
+      },
+      {
+        "f1": 0.4567596187786798,
+        "precision": 0.5529126904999287,
+        "recall": 0.38909491831211784,
+        "ROC/AUC": 0.6849082167839271,
+        "threshold": 0.19999324071747102,
+        "TP": 3882.0,
+        "TN": 159685.0,
+        "FP": 3139.0,
+        "FN": 6095.0,
+        "alpha": 0.15000000000000002
+      },
+      {
+        "f1": 0.458269389682446,
+        "precision": 0.5573582196697775,
+        "recall": 0.38909491831211784,
+        "ROC/AUC": 0.685080181604838,
+        "threshold": 0.1900290546156968,
+        "TP": 3882.0,
+        "TN": 159741.0,
+        "FP": 3083.0,
+        "FN": 6095.0,
+        "alpha": 0.2
+      },
+      {
+        "f1": 0.4615384615384615,
+        "precision": 0.5671292914536158,
+        "recall": 0.38909491831211784,
+        "ROC/AUC": 0.6854486776496471,
+        "threshold": 0.1818811698836756,
+        "TP": 3882.0,
+        "TN": 159861.0,
+        "FP": 2963.0,
+        "FN": 6095.0,
+        "alpha": 0.25
+      },
+      {
+        "f1": 0.46664262531554274,
+        "precision": 0.5827953760696593,
+        "recall": 0.38909491831211784,
+        "ROC/AUC": 0.6860137049183544,
+        "threshold": 0.17540164237462008,
+        "TP": 3882.0,
+        "TN": 160045.0,
+        "FP": 2779.0,
+        "FN": 6095.0,
+        "alpha": 0.30000000000000004
+      },
+      {
+        "f1": 0.4770800049158166,
+        "precision": 0.6164840400190567,
+        "recall": 0.38909491831211784,
+        "ROC/AUC": 0.6871314762542755,
+        "threshold": 0.1705384855183981,
+        "TP": 3882.0,
+        "TN": 160409.0,
+        "FP": 2415.0,
+        "FN": 6095.0,
+        "alpha": 0.35000000000000003
+      },
+      {
+        "f1": 0.4881483810122604,
+        "precision": 0.6548582995951417,
+        "recall": 0.38909491831211784,
+        "ROC/AUC": 0.6882646015920635,
+        "threshold": 0.1673634638554843,
+        "TP": 3882.0,
+        "TN": 160778.0,
+        "FP": 2046.0,
+        "FN": 6095.0,
+        "alpha": 0.4
+      },
+      {
+        "f1": 0.49607053862373013,
+        "precision": 0.6841734226295383,
+        "recall": 0.38909491831211784,
+        "ROC/AUC": 0.6890445848869095,
+        "threshold": 0.16588814253418402,
+        "TP": 3882.0,
+        "TN": 161032.0,
+        "FP": 1792.0,
+        "FN": 6095.0,
+        "alpha": 0.45
+      },
+      {
+        "f1": 0.5018097207859359,
+        "precision": 0.7064604185623294,
+        "recall": 0.38909491831211784,
+        "ROC/AUC": 0.6895942581537498,
+        "threshold": 0.16608577512994988,
+        "TP": 3882.0,
+        "TN": 161211.0,
+        "FP": 1613.0,
+        "FN": 6095.0,
+        "alpha": 0.5
+      },
+      {
+        "f1": 0.5182564581803617,
+        "precision": 0.7757793764988009,
+        "recall": 0.38909491831211784,
+        "ROC/AUC": 0.6911020211370937,
+        "threshold": 0.16792463307499608,
+        "TP": 3882.0,
+        "TN": 161702.0,
+        "FP": 1122.0,
+        "FN": 6095.0,
+        "alpha": 0.55
+      },
+      {
+        "f1": 0.5242757782429605,
+        "precision": 0.8033940397350994,
+        "recall": 0.38909491831211784,
+        "ROC/AUC": 0.6916301988013202,
+        "threshold": 0.17137632100435715,
+        "TP": 3882.0,
+        "TN": 161874.0,
+        "FP": 950.0,
+        "FN": 6095.0,
+        "alpha": 0.6000000000000001
+      },
+      {
+        "f1": 0.5279477764177886,
+        "precision": 0.820892366250793,
+        "recall": 0.38909491831211784,
+        "ROC/AUC": 0.6919464912397812,
+        "threshold": 0.17632622308396673,
+        "TP": 3882.0,
+        "TN": 161977.0,
+        "FP": 847.0,
+        "FN": 6095.0,
+        "alpha": 0.65
+      },
+      {
+        "f1": 0.5303640959081904,
+        "precision": 0.8326898326898327,
+        "recall": 0.38909491831211784,
+        "ROC/AUC": 0.6921522348647997,
+        "threshold": 0.18285348611802757,
+        "TP": 3882.0,
+        "TN": 162044.0,
+        "FP": 780.0,
+        "FN": 6095.0,
+        "alpha": 0.7000000000000001
+      },
+      {
+        "f1": 0.5313804667716104,
+        "precision": 0.8377211911955115,
+        "recall": 0.38909491831211784,
+        "ROC/AUC": 0.6922382172752551,
+        "threshold": 0.190844173897479,
+        "TP": 3882.0,
+        "TN": 162072.0,
+        "FP": 752.0,
+        "FN": 6095.0,
+        "alpha": 0.75
+      },
+      {
+        "f1": 0.5326198806338753,
+        "precision": 0.8439130434782609,
+        "recall": 0.38909491831211784,
+        "ROC/AUC": 0.6923426244879511,
+        "threshold": 0.20030385076855323,
+        "TP": 3882.0,
+        "TN": 162106.0,
+        "FP": 718.0,
+        "FN": 6095.0,
+        "alpha": 0.8
+      },
+      {
+        "f1": 0.5330953034880527,
+        "precision": 0.8463047743623283,
+        "recall": 0.38909491831211784,
+        "ROC/AUC": 0.6923825448928055,
+        "threshold": 0.21120084941270995,
+        "TP": 3882.0,
+        "TN": 162119.0,
+        "FP": 705.0,
+        "FN": 6095.0,
+        "alpha": 0.8500000000000001
+      },
+      {
+        "f1": 0.5339018016778985,
+        "precision": 0.8503833515881709,
+        "recall": 0.38909491831211784,
+        "ROC/AUC": 0.6924501025010203,
+        "threshold": 0.22356700584968833,
+        "TP": 3882.0,
+        "TN": 162141.0,
+        "FP": 683.0,
+        "FN": 6095.0,
+        "alpha": 0.9
+      },
+      {
+        "f1": 0.47253930648287745,
+        "precision": 0.832742914979757,
+        "recall": 0.3298586749523905,
+        "ROC/AUC": 0.6628995384293718,
+        "threshold": 0.23737887511832007,
+        "TP": 3291.0,
+        "TN": 162163.0,
+        "FP": 661.0,
+        "FN": 6686.0,
+        "alpha": 0.9500000000000001
+      },
+      {
+        "f1": 0.47369557394746314,
+        "precision": 0.8399693721286371,
+        "recall": 0.3298586749523905,
+        "ROC/AUC": 0.6630039456420677,
+        "threshold": 0.2526497445385466,
+        "TP": 3291.0,
+        "TN": 162197.0,
+        "FP": 627.0,
+        "FN": 6686.0,
+        "alpha": 1.0
+      }
+    ],
+    "supporting_sources": [
+      {
+        "file": "results/diagnostics/WADI/fp64_20261103T130744Z/summary.json",
+        "sha256": "1360b72265f810f756e078ec4c0e9347c109fa0835d554521f23f5ecfb52ec13"
+      },
+      {
+        "file": "results/diagnostics/author_weights/wadi/fp32_20261103T163516090316Z/metadata.json",
+        "sha256": "596d04565124c8566553d102d9351980aa2ff20239584137b5a4c80c62c7276e"
+      },
+      {
+        "file": "results/diagnostics/author_weights/wadi/fp32_20261103T163516090316Z/summary.json",
+        "sha256": "007bef556806f9118d6ca42d29bd042109321fdf57499cf93db0dbb3147fff75"
+      },
+      {
+        "file": "results/diagnostics/author_weights/wadi/fp64_20261103T163516090316Z/metadata.json",
+        "sha256": "86ac6f9f5787dfe4d22ac6996423e0dd02d840884f806f2032f2bb51f7689c00"
+      },
+      {
+        "file": "results/diagnostics/author_weights/wadi/fp64_20261103T163516090316Z/summary.json",
+        "sha256": "9b0d368895dc79111b8185b28dad7031f64c0fee5c9d7cd2f4e771d221fbeb17"
+      }
+    ]
+  },
+  "smd_author_weight_control": {
+    "source": "results/diagnostics/author_weights/smd20/fp32_20261103T163516090316Z/summary.json",
+    "sha256": "0fbfb75ed0e9b5f43afe521a58cb703bacd582f475964fe5fd10f3c81b3c2b2c",
+    "metrics": {
+      "pot_f1": 0.7170677332633927,
+      "pot_precision": 0.5840507573006345,
+      "pot_recall": 0.9285423176198886,
+      "pot_TP": 27340.0,
+      "pot_TN": 660018.0,
+      "pot_FP": 19471.0,
+      "pot_FN": 2104.0,
+      "pot_ROC/AUC": 0.9499434802161776,
+      "pot_threshold": 0.015061846220370805,
+      "alpha": 0.30000000000000004,
+      "beta": 0.7
+    }
+  },
+  "code_sources": {
+    "tranad_plus/TranADPlus/src/omnianomaly.py": "5ec25222c5de43c316f59cd7a69c6ac32fdb811515a94080680daa47f502d97a",
+    "tranad_plus/TranADPlus/src/spot.py": "d6791c3ce151989732a8000130ce10cc4c510d250885fde5941350b368ecb984",
+    "tranad_plus/TranADPlus/src/models.py": "3f6451beed30637248e005633d7c94d1adcede0aca0d53c53665d2a54c3deeef"
+  },
+  "author_configuration_audit": [
+    {
+      "origin": "author",
+      "hp": {
+        "features": 128,
+        "lr": 0.001,
+        "epochs": 50,
+        "batch_sz": 8192,
+        "window_sz": 20,
+        "shuffle": false,
+        "padding": true,
+        "num_workers": 0,
+        "dataset_str": "WADI",
+        "model_str": "TranAD",
+        "identifier": "Aug-19-24_20-16-28-239598",
+        "downsample": null,
+        "pot_q": 0.001,
+        "dim_feedforward": "16",
+        "num_layers": 1
+      },
+      "ff": 2048,
+      "layers": 1,
+      "checkpoint_prefix_file": "tranadplus-author-prefix-Aug-19-24_20-16-28-239598.bin",
+      "reference_repository": "https://github.com/yyexela/TranADPlus",
+      "training_log_url": "https://github.com/yyexela/TranADPlus/blob/main/Results/TranADPlus/Aug-19-24_20-16-28-239598_train.txt"
+    },
+    {
+      "origin": "author",
+      "hp": {
+        "features": 38,
+        "lr": 0.0001,
+        "epochs": 100,
+        "batch_sz": 8192,
+        "window_sz": 20,
+        "shuffle": false,
+        "padding": true,
+        "num_workers": 0,
+        "dataset_str": "SMD",
+        "model_str": "TranAD",
+        "identifier": "Aug-20-24_00-59-24-881901",
+        "downsample": null,
+        "pot_q": 0.001,
+        "dim_feedforward": "2x",
+        "num_layers": 5
+      },
+      "ff": 76,
+      "layers": 5,
+      "checkpoint_prefix_file": "tranadplus-author-prefix-Aug-20-24_00-59-24-881901.bin",
+      "reference_repository": "https://github.com/yyexela/TranADPlus",
+      "training_log_url": "https://github.com/yyexela/TranADPlus/blob/main/Results/TranADPlus/Aug-20-24_00-59-24-881901_train.txt"
+    },
+    {
+      "origin": "author",
+      "hp": {
+        "features": 38,
+        "lr": 0.0001,
+        "epochs": 100,
+        "batch_sz": 2048,
+        "window_sz": 50,
+        "shuffle": false,
+        "padding": true,
+        "num_workers": 0,
+        "dataset_str": "SMD",
+        "model_str": "TranAD",
+        "identifier": "Aug-20-24_02-57-58-370456",
+        "downsample": null,
+        "pot_q": 0.001,
+        "dim_feedforward": "2x",
+        "num_layers": 2
+      },
+      "ff": 76,
+      "layers": 2,
+      "checkpoint_prefix_file": "tranadplus-author-prefix-Aug-20-24_02-57-58-370456.bin",
+      "reference_repository": "https://github.com/yyexela/TranADPlus",
+      "training_log_url": "https://github.com/yyexela/TranADPlus/blob/main/Results/TranADPlus/Aug-20-24_02-57-58-370456_train.txt"
+    },
+    {
+      "origin": "author",
+      "hp": {
+        "features": 129,
+        "lr": 0.0001,
+        "epochs": 100,
+        "batch_sz": 8192,
+        "window_sz": 10,
+        "shuffle": false,
+        "padding": true,
+        "num_workers": 0,
+        "dataset_str": "DSN_1k",
+        "model_str": "TranAD",
+        "identifier": "Aug-20-24_03-34-14-736979",
+        "downsample": null,
+        "pot_q": 0.001,
+        "dim_feedforward": "2x",
+        "num_layers": 1
+      },
+      "ff": 258,
+      "layers": 1,
+      "checkpoint_prefix_file": "tranadplus-author-prefix-Aug-20-24_03-34-14-736979.bin",
+      "reference_repository": "https://github.com/yyexela/TranADPlus",
+      "training_log_url": "https://github.com/yyexela/TranADPlus/blob/main/Results/TranADPlus/Aug-20-24_03-34-14-736979_train.txt"
+    },
+    {
+      "origin": "author",
+      "hp": {
+        "features": 55,
+        "lr": 0.0001,
+        "epochs": 100,
+        "batch_sz": 8192,
+        "window_sz": 10,
+        "shuffle": false,
+        "padding": true,
+        "num_workers": 0,
+        "dataset_str": "MSL",
+        "model_str": "TranAD",
+        "identifier": "Aug-23-24_05-34-51-984057",
+        "downsample": null,
+        "pot_q": 0.01,
+        "dim_feedforward": "2x",
+        "num_layers": 3
+      },
+      "ff": 110,
+      "layers": 3,
+      "checkpoint_prefix_file": "tranadplus-author-prefix-Aug-23-24_05-34-51-984057.bin",
+      "reference_repository": "https://github.com/yyexela/TranADPlus",
+      "training_log_url": "https://github.com/yyexela/TranADPlus/blob/main/Results/TranADPlus/Aug-23-24_05-34-51-984057_train.txt"
+    },
+    {
+      "origin": "author",
+      "hp": {
+        "features": 51,
+        "lr": 0.001,
+        "epochs": 50,
+        "batch_sz": 8192,
+        "window_sz": 10,
+        "shuffle": false,
+        "padding": true,
+        "num_workers": 0,
+        "dataset_str": "SWaT",
+        "model_str": "TranAD",
+        "identifier": "Aug-23-24_11-02-30-935138",
+        "downsample": null,
+        "pot_q": 0.001,
+        "dim_feedforward": "16",
+        "num_layers": 4
+      },
+      "ff": 816,
+      "layers": 4,
+      "checkpoint_prefix_file": "tranadplus-author-prefix-Aug-23-24_11-02-30-935138.bin",
+      "reference_repository": "https://github.com/yyexela/TranADPlus",
+      "training_log_url": "https://github.com/yyexela/TranADPlus/blob/main/Results/TranADPlus/Aug-23-24_11-02-30-935138_train.txt"
+    },
+    {
+      "origin": "author",
+      "hp": {
+        "features": 25,
+        "lr": 0.001,
+        "epochs": 50,
+        "batch_sz": 8192,
+        "window_sz": 10,
+        "shuffle": false,
+        "padding": true,
+        "num_workers": 0,
+        "dataset_str": "SMAP",
+        "model_str": "TranAD",
+        "identifier": "Aug-23-24_20-56-20-640270",
+        "downsample": null,
+        "pot_q": 0.07,
+        "dim_feedforward": "2x",
+        "num_layers": 1
+      },
+      "ff": 50,
+      "layers": 1,
+      "checkpoint_prefix_file": "tranadplus-author-prefix-Aug-23-24_20-56-20-640270.bin",
+      "reference_repository": "https://github.com/yyexela/TranADPlus",
+      "training_log_url": "https://github.com/yyexela/TranADPlus/blob/main/Results/TranADPlus/Aug-23-24_20-56-20-640270_train.txt"
+    },
+    {
+      "origin": "author",
+      "hp": {
+        "features": 25,
+        "lr": 0.001,
+        "epochs": 50,
+        "batch_sz": 2048,
+        "window_sz": 50,
+        "shuffle": false,
+        "padding": true,
+        "num_workers": 0,
+        "dataset_str": "SMAP",
+        "model_str": "TranAD",
+        "identifier": "Aug-23-24_21-30-04-273800",
+        "downsample": null,
+        "pot_q": 0.07,
+        "dim_feedforward": "2x",
+        "num_layers": 1
+      },
+      "ff": 50,
+      "layers": 1,
+      "checkpoint_prefix_file": "tranadplus-author-prefix-Aug-23-24_21-30-04-273800.bin",
+      "reference_repository": "https://github.com/yyexela/TranADPlus",
+      "training_log_url": "https://github.com/yyexela/TranADPlus/blob/main/Results/TranADPlus/Aug-23-24_21-30-04-273800_train.txt"
+    },
+    {
+      "origin": "author",
+      "hp": {
+        "features": 51,
+        "lr": 0.0001,
+        "epochs": 100,
+        "batch_sz": 2048,
+        "window_sz": 20,
+        "shuffle": false,
+        "padding": true,
+        "num_workers": 0,
+        "dataset_str": "SWaT",
+        "model_str": "TranAD",
+        "identifier": "Aug-25-24_17-41-32-293832",
+        "downsample": null,
+        "pot_q": 0.001,
+        "dim_feedforward": "16",
+        "num_layers": 4
+      },
+      "ff": 816,
+      "layers": 4,
+      "checkpoint_prefix_file": "tranadplus-author-prefix-Aug-25-24_17-41-32-293832.bin",
+      "reference_repository": "https://github.com/yyexela/TranADPlus",
+      "training_log_url": "https://github.com/yyexela/TranADPlus/blob/main/Results/TranADPlus/Aug-25-24_17-41-32-293832_train.txt"
+    },
+    {
+      "origin": "author",
+      "hp": {
+        "features": 129,
+        "lr": 0.0001,
+        "epochs": 500,
+        "batch_sz": 8192,
+        "window_sz": 10,
+        "shuffle": false,
+        "padding": true,
+        "num_workers": 0,
+        "dataset_str": "DSN_1k",
+        "model_str": "TranAD",
+        "downsample": null,
+        "pot_q": 0.01,
+        "dim_feedforward": "16",
+        "num_layers": 1
+      },
+      "ff": 2064,
+      "layers": 1,
+      "checkpoint_prefix_file": "tranadplus-author-prefix-TranAD_DSN_1k_lr0-0001_dff16_wz10_model.bin",
+      "reference_repository": "https://github.com/yyexela/TranADPlus"
+    },
+    {
+      "origin": "author",
+      "hp": {
+        "features": 129,
+        "lr": 0.0001,
+        "epochs": 500,
+        "batch_sz": 8192,
+        "window_sz": 10,
+        "shuffle": false,
+        "padding": true,
+        "num_workers": 0,
+        "dataset_str": "DSN_1k",
+        "model_str": "TranAD",
+        "downsample": null,
+        "pot_q": 0.01,
+        "dim_feedforward": "2x",
+        "num_layers": 1
+      },
+      "ff": 258,
+      "layers": 1,
+      "checkpoint_prefix_file": "tranadplus-author-prefix-TranAD_DSN_1k_lr0-0001_dff2x_wz10_model.bin",
+      "reference_repository": "https://github.com/yyexela/TranADPlus"
+    },
+    {
+      "origin": "author",
+      "hp": {
+        "features": 55,
+        "lr": 0.0001,
+        "epochs": 50,
+        "batch_sz": 2048,
+        "window_sz": 50,
+        "shuffle": false,
+        "padding": true,
+        "num_workers": 0,
+        "dataset_str": "MSL",
+        "model_str": "TranAD",
+        "downsample": null,
+        "pot_q": 0.01,
+        "dim_feedforward": "16",
+        "num_layers": 1
+      },
+      "ff": 880,
+      "layers": 1,
+      "checkpoint_prefix_file": "tranadplus-author-prefix-TranAD_MSL_lr0-0001_dff16_wz50_model.bin",
+      "reference_repository": "https://github.com/yyexela/TranADPlus"
+    },
+    {
+      "origin": "author",
+      "hp": {
+        "features": 55,
+        "lr": 0.0001,
+        "epochs": 50,
+        "batch_sz": 2048,
+        "window_sz": 50,
+        "shuffle": false,
+        "padding": true,
+        "num_workers": 0,
+        "dataset_str": "MSL",
+        "model_str": "TranAD",
+        "downsample": null,
+        "pot_q": 0.01,
+        "dim_feedforward": "2x",
+        "num_layers": 1
+      },
+      "ff": 110,
+      "layers": 1,
+      "checkpoint_prefix_file": "tranadplus-author-prefix-TranAD_MSL_lr0-0001_dff2x_wz50_model.bin",
+      "reference_repository": "https://github.com/yyexela/TranADPlus"
+    },
+    {
+      "origin": "author",
+      "hp": {
+        "features": 25,
+        "lr": 0.001,
+        "epochs": 50,
+        "batch_sz": 8192,
+        "window_sz": 10,
+        "shuffle": false,
+        "padding": true,
+        "num_workers": 0,
+        "dataset_str": "SMAP",
+        "model_str": "TranAD",
+        "downsample": null,
+        "pot_q": 0.07,
+        "dim_feedforward": "2x",
+        "num_layers": 1
+      },
+      "ff": 50,
+      "layers": 1,
+      "checkpoint_prefix_file": "tranadplus-author-prefix-TranAD_SMAP_lr0-001_dff2x_wz10_model.bin",
+      "reference_repository": "https://github.com/yyexela/TranADPlus"
+    },
+    {
+      "origin": "author",
+      "hp": {
+        "features": 25,
+        "lr": 0.001,
+        "epochs": 50,
+        "batch_sz": 2048,
+        "window_sz": 50,
+        "shuffle": false,
+        "padding": true,
+        "num_workers": 0,
+        "dataset_str": "SMAP",
+        "model_str": "TranAD",
+        "downsample": null,
+        "pot_q": 0.07,
+        "dim_feedforward": "2x",
+        "num_layers": 1
+      },
+      "ff": 50,
+      "layers": 1,
+      "checkpoint_prefix_file": "tranadplus-author-prefix-TranAD_SMAP_lr0-001_dff2x_wz50_model.bin",
+      "reference_repository": "https://github.com/yyexela/TranADPlus"
+    },
+    {
+      "origin": "author",
+      "hp": {
+        "features": 38,
+        "lr": 0.0001,
+        "epochs": 500,
+        "batch_sz": 8192,
+        "window_sz": 20,
+        "shuffle": false,
+        "padding": true,
+        "num_workers": 0,
+        "dataset_str": "SMD",
+        "model_str": "TranAD",
+        "downsample": null,
+        "pot_q": 0.001,
+        "dim_feedforward": "16",
+        "num_layers": 1
+      },
+      "ff": 608,
+      "layers": 1,
+      "checkpoint_prefix_file": "tranadplus-author-prefix-TranAD_SMD_lr0-0001_dff16_wz20_model.bin",
+      "reference_repository": "https://github.com/yyexela/TranADPlus"
+    },
+    {
+      "origin": "author",
+      "hp": {
+        "features": 51,
+        "lr": 0.0001,
+        "epochs": 50,
+        "batch_sz": 2048,
+        "window_sz": 50,
+        "shuffle": false,
+        "padding": true,
+        "num_workers": 0,
+        "dataset_str": "SWaT",
+        "model_str": "TranAD",
+        "downsample": null,
+        "pot_q": 0.001,
+        "dim_feedforward": "2x",
+        "num_layers": 1
+      },
+      "ff": 102,
+      "layers": 1,
+      "checkpoint_prefix_file": "tranadplus-author-prefix-TranAD_SWaT_lr0-0001_dff2x_wz50_model.bin",
+      "reference_repository": "https://github.com/yyexela/TranADPlus"
+    },
+    {
+      "origin": "author",
+      "hp": {
+        "features": 51,
+        "lr": 0.001,
+        "epochs": 50,
+        "batch_sz": 2048,
+        "window_sz": 50,
+        "shuffle": false,
+        "padding": true,
+        "num_workers": 0,
+        "dataset_str": "SWaT",
+        "model_str": "TranAD",
+        "downsample": null,
+        "pot_q": 0.001,
+        "dim_feedforward": "16",
+        "num_layers": 1
+      },
+      "ff": 816,
+      "layers": 1,
+      "checkpoint_prefix_file": "tranadplus-author-prefix-TranAD_SWaT_lr0-001_dff16_wz50_model.bin",
+      "reference_repository": "https://github.com/yyexela/TranADPlus"
+    },
+    {
+      "origin": "author",
+      "hp": {
+        "features": 128,
+        "lr": 0.0001,
+        "epochs": 50,
+        "batch_sz": 2048,
+        "window_sz": 50,
+        "shuffle": false,
+        "padding": true,
+        "num_workers": 0,
+        "dataset_str": "WADI",
+        "model_str": "TranAD",
+        "downsample": null,
+        "pot_q": 0.001,
+        "dim_feedforward": "2x",
+        "num_layers": 1
+      },
+      "ff": 256,
+      "layers": 1,
+      "checkpoint_prefix_file": "tranadplus-author-prefix-TranAD_WADI_lr0-0001_dff2x_wz50_model.bin",
+      "reference_repository": "https://github.com/yyexela/TranADPlus"
+    },
+    {
+      "origin": "author",
+      "hp": {
+        "features": 128,
+        "lr": 0.001,
+        "epochs": 50,
+        "batch_sz": 8192,
+        "window_sz": 20,
+        "shuffle": false,
+        "padding": true,
+        "num_workers": 0,
+        "dataset_str": "WADI",
+        "model_str": "TranAD",
+        "downsample": null,
+        "pot_q": 0.001,
+        "dim_feedforward": "2x",
+        "num_layers": 1
+      },
+      "ff": 256,
+      "layers": 1,
+      "checkpoint_prefix_file": "tranadplus-author-prefix-TranAD_WADI_lr0-001_dff2x_wz20_model.bin",
+      "reference_repository": "https://github.com/yyexela/TranADPlus"
+    }
+  ]
+}

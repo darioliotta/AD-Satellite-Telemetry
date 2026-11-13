@@ -1,6 +1,6 @@
-\chapter{Background and Reference Models}
+\chapter{Reference Models}
 \label{chap:background}
-\chaptermark{Background and models}
+\chaptermark{Reference Models}
 
 % First draft requested by the author on 2026-11-05.
 % Mathematical definitions are literature-backed or explicit descriptions of
@@ -51,15 +51,11 @@ unusual, even if its individual values are not. A persistent constant reading
 can belong to this category when normal behavior requires variation. These
 categories describe different aspects of an event and need not be exclusive.
 
-Learning settings also differ in the information provided during training.
-Supervised detection uses examples labeled as nominal and anomalous. In
-normal-only training, the model learns from observations identified as nominal;
-this setting is often termed semisupervised anomaly detection. Unsupervised
-methods instead learn from unlabeled data, usually under an assumption that
-anomalies do not dominate the training distribution~\cite{Chandola2009AnomalySurvey}.
-This terminology concerns the available training information. A reconstruction
-objective can avoid anomaly labels in its loss while still being trained on
-data selected as nominal.
+Models can learn the expected behavior of a system from nominal
+observations and identify anomalies by comparing their outputs
+with the observed measurements~\cite{Hundman2018Spacecraft}.
+A reconstruction loss does not require anomaly labels, but the
+training data can still be selected as nominal.
 
 The annotation granularity is a separate issue. A point label identifies the
 status assigned to a sample, whereas a fragment label describes an interval as
@@ -70,248 +66,151 @@ measured anomaly onset within that fragment.
 
 \section{Reconstruction-based detection and anomaly scores}
 \label{sec:background-reconstruction}
-A reconstruction model learns to reproduce an input through an internal
-representation. In a conventional autoencoder, an encoder constructs the
-representation and a decoder maps it back into the observation
-space~\cite{Goodfellow2016DeepLearning}. For the window-based formulation used
-here, the target is the last observed sample. A generic encoder--decoder
-mapping can therefore be written as
+
+A reconstruction model learns to reproduce observed data.
+In an autoencoder, an encoder maps the input to an internal
+representation, and a decoder uses this representation to
+reconstruct the input~\cite{Goodfellow2016DeepLearning}.
+The reconstruction error can then be used as an anomaly
+score~\cite{Tuli2022TranAD}.
+It is important to state the underlying assumption: a model trained on nominal data
+will reconstruct nominal observations more accurately than
+anomalous ones.
+
+In the implementation used here, the model receives the window
+$\mathbf{W}_t$ and reconstructs its last sample
+$\mathbf{x}_t$~\cite{TranADPlusReferenceCode}.
+We describe this mapping as
+
 \begin{equation}
-  \mathbf{h}_t = E_{\theta}(\mathbf{W}_t),
-  \qquad
-  \widehat{\mathbf{x}}_t = D_{\theta}(\mathbf{h}_t).
+  \widehat{\mathbf{x}}_t = f_{\theta}(\mathbf{W}_t).
   \label{eq:background-reconstruction}
 \end{equation}
-Here, \(E_{\theta}\) and \(D_{\theta}\) denote the encoder and decoder,
-\(\theta\) collects their trainable parameters, \(\mathbf{h}_t\) is the internal
-representation and \(\widehat{\mathbf{x}}_t\) is the reconstructed sample.
-The target \(\mathbf{x}_t\) is already present in \(\mathbf{W}_t\). This is a
-reconstruction task, rather than a forecast of an unobserved future sample.
 
-The discrepancy between reconstruction and observation supplies a possible
-anomaly score. With equal weighting of the input coordinates, the mean squared
-error is
+Here, $f_{\theta}$ represents the model with trainable parameters
+$\theta$, while $\widehat{\mathbf{x}}_t$ is the reconstructed sample.
+The target $\mathbf{x}_t$ is already included in the input window.
+This means that the task is therefore to reconstruct an observed value, rather than
+predict a future one.
+
+We calculate the anomaly score as the mean squared reconstruction
+error across the input features:
+
 \begin{equation}
   s_t = \frac{1}{F}\sum_{j=1}^{F}
   \left(\widehat{x}_{t,j}-x_{t,j}\right)^2.
   \label{eq:background-mse-score}
 \end{equation}
-Here, \(s_t\) is the scalar score and \(j\) indexes the features. The quantities
-\(\widehat{x}_{t,j}\) and \(x_{t,j}\) are the reconstructed and observed values
-of feature \(j\). Since the coordinates have been normalized, \(s_t\) is
-dimensionless. Other reductions or feature weights define different scoring
-rules, even when they use the same trained network.
 
-The detection hypothesis is that a model trained on nominal behavior will
-reconstruct it more accurately than anomalous behavior. This is a hypothesis
-about the learned representation, not an automatic consequence of minimizing
-reconstruction loss. An autoencoder with sufficient capacity can learn to copy
-inputs without retaining useful structure~\cite{Goodfellow2016DeepLearning}.
-For anomaly detection, a related concern is that unusual observations may
-also receive small reconstruction errors. Reconstruction accuracy alone is
-therefore insufficient to establish detection quality.
+Here, $F$ is the number of features, while $x_{t,j}$ and
+$\widehat{x}_{t,j}$ are the observed and reconstructed values
+of feature $j$. The inputs are normalized before processing:
+the reference implementation rescales each feature with the minimum
+and maximum of the training data, without clipping~\cite{TranADPlusReferenceCode}.
+Test observations can therefore fall outside the interval $[0,1]$,
+whereas the output layer of TranAD+ (Section~\ref{sec:background-tranadplus})
+is restricted to this interval.
+Averaging the errors produces a single score for each sample,
+following the approach described in
+TranAD+~\cite{Yermakov2025TranADPlus}.
 
-A threshold converts the score into a binary decision:
+It is important to keep in mind that an
+autoencoder with sufficient capacity can learn to copy its
+inputs without learning useful properties of the
+data~\cite{Goodfellow2016DeepLearning}.
+For anomaly detection, accurate reconstruction is useful only
+if the resulting scores distinguish nominal from anomalous
+observations. Small reconstruction errors alone do not guarantee
+this distinction.
+
+A threshold converts the score into a binary prediction:
+
 \begin{equation}
   \widehat{y}_t = \mathbb{1}\!\left[s_t>\tau\right].
   \label{eq:background-threshold}
 \end{equation}
-Here, \(\widehat{y}_t\) is the predicted anomaly label, \(\tau\) is a
-dimensionless threshold, and \(\mathbb{1}\) is the indicator function, equal
-to one when its condition holds and zero otherwise. A large score is thus
-interpreted as evidence of anomalous behavior.
 
-The network, score and decision rule are distinct parts of the detector.
-Changing a threshold changes the decisions without updating the model
-parameters. Likewise, post-processing predictions can change reported metrics
-without changing the reconstruction. The particular threshold searches,
-\ac{POT} procedure and point adjustment used in this work are defined in
-Chapter~\ref{chap:datasets}; they are kept separate from the architecture
-description below.
+Here, $\tau$ is the threshold and $\mathbb{1}$ is the indicator
+function. The predicted label $\widehat{y}_t$ is $1$ when the score
+exceeds the threshold and $0$ otherwise.
 
-\section{Attention and transformer architectures}
-\label{sec:background-transformers}
-Attention builds a representation by taking a weighted combination of input
-representations. The weights depend on the compatibility between a query and
-the keys associated with the available values. In scaled dot-product
-attention, the operation is~\cite{Vaswani2017Attention}
-\begin{equation}
-  \operatorname{Attention}(\mathbf{Q},\mathbf{K},\mathbf{V})
-  =
-  \operatorname{softmax}_{\mathrm{row}}
-  \left(\frac{\mathbf{Q}\mathbf{K}^{\top}}{\sqrt{d_k}}\right)
-  \mathbf{V}.
-  \label{eq:background-attention}
-\end{equation}
-Here, \(\mathbf{Q}\), \(\mathbf{K}\) and \(\mathbf{V}\) are the query, key
-and value matrices. The queries and keys have \(d_k\) coordinates per row.
-The row-wise softmax normalizes the compatibility scores over the available
-keys, producing a weighted combination of the corresponding values. The
-factor \(\sqrt{d_k}\) controls the growth of dot-product magnitudes with
-key width, helping to avoid strongly saturated softmax weights.
-
-For a representation \(\mathbf{Z}\in\mathbb{R}^{w\times d}\), self-attention
-constructs all three matrices from that same sequence:
-\begin{equation}
-  \mathbf{Q}=\mathbf{Z}\mathbf{A}^{Q},\qquad
-  \mathbf{K}=\mathbf{Z}\mathbf{A}^{K},\qquad
-  \mathbf{V}=\mathbf{Z}\mathbf{A}^{V}.
-  \label{eq:background-qkv}
-\end{equation}
-Here, \(d\) is the representation width;
-\(\mathbf{A}^{Q},\mathbf{A}^{K}\in\mathbb{R}^{d\times d_k}\) and
-\(\mathbf{A}^{V}\in\mathbb{R}^{d\times d_v}\) are learned projection
-matrices, with \(d_v\) the value width. Bias terms are suppressed in this
-notation. Thus, \(\mathbf{Q},\mathbf{K}\in\mathbb{R}^{w\times d_k}\)
-and \(\mathbf{V}\in\mathbb{R}^{w\times d_v}\); the self-attention
-compatibility matrix has shape \(w\times w\).
-In cross-attention, the query sequence and the sequence providing
-keys and values are different. This is how a decoder can retrieve information
-from an encoder representation.
-
-Multi-head attention applies separate projections to form several attention
-outputs, then combines them:
-\begin{equation}
-  \operatorname{MHA}(\mathbf{Z}) =
-  \left[\mathbf{H}_1\Vert\cdots\Vert\mathbf{H}_h\right]\mathbf{A}^{O},
-  \qquad
-  \mathbf{H}_i =
-  \operatorname{Attention}(\mathbf{Q}_i,\mathbf{K}_i,\mathbf{V}_i).
-  \label{eq:background-multihead}
-\end{equation}
-Here, \(h\) is the number of heads, \(i\) indexes a head, and \(\Vert\)
-denotes concatenation along the feature dimension. The matrices
-\(\mathbf{Q}_i,\mathbf{K}_i,\mathbf{V}_i\) are obtained with head-specific
-projections as in Equation~\eqref{eq:background-qkv}.
-The learned matrix \(\mathbf{A}^{O}\in\mathbb{R}^{h d_v\times d}\)
-returns the concatenated result to width \(d\).
-Figure~\ref{fig:background-attention} reproduces the original attention
-schematics.
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.78\linewidth]{chapter2/vaswani-attention.pdf}
-  \caption{Scaled dot-product attention and multi-head attention. The left
-  panel shows compatibility calculation, scaling, optional masking and
-  normalization before weighting the values. The right panel shows the
-  head-specific projections and concatenation. Reproduced from Figure 2
-  of Vaswani et al.~\cite{Vaswani2017Attention}.}
-  \label{fig:background-attention}
-\end{figure}
-% Source: Vaswani et al., NeurIPS 2017, Fig. 2, p. 4; original PDF crop.
-
-Attention by itself does not assign an order to the samples. The original
-Transformer adds positional information to the input representation. Its
-sinusoidal encoding is~\cite{Vaswani2017Attention}
-\begin{equation}
-  P_{p,2i} =
-  \sin\!\left(\frac{p}{10000^{2i/d}}\right),
-  \qquad
-  P_{p,2i+1} =
-  \cos\!\left(\frac{p}{10000^{2i/d}}\right).
-  \label{eq:background-position}
-\end{equation}
-Here, \(P_{p,j}\) is the positional value at sequence position \(p\) and
-coordinate \(j\); \(i\) indexes a pair of coordinates in a representation
-of even width \(d\). The constant \num{10000} sets the range of positional
-scales represented by the sinusoids. The alternating sine and cosine formula is
-the canonical definition; the reference code used in this thesis has a
-different positional construction, specified below.
-
-The other main component of a transformer block is a position-wise
-feed-forward network. It applies the same learned transformation at each
-sequence position:
-\begin{equation}
-  \operatorname{FFN}(\mathbf{z}) =
-  \phi\!\left(\mathbf{z}\mathbf{A}_1+\mathbf{b}_1\right)
-  \mathbf{A}_2+\mathbf{b}_2.
-  \label{eq:background-ffn}
-\end{equation}
-Here, \(\mathbf{z}\in\mathbb{R}^{d}\) is a row representation,
-\(\mathbf{A}_1\in\mathbb{R}^{d\times d_{\mathrm{ff}}}\),
-\(\mathbf{A}_2\in\mathbb{R}^{d_{\mathrm{ff}}\times d}\) are weight
-matrices, and \(\mathbf{b}_1,\mathbf{b}_2\) are biases of widths
-\(d_{\mathrm{ff}}\) and \(d\). The nonlinear activation is denoted by
-\(\phi\). The original Transformer uses a rectified linear activation;
-the TranAD+ code uses a leaky rectified linear activation.
-
-An encoder block combines self-attention and a feed-forward transformation
-with residual connections. The original Transformer also applies layer
-normalization and dropout. A decoder adds cross-attention to an encoder
-representation, as well as attention over its own input sequence. Masking
-restricts the positions available to attention when the task requires it.
-These components define a family of architectures; the precise blocks and
-masks of a particular implementation must be checked separately.
+Changing the threshold changes the predictions without changing
+the trained model. Post-processing can also change the reported
+metrics without changing the reconstruction errors.
 
 \section{TranAD}
 \label{sec:background-tranad}
-TranAD was proposed as a transformer-based approach to anomaly detection
-and diagnosis in multivariate time series~\cite{Tuli2022TranAD}. Detection
-assigns an anomaly status to an observation, whereas diagnosis estimates
-which input coordinates contribute to an anomalous event. The present thesis
-focuses on detection.
 
-The published architecture distinguishes a complete-sequence encoder and a
-window encoder. The former represents the available history up to the
-current time. The latter processes a bounded window, with masked attention
-and attention to the history representation. Reconstruction branches map the
-resulting representation back to the observation space.
-Figure~\ref{fig:background-tranad} shows this architecture as drawn in the
-original paper.
+TranAD is a transformer-based model developed for anomaly detection
+in multivariate time series~\cite{Tuli2022TranAD}.
+Its reconstruction process uses attention to combine information
+from different positions in a sequence, with weights calculated
+from the input representations~\cite{Vaswani2017Attention}.
+Self-attention relates positions within the same sequence, while
+cross-attention uses information from another sequence.
+
+In an encoder--decoder architecture, the encoder builds internal
+representations of the input, which the decoder uses to produce
+an output. Attention is combined with feed-forward layers that
+apply the same transformation separately at each sequence position;
+their intermediate width is called the feed-forward dimension.
+Positional information is also supplied so that the model can
+account for the order of the samples~\cite{Vaswani2017Attention}.
+
+The published TranAD architecture combines a representation of
+the history up to the current time with a local input window.
+A complete-sequence encoder processes the history, while a window
+encoder combines local information with this broader context.
+Two decoders produce reconstructions, as shown in
+Figure~\ref{fig:background-tranad}~\cite{Tuli2022TranAD}.
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\linewidth]{chapter2/tranad-original.pdf}
-  \caption{Published TranAD architecture, reproduced from Figure 1 of
-  Tuli et al.~\cite{Tuli2022TranAD}. In the source notation, \(C\) is the
-  available history, \(W\) is the input window and PE denotes positional
-  encoding. The branches produce \(O_1\) and \(O_2\); the focus feedback
-  produces the second-phase reconstruction \(\widehat{O}_2\). Solid and
-  dashed connections distinguish the reconstruction paths and feedback.}
+  \caption{TranAD architecture, reproduced from Figure 1
+  of Tuli et al.~\cite{Tuli2022TranAD}.
+  \(C\) denotes the available history, \(W\) the input window,
+  and PE the positional encoding.}
   \label{fig:background-tranad}
 \end{figure}
 % Source: docs/papers/TranAD.pdf, Fig. 1, printed p. 1204 / PDF p. 4.
 
-Its self-conditioning mechanism uses a preliminary reconstruction to
-construct a focus signal from the discrepancy with the input. The network
-then performs a further reconstruction conditioned on that signal. This
-allows a later processing stage to depend on the deviations found by an
-earlier one. The focus is computed from model outputs and observations,
-without requiring an anomaly label.
+Reconstruction takes place in two phases: the first produces
+an initial reconstruction, whose error becomes a focus signal
+for the second. This process, called \textit{self-conditioning}, allows
+the second reconstruction to depend on the errors found
+in the first, without requiring anomaly labels.
 
-The training procedure described in the paper combines initial
-reconstruction with an adversarial objective. One decoder is encouraged to
-reduce the focused reconstruction error, while the other is encouraged to
-increase it. An evolving weight changes the balance between the initial and
-focused terms during training. The full published method also incorporates
-a model-agnostic meta-learning step to support adaptation when training data
-are limited~\cite{Tuli2022TranAD}.
-
-These statements describe the published TranAD formulation. Its original
-inference score combines reconstruction deviations, and its decision
-procedure applies thresholding to feature-level scores. They do not define
-the literal computations of every subsequent implementation. In particular,
-the finite-window architecture and loss used by the TranAD+ code below must
-be distinguished from the history encoder and adversarial training in the
-original paper.
+The published training procedure combines reconstruction losses
+with an adversarial objective, in which the two decoders have
+opposing objectives for the second-phase reconstruction
+error~\cite{Tuli2022TranAD}.
 
 \section{TranAD+}
 \label{sec:background-tranadplus}
+
 \subsection{Reference architecture and training objective}
 \label{sec:background-tranadplus-training}
-TranAD+ is the reference model studied in the remaining chapters.
-Yermakov et al. introduce it for anomaly detection in high-bandwidth
-spacecraft communications, including inputs with numerical, categorical
-and missing values~\cite{Yermakov2025TranADPlus}. Its operation is specified
-here using the inspected reference implementation~\cite{TranADPlusReferenceCode}.
-The batch dimension is suppressed in the notation.
 
-The model contains a transformer encoder \(E\), two transformer decoder
-stacks \(D_1,D_2\), and a final projection \(P\) consisting of a linear map
-and a sigmoid. The encoder is shared between the processing passes. The
-decoder stacks have separate parameters, while the final projection is
-shared. Figure~\ref{fig:background-tranadplus-flow} summarizes the two
-passes and their parameter sharing.
+The reference model used in this thesis is TranAD+, introduced
+by Yermakov et al. and built on TranAD for anomaly detection
+in high-bandwidth satellite communications~\cite{Yermakov2025TranADPlus}.
+The work is motivated by DSN monitoring data, which contain
+numerical and categorical variables as well as missing values.
+The aim is to support operations engineers in monitoring increasing
+amounts of incoming data by adapting the preprocessing and the
+model to these inputs~\cite{Yermakov2025TranADPlus}.
+Among other things, the original training pipeline selected only
+one track for each of the SMAP, MSL and SMD datasets, while TranAD+
+uses all tracks in the training
+split~\cite{TranADReferenceCode,TranADPlusReferenceCode}.
+
+The model contains a transformer encoder, two transformer decoders
+and an output layer consisting of a linear transformation followed
+by a sigmoid. The same encoder and output layer are used in both
+processing passes, while the two decoders have separate parameters.
+Figure~\ref{fig:background-tranadplus-flow} shows these components
+and their connections.
 
 \begin{figure}[htbp]
   \centering
@@ -323,7 +222,7 @@ passes and their parameter sharing.
       minimum height=1.05cm,inner sep=5pt},
     input/.style={block,fill=black!8,minimum width=2.6cm},
     encoder/.style={block,fill=blue!10,minimum width=2.2cm},
-    decoder/.style={block,fill=orange!18,minimum width=2.5cm},
+    decoder/.style={block,fill=black!12,minimum width=2.5cm},
     head/.style={block,fill=blue!10,minimum width=2.4cm},
     output/.style={block,fill=black!8,minimum width=2.6cm},
     data/.style={->,semithick},
@@ -373,219 +272,169 @@ passes and their parameter sharing.
   \label{fig:background-tranadplus-flow}
 \end{figure}
 
-The encoder receives a window together with a context matrix:
-\begin{equation}
-  [\,\mathbf{W}_t\Vert\mathbf{C}_t\,]\in\mathbb{R}^{w\times 2F},
-  \qquad
-  \mathbf{q}_t=[\,\mathbf{x}_t\Vert\mathbf{x}_t\,]
-  \in\mathbb{R}^{1\times 2F}.
-  \label{eq:background-tranadplus-input}
-\end{equation}
-Here, \(\mathbf{C}_t\in\mathbb{R}^{w\times F}\) is the context supplied to
-the encoder, and \(\mathbf{q}_t\) is the decoder input obtained by duplicating
-the last observed sample along its feature dimension. Concatenation gives
-the model width \(d=2F\); the reference uses \(h=F\) attention heads.
-The notation \(E(\mathbf{W}_t,\mathbf{C}_t)\)
-below includes this concatenation, multiplication by \(\sqrt{F}\), the
-positional encoding and input dropout.
+In the first pass, the encoder receives the input window together
+with a matrix of zeros, and the first decoder produces a
+reconstruction of the last sample: this reconstruction is then
+compared with every sample in the window, using squared differences
+to construct the focus matrix. The same encoder processes the
+window again with this focus, and the second decoder produces
+another reconstruction. Both decoders also receive the current
+sample as an input~\cite{TranADPlusReferenceCode}.
 
-The first pass uses a zero context and produces
-\begin{equation}
-  \widehat{\mathbf{x}}^{(1)}_t =
-  P\!\left(D_1\!\left(\mathbf{q}_t,
-  E(\mathbf{W}_t,\mathbf{0})\right)\right).
-  \label{eq:background-tranadplus-first}
-\end{equation}
-Here, \(\widehat{\mathbf{x}}^{(1)}_t\in\mathbb{R}^{F}\) is the first
-reconstruction and \(\mathbf{0}\) is the zero matrix with the same shape
-as \(\mathbf{W}_t\). The decoder uses \(\mathbf{q}_t\) as its input and
-the encoder output as its memory.
+During training, the model minimizes a weighted sum of the two
+reconstruction errors:
 
-\begin{samepage}
-This reconstruction defines the context for the next pass:
-\begin{equation}
-  C^{(1)}_{t,k,j} =
-  \left(\widehat{x}^{(1)}_{t,j}-W_{t,k,j}\right)^2,
-  \qquad
-  k=1,\ldots,w,\quad j=1,\ldots,F.
-  \label{eq:background-tranadplus-focus}
-\end{equation}
-Here, \(k\) indexes a position in the window and \(j\) indexes a feature.
-The value \(W_{t,k,j}\) is the corresponding observed input. The same
-reconstructed final sample is compared with every row of the window.
-Consequently, this context is not a position-by-position error from a
-reconstruction of the entire window.
-\end{samepage}
-
-The encoder is then invoked again, using the new context, and the second
-decoder produces
-\begin{equation}
-  \widehat{\mathbf{x}}^{(2)}_t =
-  P\!\left(D_2\!\left(\mathbf{q}_t,
-  E(\mathbf{W}_t,\mathbf{C}^{(1)}_t)\right)\right).
-  \label{eq:background-tranadplus-second}
-\end{equation}
-Here, \(\widehat{\mathbf{x}}^{(2)}_t\in\mathbb{R}^{F}\) is the second
-reconstruction. Both outputs estimate the last sample already contained in
-the input, rather than a future sample. The sigmoid restricts reconstructed
-values to the interval \((0,1)\).
-
-The training routine minimizes a weighted sum of reconstruction errors:
 \begin{equation}
   \mathcal{L}_{n} =
   \frac{1}{n}\operatorname{MSE}
-  \!\left(\widehat{\mathbf{x}}^{(1)}_t,\mathbf{x}_t\right)
+  \left(\widehat{\mathbf{x}}^{(1)}_t,\mathbf{x}_t\right)
   +
   \left(1-\frac{1}{n}\right)\operatorname{MSE}
-  \!\left(\widehat{\mathbf{x}}^{(2)}_t,\mathbf{x}_t\right).
+  \left(\widehat{\mathbf{x}}^{(2)}_t,\mathbf{x}_t\right),
   \label{eq:background-tranadplus-loss}
 \end{equation}
-Here, \(n\geq1\) is the one-based training epoch, \(\mathcal{L}_{n}\)
-is the batch loss, and \(\operatorname{MSE}\) averages squared differences
-over features and batch elements. The first output alone contributes
-directly in the first epoch; the weight of the second output increases in
-later epochs. Both terms are minimized together. The focus computation
-remains differentiable, so the second term can also propagate gradients
-through the first pass~\cite{TranADPlusReferenceCode}.
-% Source: TranADPlus/src/models.py:34--60 and src/helpers.py:831--849,
-% upstream revision 2f02268d1fb606d85e55e76422a5fc00a08dc6d5.
 
-Inference combines the reconstructed values before calculating the error:
+where $n\geq1$ is the training epoch, while
+$\widehat{\mathbf{x}}^{(1)}_t$ and
+$\widehat{\mathbf{x}}^{(2)}_t$ are the two reconstructions.
+The mean squared error is averaged over features and batch
+elements. Only the first reconstruction contributes directly
+to the loss in the first epoch; the weight of the second
+increases in subsequent epochs~\cite{TranADPlusReferenceCode}.
+% Source: TranADPlus/src/helpers.py:831--849; one-based epoch n.
+
+During evaluation, the two reconstructions are combined as
+
+\begin{equation}
+  \widehat{\mathbf{x}}_t(\alpha) =
+  \alpha\widehat{\mathbf{x}}^{(1)}_t
+  +(1-\alpha)\widehat{\mathbf{x}}^{(2)}_t.
+  \label{eq:background-tranadplus-combination}
+\end{equation}
+
+Here, $\alpha\in[0,1]$ controls the contribution of each
+reconstruction. With $\alpha=1$, only the first is used,
+while $\alpha=0$ selects the second.
+This evaluation parameter is separate from the epoch-dependent
+weights used during training~\cite{TranADPlusReferenceCode}.
+
+The combined reconstruction is then compared with the observed
+sample to calculate the anomaly score:
+
 \begin{equation}
   s_t(\alpha)=\frac{1}{F}\sum_{j=1}^{F}
-  \left[
-    \alpha\widehat{x}^{(1)}_{t,j}
-    +(1-\alpha)\widehat{x}^{(2)}_{t,j}
-    -x_{t,j}
-  \right]^2.
+  \left[\widehat{x}_{t,j}(\alpha)-x_{t,j}\right]^2.
   \label{eq:background-tranadplus-score}
 \end{equation}
-Here, \(\alpha\in[0,1]\) is the mixing coefficient and \(s_t(\alpha)\)
-is the resulting scalar anomaly score. This operation differs from a
-weighted sum of squared errors from the two branches. With \(\alpha=1\),
-the score depends on the first reconstruction; with \(\alpha=0\), it
-depends on the second. Intermediate values combine the reconstructions
-themselves. This inference coefficient is separate from the epoch-dependent
-weight in Equation~\eqref{eq:background-tranadplus-loss}.
+
+The combination therefore takes place before calculating
+the squared errors, rather than averaging the errors
+of the two reconstructions.
 % Source: TranADPlus/src/helpers.py:665--673,726 and scripts/evaluation.py.
+
 \subsection{Changes relative to TranAD}
 \label{sec:background-tranadplus-changes}
-The TranAD+ paper identifies changes to feed-forward width and the
-combination of decoder outputs~\cite{Yermakov2025TranADPlus}. It motivates
-an inverse bottleneck to retain information when the input has many
-coordinates, including those introduced by categorical encodings. This
-description concerns the intended internal expansion. In the inspected
-code, the feed-forward transformation has widths
-\(2F\longrightarrow d_{\mathrm{ff}}\longrightarrow2F\).
-It is an expansion only when \(d_{\mathrm{ff}}>2F\); the effective integer
-width must therefore be recorded rather than inferred from the model name.
 
-The encoder in that implementation receives only the supplied window and
-its context matrix. It has no separate input carrying the complete history
-of the original TranAD diagram. The custom encoder and decoder layers use
-residual additions, dropout and leaky rectified linear activations. They do
-not contain the layer-normalization operations shown in the original
-TranAD figure~\cite{TranADPlusReferenceCode}.
+The main changes concern the feed-forward layers, the combination
+of decoder outputs and the training procedure.
 
-Their positional values also differ from
-Equation~\eqref{eq:background-position}. The inspected code constructs
-\begin{equation}
-  P^{\mathrm{ref}}_{p,j} =
-  \sin\!\left(p\,10000^{-j/d}\right)
-  +\cos\!\left(p\,10000^{-j/d}\right).
-  \label{eq:background-reference-position}
-\end{equation}
-Here, \(P^{\mathrm{ref}}_{p,j}\) is the positional value used by the
-reference implementation, \(p\) is the position within the window, and
-\(j=0,\ldots,d-1\) is the embedding coordinate, with \(d=2F\). Both
-functions contribute to every coordinate instead of alternating between
-sine and cosine coordinates~\cite{TranADPlusReferenceCode}.
+\begin{itemize}
 
-The attention calls do not apply a causal mask within the supplied window.
-This does not provide observations after the reconstruction target:
-\(\mathbf{W}_t\) ends at \(t\), and the target is its last row. It differs
-from predicting every position of a sequence under an autoregressive mask.
-Finally, the positive loss in Equation~\eqref{eq:background-tranadplus-loss}
-is not the adversarial min--max update described in the original TranAD
-paper, and the inspected training loop contains no meta-learning
-step~\cite{Tuli2022TranAD,TranADPlusReferenceCode}.
+  \item TranAD+ introduces an inverse bottleneck in the feed-forward
+  layers to limit information loss, particularly with inputs expanded
+  by categorical encoding~\cite{Yermakov2025TranADPlus}.
+  The transformation first changes the width of the representation
+  and then returns it to its initial value:
 
-These distinctions define the reference being simplified. They are not
-additional interventions introduced by this thesis. Exact configurations
-and the consequences for benchmark reproduction are addressed in
-Chapter~\ref{chap:replication}.
+  \begin{equation}
+    d \longrightarrow d_{\mathrm{ff}} \longrightarrow d.
+    \label{eq:background-bottleneck}
+  \end{equation}
+
+  Here, $d$ is the input and output width, while $d_{\mathrm{ff}}$
+  is the intermediate width. A bottleneck makes the intermediate
+  representation smaller, whereas an inverse bottleneck makes it
+  larger. In the implementation used here, $d=2F$ because the window
+  and focus are concatenated, so an expansion occurs when
+  $d_{\mathrm{ff}}>2F$~\cite{TranADPlusReferenceCode}.
+
+  \item TranAD+ combines the two reconstructed outputs using
+  adjustable weights before calculating the anomaly score.
+  The coefficient $\alpha$ controls their contributions, as described
+  in Equation~\eqref{eq:background-tranadplus-combination}, allowing
+  the score to use either reconstruction or a combination of
+  both~\cite{Yermakov2025TranADPlus,TranADPlusReferenceCode}.
+
+  \item Unlike the adversarial training described in the TranAD
+  paper, the TranAD+ implementation minimizes a weighted sum
+  of reconstruction errors with non-negative weights, as given
+  in Equation~\eqref{eq:background-tranadplus-loss}.
+  The second reconstruction is therefore trained to reduce its
+  error, rather than to increase it through an adversarial
+  objective~\cite{Tuli2022TranAD,TranADPlusReferenceCode}.
+
+  \item The original TranAD window-conversion routine produces
+  two identical initial windows because of its indexing and
+  replication padding. TranAD+ corrects this duplication by
+  advancing the window through the
+  data~\cite{TranADReferenceCode,TranADPlusReferenceCode}.
+
+  \item The window size, feed-forward dimension, number of layers
+  and training settings can be configured in the TranAD+ pipeline.
+  The documentation of the reference code also states that the training
+  hyperparameters were optimized~\cite{TranADPlusReferenceCode}.
+  % Source: TranADPlus/README_original.md:130.
+
+\end{itemize}
 
 \section{Model simplification and resource-aware inference}
 \label{sec:background-efficiency}
-Simplification can act on parameter storage, arithmetic operations and
-intermediate memory in different ways. Changing an input length modifies
-the computation without necessarily changing the number of learned
-parameters. Reducing an internal width changes the weight matrices.
-Sharing a block reduces the number of independent parameters, whereas
-removing a processing pass also avoids executing its operations.
 
-For the feed-forward layer in Equation~\eqref{eq:background-ffn}, counting
-both weight matrices and biases gives
-\begin{equation}
-  N_{\mathrm{ff}}=2d\,d_{\mathrm{ff}}+d_{\mathrm{ff}}+d.
-  \label{eq:background-ff-parameters}
-\end{equation}
-Here, \(N_{\mathrm{ff}}\) is the number of trainable scalar parameters in
-one feed-forward block. It depends on the embedding width \(d\) and the
-inner width \(d_{\mathrm{ff}}\), but not on the window length \(w\).
-This makes width reduction and window reduction distinct experimental
-interventions.
+The attention and reconstruction stages described for TranAD and
+TranAD+ require memory to store the model and its intermediate
+representations, as well as computation to process each telemetry
+window. Starting from TranAD+ as the reference, this thesis therefore
+considers detection performance together with these requirements,
+since future onboard use depends on the resources available
+on the spacecraft.
 
-The matrix multiplications of one encoder self-attention block and its
-feed-forward layer, with the usual head partition \(h d_k=h d_v=d\),
-have the approximate scaling
-\begin{equation}
-  C_{\mathrm{attn}}=\mathcal{O}(w d^2+w^2d),
-  \qquad
-  C_{\mathrm{ff}}=\mathcal{O}(w d\,d_{\mathrm{ff}}).
-  \label{eq:background-compute-scaling}
-\end{equation}
-Here, \(C_{\mathrm{attn}}\) and \(C_{\mathrm{ff}}\) denote arithmetic
-operation counts up to constant factors. The attention expression includes
-the projections and the pairwise attention products, while the
-feed-forward expression covers its two linear transformations. These
-are analytical scalings, not latency measurements. They explain why
-reducing the temporal window can lower computational requirements even
-when parameter storage is unchanged~\cite{Vaswani2017Attention,Sze2017EfficientDNN}.
-Conventional explicit attention also forms \(h\) score matrices of shape
-\(w\times w\), with storage scaling as \(\mathcal{O}(h w^2)\).
-Implementations that avoid materializing these matrices can have different
-memory requirements.
+The number of parameters provides an initial measure of model size,
+but the memory needed to store them also depends on their numerical
+precision, while inference requires additional space for inputs and
+intermediate results~\cite{Sze2017EfficientDNN}.
+The distinction between model size and computation is visible in
+TranAD+ itself: its two encoder passes use the same learned weights,
+but both require operations to be performed, so sharing parameters
+does not remove the cost of executing them~\cite{TranADPlusReferenceCode}.
 
-For fixed weight precision, parameter storage is proportional to the
-number of stored weights. Execution time also depends on memory traffic,
-parallelism and the efficiency of the underlying kernels. A reduction
-in arithmetic work can therefore have a different effect on different
-devices~\cite{Sze2017EfficientDNN}. These dependencies motivate reporting
-model-level quantities separately from measurements on the available
-processor.
+Execution time also depends on the hardware and software used,
+so measurements on the available platform do not directly establish
+performance on an onboard device~\cite{Sze2017EfficientDNN}.
 
-The architectural study considers interventions tied directly to the
-reference computation. Sharing the decoder stack retains both passes but
-ties their parameters. A single-pass model retains the first
-encoder--decoder reconstruction and removes the focused pass. An
-encoder-only model removes the transformer decoders and applies the
-reconstruction head to the final encoder representation. The latter still
-has a learned mapping to the observed feature space. The single-output
-variants use one reconstruction loss and have no decoder-mixing
-coefficient. Their implementations and comparisons belong to
-Chapter~\ref{chap:architecture}.
+\section{Lightweight detectors without transformers}
+\label{sec:background-lightweight}
 
-These changes do not imply a fixed ordering of detection quality. A
-longer window supplies additional observations, but the model must learn
-which are relevant. Similarly, a wider representation can improve
-reconstruction without improving the separation of anomaly scores.
-The controlled studies in Chapters~\ref{chap:ablation}
-and~\ref{chap:architecture} examine these possibilities empirically.
-Other compression techniques, including pruning and reduced-precision
-representations, address further aspects of efficient execution
-\cite{Sze2017EfficientDNN}; they do not form part of the reference
-architecture defined in this chapter.
-% Sources for the implemented variants: tranad_variants/models/shared_decoder/,
-% single_pass/, encoder_only/ and training/objectives.py; initial results in
-% results/v13/architectures/. This paragraph specifies interventions, not rankings.
+Anomaly detection does not require a sequence model. A simpler approach
+describes a piece of signal, such as a fragment or a window, with a few
+statistics, for example its standard deviation, range or the size of its
+changes between consecutive samples. These statistics are then compared
+with those of nominal data. The \ac{OPS-SAT} benchmark follows this approach:
+it provides statistical features computed for each fragment and
+evaluates several detectors on them, including a nearest-neighbour
+detector~\cite{Ruszczak2025OPSSAT}.
+
+A nearest-neighbour detector stores the descriptions of nominal training
+pieces and assigns each new piece a score equal to its distance from the
+closest stored ones: a piece unlike any nominal example receives a high
+score~\cite{Chandola2009AnomalySurvey}. Linear methods instead learn a
+low-dimensional subspace that contains most of the variation of nominal
+data, and use the distance from this subspace as the
+score~\cite{Chandola2009AnomalySurvey}. An autoencoder built from fully
+connected layers is a non-linear counterpart of this idea: it compresses
+the description and reconstructs it, and the reconstruction error is the
+score~\cite{Goodfellow2016DeepLearning}.
+
+These detectors contain no attention mechanism. A fully connected network
+uses only matrix products and simple element-wise functions, so its
+memory and computation per decision are small and fixed. We use them as
+lightweight alternatives to TranAD+ and as controls for its evaluation.

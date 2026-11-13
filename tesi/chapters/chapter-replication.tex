@@ -1,35 +1,401 @@
 \chapter{Baseline Reproduction and Adaptation}
 \label{chap:replication}
+\chaptermark{Baseline reproduction}
 
-\todo[inline]{Outline approved; prose pending. Present the baseline verification and adaptation as evidence-based experimental work. Report unresolved discrepancies explicitly and keep the original and dense evaluation protocols separate.}
+Before simplifying TranAD+, we examined whether its implementation and
+reported benchmarks could provide a consistent reference. This chapter
+starts from the published TranAD+ model and its released code. We recover
+effective configurations, compare the available results with the published
+values, and investigate discrepancies that affect their interpretation.
+The chapter also connects this reference to the \ac{OPS-SAT} application.
 
-\section{Initial reproduction attempts with TranAD}
-\label{sec:replication-tranad}
-% Document concrete attempts, available configurations and observed difficulties.
-% Avoid unsupported claims that a published method is intrinsically irreproducible.
-
-\section{TranAD+ implementation and configuration reconstruction}
+\section{TranAD+ implementation and configurations}
 \label{sec:replication-tranadplus}
-% Compare local/reference sources and recover configurations from official run logs.
-% Identify which run supplies each published POT/BF result, including different winners.
+The reference is the model of Yermakov et al.~\cite{Yermakov2025TranADPlus},
+implemented in the authors' repository~\cite{TranADPlusReferenceCode}.
+The inspected model and training-helper files match the pinned upstream
+snapshot byte for byte. The encoder, decoder sharing and reconstruction
+objective are described in Section~\ref{sec:background-tranadplus-training}.
+Reproduction therefore begins with the same computation, while allowing
+the dimensions and training settings recorded for each experiment to vary.
+% Source identity: docs/journal.md, 2026-11-05 background entry;
+% model SHA256 3f6451beed30637248e005633d7c94d1adcede0aca0d53c53665d2a54c3deeef.
+
+A model name alone is insufficient to reconstruct an experiment. Window
+length, feed-forward width, stack depth, batch size, learning rate and
+training duration all affect the result. The published dataset-level
+\ac{POT} and Best F1 (BF) entries can also come from different checkpoints.
+We therefore inspected the supplied training and evaluation logs together
+with checkpoint metadata and parameter shapes~\cite{TranADPlusReferenceCode}.
+
+This inspection identified an ambiguity in historical feed-forward labels.
+The current parser interprets an integer such as \texttt{16} as an
+absolute width, whereas a string such as \texttt{2x} multiplies the feature
+count. Some older author checkpoints nevertheless contain a width of
+\(16F\) despite recording \texttt{16}, where \(F\) is the input feature
+count. We use the actual tensor dimension as the effective width, rather
+than inferring it from the filename. For example, the recovered WADI
+\ac{POT} checkpoint has width \num{2048}, not \num{16}.
+% Source: src/helpers.py parse_dim_feedforward; author checkpoint shape audit
+% retained in data/chapter4/benchmark-evidence.json, author_configuration_audit.
+
+Table~\ref{tab:replication-configurations} gives the local configurations
+retained for the comparison below. These settings describe the runs that
+actually supplied the selected values. They include early configurations
+and later runs reconstructed from the authors' records. A missing recorded
+seed is left unspecified; it is not assigned retrospectively.
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \setlength{\tabcolsep}{4pt}
+  \begin{tabular}{@{}llrrrrrrrl@{}}
+    \toprule
+    Dataset & Metric & \(w\) & \(d_{\mathrm{ff}}\) & \(L\) & \(E\) & \(B\) & \(\eta\) & \(q\) & Seed \\
+    \midrule
+    DSN\_1k & \acs{POT} & \num{10} & \num{16} & \num{1} & \num{500} & \num{8192} & \num{1e-4} & \num{0.01} & --- \\
+    DSN\_1k & BF & \num{10} & \num{258} & \num{1} & \num{500} & \num{8192} & \num{1e-4} & \num{0.01} & --- \\
+    \acs{SMAP} & \acs{POT}/BF & \num{10} & \num{50} & \num{1} & \num{50} & \num{8192} & \num{1e-3} & \num{0.07} & --- \\
+    \acs{MSL} & \acs{POT} & \num{50} & \num{16} & \num{2} & \num{100} & \num{2048} & \num{1e-4} & \num{0.01} & \num{1} \\
+    \acs{MSL} & BF & \num{10} & \num{110} & \num{3} & \num{100} & \num{8192} & \num{1e-4} & \num{0.01} & \num{1} \\
+    SWaT & \acs{POT} & \num{10} & \num{816} & \num{4} & \num{50} & \num{8192} & \num{1e-3} & \num{0.001} & \num{1} \\
+    SWaT & BF & \num{50} & \num{102} & \num{1} & \num{50} & \num{2048} & \num{1e-4} & \num{0.001} & --- \\
+    \acs{SMD} & \acs{POT} & \num{20} & \num{76} & \num{5} & \num{100} & \num{8192} & \num{1e-4} & \num{0.001} & \num{3} \\
+    \acs{SMD} & BF & \num{50} & \num{76} & \num{2} & \num{100} & \num{2048} & \num{1e-4} & \num{0.001} & \num{1} \\
+    WADI & \acs{POT}\(^{\dagger}\) & \num{50} & \num{2048} & \num{2} & \num{50} & \num{1024} & \num{1e-3} & \num{0.001} & \num{1} \\
+    WADI & BF & \num{50} & \num{256} & \num{1} & \num{50} & \num{2048} & \num{1e-4} & \num{0.001} & --- \\
+    \bottomrule
+  \end{tabular}
+  \caption{Configurations supplying the selected local benchmark entries.
+  Here \(L\) is the number of layers in each encoder or decoder stack,
+  \(E\) the training epoch count, \(B\) the batch size, \(\eta\) the initial
+  learning rate and \(q\) the supplied \acs{POT} risk parameter. The width
+  \(d_{\mathrm{ff}}\) is an effective integer dimension. A dash denotes an
+  unrecorded seed. The dagger identifies the WADI score-masking diagnostic
+  described in Section~\ref{sec:replication-thresholds}.}
+  \label{tab:replication-configurations}
+\end{table}
+% Per-row checkpoint identifiers, pickle paths, metrics and SHA256 values:
+% data/chapter4/benchmark-evidence.json. All profiles use scaling and padding,
+% ordered batches, num_workers=0 and no downsampling.
+
+Numerical agreement and configuration agreement must be assessed
+separately. The selected DSN\_1k \ac{POT} run uses width \num{16}, while
+the corresponding older author checkpoint has width \num{2064}.
+The closest \ac{MSL} \ac{POT} result comes from the local
+\((w,d_{\mathrm{ff}},L)=(\num{50},\num{16},\num{2})\) setting,
+although the recovered author \ac{POT} setting is
+\((\num{10},\num{110},\num{3})\). Similarly, the selected SWaT BF
+result uses \((\num{50},\num{102},\num{1})\), rather than the
+\((\num{20},\num{816},\num{4})\) author setting associated with the
+published BF result. Their close scores establish agreement at the level
+of reported performance, not exact replication of those configurations.
+% Author records: DSN TranAD_DSN_1k_lr0-0001_dff16_ws10;
+% MSL Aug-23-24_05-34-51-984057; SWaT Aug-25-24_17-41-32-293832.
+% Their recovered metadata/tensor widths are retained in the evidence JSON.
 
 \section{Reproduction of the original benchmarks}
 \label{sec:replication-benchmarks}
-% Compare the six datasets with matched configurations and original evaluation settings.
-% Preserve differing batch sizes/configurations as separate experiments.
-% Put full per-run configurations and supplementary tables in Appendix A.
+\subsection{Selection and evaluation scope}
+The comparison covers the six datasets used in the TranAD+ paper.
+Published values are taken from its Tables~\num{2}--\num{7}, rather than
+substituted with results from individual repository logs~\cite{Yermakov2025TranADPlus}.
+For each dataset and threshold method, we retain the available local
+run whose F1 is closest to the published value. This is a retrospective,
+descriptive comparison. It does not estimate the expected performance
+of a newly trained model.
 
-\section{Sensitivity to the threshold-search protocol}
+Each retained entry comes from a single checkpoint. \ac{POT} and BF can
+select different runs, alphas and thresholds. No uncertainty across
+training repetitions is estimated for this table, and the entries are
+not seed averages. The later ablation and architectural studies use
+declared seed groups instead, as described in
+Section~\ref{sec:datasets-reproducibility}.
+
+All BF entries use the original \num{200}-threshold search. The dense
+search defined in Section~\ref{sec:datasets-dense-thresholds} is not used
+to replace these benchmark values. Alpha selection, point adjustment and
+binary-prediction \ac{ROC} area follow the implementation described in
+Sections~\ref{sec:datasets-original-thresholds}
+and~\ref{sec:datasets-point-adjustment}. Consequently, \(\mathrm{AUC\mbox{-}PA}\)
+in this chapter denotes the area computed from adjusted binary decisions,
+not the ranking area of continuous scores.
+
+\subsection{Comparison with the published results}
+Table~\ref{tab:replication-f1} compares F1 values. The differences are in
+percentage points, with a positive sign indicating a larger local value.
+The WADI \ac{POT} entry is explicitly marked because it includes the
+numerical mask investigated in the next section.
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \setlength{\tabcolsep}{7pt}
+  \begin{tabular}{@{}lrrrrrr@{}}
+    \toprule
+    & \multicolumn{3}{c}{\acs{POT} F1} & \multicolumn{3}{c}{BF200 F1} \\
+    \cmidrule(lr){2-4}\cmidrule(l){5-7}
+    Dataset & Paper & Local & \(\Delta\) & Paper & Local & \(\Delta\) \\
+    \midrule
+    DSN\_1k & \num{92.47} & \num{92.34} & \num{-0.13} & \num{80.44} & \num{80.73} & \num{+0.29} \\
+    \acs{SMAP} & \num{84.24} & \num{84.22} & \num{-0.02} & \num{84.91} & \num{84.70} & \num{-0.21} \\
+    \acs{MSL} & \num{89.01} & \num{89.28} & \num{+0.27} & \num{81.96} & \num{79.03} & \num{-2.93} \\
+    SWaT & \num{32.90} & \num{32.49} & \num{-0.41} & \num{82.39} & \num{82.07} & \num{-0.32} \\
+    \acs{SMD} & \num{71.29} & \num{68.61} & \num{-2.68} & \num{85.09} & \num{84.06} & \num{-1.03} \\
+    WADI & \num{50.84} & \num{53.39}\(^{\dagger}\) & \num{+2.55} & \num{27.88} & \num{27.88} & \num{0.00} \\
+    \bottomrule
+  \end{tabular}
+  \caption{Published and selected local F1 values, in percent.
+  \(\Delta\) is local minus published F1, in percentage points.
+  Published values are from Tables~\num{2}--\num{7} of
+  Yermakov et al.~\cite{Yermakov2025TranADPlus}. Each local entry is a
+  selected single-run result without an estimated across-run uncertainty.
+  The WADI dagger denotes a diagnostic mask, not finite-output performance.}
+  \label{tab:replication-f1}
+\end{table}
+% Exact local values and sources: data/chapter4/benchmark-evidence.json.
+% WADI POT .5339018016778985 is recomputed from all21 saved FP64 alpha grids
+% with the authors' FP32 test_second nonfinite mask; no observations removed.
+% SMD POT .6861043844384682: results/v16/smd/author_pot/seed_3/metrics.json;
+% formats.fp32.oracle.pot; all status.json artifact hashes verified.
+
+For DSN\_1k, \ac{SMAP} and SWaT, both selected F1 differences are smaller
+than \num{0.5} percentage points. WADI BF agrees at the displayed precision.
+The larger finite-output differences are \ac{SMD} \ac{POT}, at
+\num{-2.68} percentage points, and \ac{MSL} BF, at \num{-2.93} percentage
+points. The \ac{SMD} BF difference is \num{-1.03} percentage points.
+These are observations about the selected runs, not bounds on variability.
+
+Table~\ref{tab:replication-operating-points} gives the precision, recall
+and AUC-PA at those same selected operating points. These quantities are
+not maximized independently. Similar F1 values can conceal different
+alarm behavior: for \ac{SMAP} BF, local precision and recall are
+\SI{83.36}{\percent} and \SI{86.08}{\percent}, whereas the paper reports
+\SI{78.38}{\percent} and \SI{92.63}{\percent}. The F1 difference alone
+therefore does not establish identical detections.
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \setlength{\tabcolsep}{10pt}
+  \begin{tabular}{@{}llrrr@{}}
+    \toprule
+    Dataset & Method & Precision & Recall & AUC-PA \\
+    \midrule
+    DSN\_1k & \acs{POT} & \num{86.48} & \num{99.06} & \num{96.86} \\
+    DSN\_1k & BF & \num{96.59} & \num{69.34} & \num{84.25} \\
+    \acs{SMAP} & \acs{POT} & \num{87.95} & \num{80.79} & \num{89.58} \\
+    \acs{SMAP} & BF & \num{83.36} & \num{86.08} & \num{91.78} \\
+    \acs{MSL} & \acs{POT} & \num{86.66} & \num{92.07} & \num{95.22} \\
+    \acs{MSL} & BF & \num{66.90} & \num{96.54} & \num{95.47} \\
+    SWaT & \acs{POT} & \num{19.85} & \num{89.56} & \num{69.79} \\
+    SWaT & BF & \num{96.35} & \num{71.47} & \num{85.55} \\
+    \acs{SMD} & \acs{POT} & \num{53.46} & \num{95.74} & \num{96.07} \\
+    \acs{SMD} & BF & \num{82.14} & \num{86.08} & \num{92.63} \\
+    WADI & \acs{POT}\(^{\dagger}\) & \num{85.04} & \num{38.91} & \num{69.25} \\
+    WADI & BF & \num{99.75} & \num{16.21} & \num{58.10} \\
+    \bottomrule
+  \end{tabular}
+  \caption{Local operating-point metrics corresponding to
+  Table~\ref{tab:replication-f1}, all in percent. AUC-PA is computed from
+  binary predictions after point adjustment. Entries are selected single
+  runs, without estimated across-run uncertainty; the WADI dagger retains
+  the diagnostic qualification of Table~\ref{tab:replication-f1}.}
+  \label{tab:replication-operating-points}
+\end{table}
+
+The \ac{SMD} \ac{POT} result illustrates this distinction. Its recall is
+\SI{95.74}{\percent}, above the published \SI{92.89}{\percent}, but
+precision is \SI{53.46}{\percent} rather than \SI{57.84}{\percent}.
+The F1 deficit is thus associated with additional false alarms, rather
+than a lower adjusted recall. AUC-PA is \SI{96.07}{\percent}, above the published
+\SI{94.98}{\percent}, despite the lower precision. AUC-PA averages
+sensitivity and specificity. Precision instead
+depends on the number of false positives relative to true positives.
+
+Evaluating the authors' released \ac{SMD} \ac{POT} weights locally gives
+\SI{71.71}{\percent} F1 against their \SI{71.29}{\percent}, with finite
+scores. This supports compatibility of the evaluation path. It neither
+replaces the independently trained \SI{68.61}{\percent} result nor
+identifies the cause of the training discrepancy.
+% Source: results/diagnostics/author_weights/smd20/
+% fp32_20261103T163516090316Z/summary.json;
+% observed POT F1 .7170677332633927; author reference .7129061265981155.
+
+\section{Evaluation checks and the WADI discrepancy}
 \label{sec:replication-thresholds}
-% Compare original and dense searches on the same checkpoint and scores.
-% Attribute changes caused by evaluation to the protocol rather than model improvements.
+The finite BF grid and \ac{POT} are different threshold procedures, as
+specified in Section~\ref{sec:datasets-original-thresholds}. The paper
+notes that its grid can miss a better threshold and gives WADI as an
+example~\cite{Yermakov2025TranADPlus}. However, threshold-grid resolution
+alone does not explain the observed WADI \ac{POT} discrepancy. Its
+investigation requires examining numerical outputs before thresholding.
+
+\subsection{Nonfinite inference outputs}
+Evaluation of the authors' WADI \ac{POT} checkpoint in single precision
+produced NaNs in the second decoder reconstruction for \num{94226} of
+\num{172801} test windows. The affected windows form a contiguous suffix,
+starting at zero-based index \num{78575}. Both decoder outputs on training
+data and the first decoder output on test data remained finite. The
+normalized input arrays were also finite. The nonfinite outputs
+therefore arose during model inference, rather than being missing raw
+telemetry or a failure of the \ac{POT} tail fit.
+% Sources: author_weights/wadi/fp32_20261103T163516090316Z/
+% {metadata,summary}.json and nonfinite_masks.npz, key test_second.
+
+The implementation combines reconstructions before computing their
+squared error~\cite{TranADPlusReferenceCode}. A NaN in the second output
+therefore propagates to the score, even at \(\alpha=1\), because
+\texttt{0 * NaN} remains NaN in the numerical expression. A comparison
+\texttt{NaN > threshold} then returns false. The corresponding observation
+and its label remain in the evaluation, but no direct alarm is raised
+there. Point adjustment is applied afterwards in the usual way.
+
+This behavior is consequential for \ac{POT}. Its finite training scores
+still supply a valid threshold, while nonfinite test scores can suppress
+alarms. By contrast, NaNs also contaminate the minimum, mean and standard
+deviation used to construct the BF grid. The finite WADI BF result in
+Table~\ref{tab:replication-f1} therefore comes from a separate finite run,
+not from interpreting BF on the nonfinite score array.
+
+Table~\ref{tab:replication-wadi} compares the numerical controls. With
+the authors' weights, the original single-precision expression gives
+\SI{50.77}{\percent} \ac{POT} F1, close to the published
+\SI{50.84}{\percent}. Re-evaluating the same weights and normalized inputs
+in double precision removes the NaNs and gives \SI{15.11}{\percent}.
+Computing the first decoder's endpoint directly, without multiplying an
+unused NaN output by zero, also gives a finite \SI{15.11}{\percent}.
+These controls locate a substantial part of the discrepancy in numerical
+inference and score construction.
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \setlength{\tabcolsep}{6pt}
+  \begin{tabular}{@{}lrrrr@{}}
+    \toprule
+    Evaluation & F1 & Precision & Recall & AUC-PA \\
+    \midrule
+    Published WADI \acs{POT} & \num{50.84} & \num{57.39} & \num{45.63} & \num{71.78} \\
+    Author weights, single precision & \num{50.77} & \num{57.21} & \num{45.63} & \num{71.77} \\
+    Author weights, double precision & \num{15.11} & \num{8.29} & \num{84.96} & \num{63.70} \\
+    Local weights, double precision & \num{14.35} & \num{7.90} & \num{78.23} & \num{61.17} \\
+    Local scores with diagnostic mask & \num{53.39} & \num{85.04} & \num{38.91} & \num{69.25} \\
+    \bottomrule
+  \end{tabular}
+  \caption{WADI \acs{POT} numerical controls, in percent. Each measured
+  row evaluates one fixed checkpoint; there is no across-run uncertainty
+  estimate. The last row applies the author checkpoint's observed
+  nonfinite mask to the local checkpoint's finite scores. All observations
+  and labels are retained, and point adjustment follows thresholding.}
+  \label{tab:replication-wadi}
+\end{table}
+% Exact sources and mask hashes: data/chapter4/benchmark-evidence.json,
+% wadi_diagnostics. Local finite and masked winners: alpha=.9,
+% threshold=.22356700584968833. Author FP32/FP64 summaries are separate controls.
+
+\subsection{Diagnostic mask and its interpretation}
+The independently retrained WADI checkpoint was also evaluated in double
+precision, yielding finite scores. We then applied the saved nonfinite
+mask from the authors' single-precision checkpoint to these local test
+scores. Scores at those positions were set to NaN; training scores,
+threshold fitting, labels and observation counts were unchanged. The
+local single-precision log independently records the same nonfinite
+count, but does not preserve its exact indices. The diagnostic therefore
+uses the explicitly saved author mask, without assuming that the two
+masks were verified identical.
+
+Repeating the original alpha search gives \SI{53.39}{\percent} F1,
+compared with \SI{14.35}{\percent} for the unmasked local scores. Both
+selected results use \(\alpha=\num{0.9}\) and threshold
+\num{0.22356700585}. In this comparison, false positives fall from
+\num{90986} to \num{683}, while true positives fall from \num{7805} to
+\num{3882}. The masked region contains \num{90303} nominal observations
+and \num{3923} anomalous observations. Suppressing alarms there removes
+many false positives, but also loses detections, explaining the increase
+in precision and reduction in recall.
+
+This operation is not row deletion: no observation is removed from the
+metric denominator. It reproduces the consequence of a numerical
+comparison with NaN. The \SI{53.39}{\percent} entry is consequently
+retained only as a marked diagnostic. It does not demonstrate an improved
+finite-output detector, and its precision--recall balance differs from
+the published operating point despite a similar F1.
+
+The controls establish precision-sensitive numerical instability, but
+they do not identify the first overflowing operation. A plausible
+mechanism follows from the input range and the second-pass feedback.
+Normalized test values reach approximately \num{268.29}, whereas nominal
+training values lie approximately between \num{0} and \num{1}.
+The squared reconstruction feedback and residual attention/feed-forward
+stacks can amplify these out-of-range inputs; the inspected blocks have
+no layer normalization~\cite{TranADPlusReferenceCode}. Without an
+operator-level trace, this remains a possible mechanism rather than a
+proven explanation of the first NaN. The evidence does establish that
+WADI \ac{POT} cannot be interpreted as training randomness alone.
+% Input range from author_weights/wadi/fp32_20261103T163516090316Z/metadata.json:
+% train [0,1.0000001192], test [-2.72866106,268.29458618].
+% Code source: models.py squared second-pass focus and residual blocks.
 
 \section{Adaptation of TranAD+ to OPS-SAT}
 \label{sec:replication-opssat}
-% Describe changes required for single-feature fragments and the observed baseline results.
-% Keep fragment validation/test outcomes distinct from point-adjusted oracle metrics.
+\ac{OPS-SAT} supplies the reference application for the simplification
+study, rather than another row in the original six-dataset comparison.
+Its inputs are univariate fragments, with annotations attached to whole
+fragments~\cite{Ruszczak2025OPSSAT}. The model can operate with a single
+feature: the input dimension changes, while the shared encoder,
+independent decoders and reconstruction objective retain their roles.
+No additional decoder or classification output is required to make this
+adaptation.
 
-\section{Reproduction assessment and remaining discrepancies}
+The necessary changes concern data organization and evaluation. Windows
+are constructed inside each fragment, so no input window joins different
+fragments. Channel-specific scaling is fitted on nominal optimization
+fragments. The reconstruction target remains the last observed sample
+of the window. The split construction and held-out validation set are
+defined in Sections~\ref{sec:datasets-opssat-splits}
+and~\ref{sec:datasets-opssat-protocol}.
+
+We retain two distinct interpretations of the outputs. The paper-style
+pointwise analysis propagates fragment labels to their samples and uses
+fragment-aware point adjustment. The fragment-level analysis chooses
+its scoring rule on validation fragments, then applies it to test
+fragments. These procedures address different questions; neither makes
+the weak fragment annotation an exact record of anomaly onset and offset.
+The common neural reconstruction model does not make the annotation
+protocols interchangeable.
+
+This adaptation establishes a reference that can be trained and evaluated
+with the same model family on \ac{OPS-SAT}, \ac{SMAP} and \ac{MSL}.
+The controlled window and feed-forward settings in
+Table~\ref{tab:datasets-study-settings} are used for the subsequent studies.
+They are deliberately distinguished from the selected benchmark settings
+in Table~\ref{tab:replication-configurations}. A benchmark's closest
+published score is not used as a different starting point for each
+architectural variant.
+
+\section{Reproduction assessment}
 \label{sec:replication-assessment}
-% Summarize verified agreement, explained deviations and unresolved differences.
-% Establish the reference configurations used by the following ablation study.
+The reproduction work provides a traceable implementation and identifies
+which configurations and evaluation choices support the available
+comparisons. Several selected F1 values are close to the paper, while
+\ac{SMD} \ac{POT} and \ac{MSL} BF retain larger differences. WADI
+requires a separate qualification because its \ac{POT} agreement depends
+strongly on the treatment of nonfinite inference outputs.
+
+The remaining gaps cannot all be assigned to random initialization.
+Some selected configurations differ from the corresponding author
+configurations, some legacy seeds were not recorded, and WADI exhibits
+a directly observed numerical effect. Even with matching dimensions,
+finite precision, numerical-library versions and optimization trajectories
+can affect the selected threshold and operating point. The available
+single-run comparisons do not quantify those contributions separately.
+
+For the lightweight-model study, the useful outcome is a controlled
+reference rather than a claim that every published number has been
+reproduced exactly. Chapters~\ref{chap:ablation}
+and~\ref{chap:architecture} therefore compare models under declared
+settings, common data splits and consistent evaluation procedures.
+Their seed-based summaries address variability within those experiments,
+while this chapter documents the distinct limitations of the benchmark
+reconstruction.

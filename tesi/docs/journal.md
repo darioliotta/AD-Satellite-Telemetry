@@ -312,3 +312,303 @@ Append factual updates here: date, edited files, source used, decisions, unresol
 - Next writing task: author review of Chapter 3; Chapter 4 should present the
   reproduction results with configuration provenance and clearly named
   evaluation protocols, separately from the main simplification study.
+
+## 2026-11-08 — Baseline reproduction and adaptation draft
+
+- Authorization: the author requested Chapter 4 in English, starting directly
+  from TranAD+, with the initial-TranAD-attempts section removed. The author
+  requested available results closest to the published paper, SMD POT retained
+  at the current independently trained value near 67%, and an evidence-based
+  account of the WADI NaN diagnostic. This is a draft for author review.
+- Scope: replaced `chapters/chapter-replication.tex`; updated Chapter 4 in
+  `outline.md` and the writing-status text in `README.md`. The chapter has five
+  sections and four tables: effective configurations; published/local F1 and
+  differences; local precision/recall/AUC-PA; and WADI numerical controls.
+  No figure is needed for the presented comparisons.
+- Numerical source of truth: `data/chapter4/benchmark-evidence.json`. It retains
+  the twelve selected result sources and SHA256 hashes, effective profiles,
+  recorded seeds (null for missing records), confusion counts, published rows,
+  twenty recovered author-configuration records, and diagnostic source hashes.
+  This small audit file contains scalar evidence, not raw datasets or models.
+- Published reference: `../../docs/papers/TranAD+.pdf`, Tables 2--7 on PDF
+  pages 6--7, visually verified from rendered originals. Dataset POT/BF F1:
+  DSN_1k .9247/.8044; SMAP .8424/.8491; MSL .8901/.8196;
+  SWaT .3290/.8239; SMD .7129/.8509; WADI .5084/.2788.
+  The paragraph on p. 8 supports the finite-BF-grid caveat. PA and binary AUC
+  are attributed to the implementation, not incorrectly to paper Section 4.2.
+- Selection: native rows are retained independently per method for minimum
+  absolute F1 difference from the rounded published entry. These are selected
+  single-run results, not maxima over all metrics, seed means, confidence
+  intervals, or unbiased estimates of expected training performance. WADI POT
+  is separately marked as a diagnostic, rather than a finite-output result.
+  Every BF entry is the original BF200; no dense result replaces a BF entry.
+- Selected F1 POT/BF: DSN_1k .923432099416902/.8072652127454257;
+  SMAP .8421503933191664/.8470132840679159;
+  MSL .8928013985140788/.7903225806451613;
+  SWaT .324939721423305/.8206691402924203;
+  SMD .6703861721912263/.8406109554055622;
+  WADI .5339018016778985 (masked diagnostic)/.27884117951370924.
+  Exact P/R/AUC-PA and operating-point counts are in the evidence JSON.
+- Configuration caveats are explicit. Tensor shapes take precedence over old
+  integer/multiplier strings. The selected DSN POT width16 is not the author's
+  width2064. The closest MSL POT row uses W50/FF16/L2 rather than the author
+  W10/FF110/L3 configuration. Selected SWaT BF W50/FF102/L1 differs from the
+  author W20/FF816/L4. Missing legacy seeds are not retrospectively assigned.
+  Existing source identity is documented in the 2026-11-05 journal entry.
+- SMD: the retained POT value .6703861721912263 comes from
+  `../../results/legacy/SMD/_native_pickles/papercheck_SMD_pot_w20_ff76_l5_bs8192_s1_pot.pkl`;
+  its configuration is E100/W20/FF76/L5/B8192/LR1e-4/q.001/seed1. Future SMD
+  repetitions have not been received here and are not presented as complete.
+  Author-weight evaluation .7170677332633927 is a separate fixed-weight check
+  (`../../results/diagnostics/author_weights/smd20/fp32_20261103T163516090316Z/summary.json`),
+  not substituted for the independently trained result. Low local precision
+  rather than lower adjusted recall explains the local POT F1 deficit.
+- WADI source checkpoint: `papercheck_WADI_pot_w50_ff2048_l2_bs1024_s1`,
+  SHA256 07dfeccb49f278c0984790452aabc3723f1ca323a1a0e750088038002dd1a774.
+  Finite FP64 inference is saved under
+  `../../results/diagnostics/WADI/fp64_20261103T130744Z/`.
+  The explicitly used mask is the authors' FP32 `nonfinite_masks.npz`, key
+  `test_second`, under `author_weights/wadi/fp32_20261103T163516090316Z/`.
+  Mask SHA256 0e1601b5f1c095b101de44c5495a50078540ef7368648767b3b851e79cdf53c7.
+- Recomputed WADI diagnostic: all21 saved local alpha score files were loaded;
+  test scores at that mask were set to NaN, training scores/labels/counts
+  unchanged; original omnianomaly.pot_eval(q=.001) was run and the best POT
+  alpha retained. Winning alpha .9 and threshold .22356700584968833 match the
+  finite local winner. The resulting F1 .5339018016778985, precision
+  .8503833515881709, recall .38909491831211784 and AUC-PA .6924501025010203
+  reproduce the prior diagnostic. Counts TP3882/TN162141/FP683/FN6095.
+  Unmasked local F1 .14351647543395116, TP7805/TN71838/FP90986/FN2172.
+- The mask covers94226 of172801 test windows, zero-based indices78575--172800,
+  including90303 nominal and3923 anomalous labels. The local FP32 log records
+  the same nonfinite count but not its exact indices; exact local/author mask
+  equality is not claimed. NaNs arise in D2 inference on finite inputs, not
+  missing raw telemetry or a GPD fit. `0*NaN` still contaminates the original
+  score at alpha1; `NaN>threshold` is false, suppressing direct alarms while
+  retaining observations. PA is applied afterwards. This is not row deletion
+  or a demonstrated improvement of a finite-output detector.
+- Author-weight WADI controls: FP32 F1 .507694023193577, FP64 F1
+  .15113853176655195, from the separately saved author-weight summaries.
+  Their agreement/disagreement supports precision-sensitive score semantics.
+  Train range approximately0--1 and test maximum268.29458618 are metadata
+  observations. Squared focus/residual amplification without LayerNorm is a
+  plausible mechanism; no retained operator trace proves the first overflow.
+- Bibliography: all citations verified against existing entries
+  Yermakov2025TranADPlus, TranADPlusReferenceCode and Ruszczak2025OPSSAT.
+  No bibliography entry was added or altered. Chapter 3 supplies the existing
+  POT/PA/AUC definitions; Chapter 4 references them without redefining them.
+- Review: independent read-only audits checked every table/pickle/hash,
+  effective configurations and seeds, literature/cross-references, WADI
+  mechanics and causal qualifications. Minor wording and heading corrections
+  were applied. No raw results, experiment code, datasets, title page,
+  metadata, main.tex or Chapters 1--3 were modified.
+- Build: overlapping verification builds initially conflicted in generated
+  auxiliary files. Auxiliary files were cleaned and regenerated successfully;
+  final latexmk checks were run sequentially. The final LaTeX and BibTeX logs
+  have no warnings, undefined/multiply-defined references or overfull/underfull
+  boxes. The draft PDF has47 pages; Chapter 4 spans printed pp26--32
+  (PDF pp34--40). Its pages and all four tables were rendered and visually
+  checked; the bibliography and personalized title page remain intact.
+
+## 2026-11-08 — Window and feed-forward ablation draft
+
+- Authorization: the author requested Chapter 5 using the same English/style,
+  evidence and bibliography standards as Chapter 4, reporting what is already
+  known and allowing later revisions after the forthcoming studies. Work resumed
+  from the completed audits after a usage-limit interruption; no research runs
+  were restarted or overwritten. The chapter is a draft for author review.
+- Scope: `chapters/chapter-ablation.tex`, with eight concise sections, four
+  tables, two vector figures and two displayed equations. Updated Chapter 5
+  writing status/section titles in `outline.md` and status/folder documentation
+  in `README.md`. Existing Chapters 1--4, title page, metadata, bibliography,
+  main.tex, datasets, experiment code and raw results were preserved.
+- Source: `../../results/analysis_v10_v12/runs_270.csv` plus all270 original
+  integrated reports. The existing analysis figures were dense-search-primary;
+  they were not reused. New figures and tables use original BF200/POT only,
+  with PA and binary AUC-PA. No AUC-score or dense BF is substituted into the
+  main results. Every selected operating point retains its own alpha/threshold.
+- Persistent evidence: `data/chapter5/runs.csv` includes relative report paths,
+  report SHA256, declared checkpoint SHA256, all8 BF/POT scalar metrics,
+  confusion counts, effective dimensions, seeds, resource values and model hash.
+  `data/chapter5/evidence.json` records the design, source revisions, four-corner
+  means/SD/ranges, paired seed differences, interactions and resource reductions.
+  `data/chapter5/README.md` documents definitions, scope and regeneration.
+- Validation: all270 report hashes and canonical scalar entries checked;
+  90cells, 3seeds per cell, 50epoch records per run; all540 AUCs verified against
+  half the sum of sensitivity and specificity within1e-9. Learned parameter
+  and weight-byte totals and recorded analytic MACs verified for every run.
+  The existing original reports and metrics were not changed.
+- Effective grids: OPS W[3,4,5,6,8,10], FF[2,3,4,6,8]; SMAP the sameW and
+  FF[13,25,32,38,50]; MSL W[13,25,32,38,44,50], FF[28,55,69,83,110].
+  Each dataset has48 v10 runs and42 v12 runs. Baselines are the largest
+  W/FF coordinates (10,8), (10,50), (50,110). All principal four-corner
+  endpoint comparisons belong to v10; this is asserted in the table builder.
+- Fixed settings: L1/E50, batches256/1024/128, LR.001/.001/.0001,
+  q.01/.07/.01, scaling/padding, ordered batches, no downsample, zero workers.
+  OPS nominal optimization/validation/test fragments are fixed. NASA native
+  per-track padding changes duplicated targets and minibatch counts withW;
+  equal50epochs is not exactly equal optimizer-step counts.
+- Campaign qualification: model hashes match, and OPS scoring hashes match;
+  runner/evaluation revisions differ. The historical combined-analysis
+  provenance explicitly did not certify full numerical scoring parity. The
+  chapter states this limit and treats the full grid as descriptive; it does
+  not infer equivalence merely from a shared model hash. The headline corner
+  comparisons avoid crossing those source revisions.
+- Endpoint means±sampleSD, BF200/POT F1 in percent, ordered reference,
+  window-only, FF-only, joint: OPS88.34±.58/65.74±3.01;
+  84.59±6.61/72.31±22.51;84.05±7.46/56.54±8.31;91.28±.18/88.49±.85.
+  SMAP82.90±1.06/81.38±.98;85.26±.63/84.53±.09;
+  83.88±1.03/81.92±.22;85.76±.15/84.55±.09.
+  MSL51.26±17.61/85.69±.22;73.71±3.41/85.56±.65;
+  47.62±21.56/85.61±.58;72.26±16.53/85.71±.78.
+  All exact values and operating-point P/R/AUC statistics are retained in JSON.
+- Interactions: the displayed four-corner contrast is computed perseed, not
+  from separately chosen maxima. OPS BF200 interaction10.9877046337±1.4731123945
+  percentage points. OPS joint BF/POT gains+2.94154/+22.74926pp and SMAP
+  +2.86066/+3.16928pp are positive in each matched seed. MSL joint BF changes
+  +48.45163,-15.45693,+30.01631pp; the mean gain is not a robust perseed gain.
+  MSL POT joint-minus-reference mean+.023887pp is effectively stable at this
+  descriptive resolution. No significance or confidence claim is made.
+- Resource equation P=82F^2+47F+(12F+3)*FF is counted for this single-layer
+  implementation and checked against all270 models. It is not a universal
+  Transformer formula. Parameter counts are independent ofW; positional
+  buffers are distinct. Largest-to-smallest learned parameter/MAC totals:
+  OPS249/2124→159/364; SMAP67575/464700→56364/135500;
+  MSL323565/11008140→269199/2297900. Learned storage is4bytes/parameter.
+  Relative parameter reductions36.14/16.59/16.80%; MAC reductions
+  82.86/70.84/79.13%. Counts exclude softmax/elementwise/backward/optimizer.
+- Timing sources: original model_statistics/profiling records, pipeline_metrics.py
+  and opssat_pipeline.py. A100-PCIE-40GB, PyTorch2.8.0+cu128, FP32, batch1,
+  10warmups/50synchronized wall-clock forwards. Three seed-specific medians
+  summarized by mean/sampleSD. NASA input is synthetic; OPS uses a real
+  test window. No verified blanket claim about v10 TF32 flags is introduced.
+  Latencies around1.8ms do not track the large MAC reductions; no integer
+  kernel, onboard speedup or measured energy claim is made.
+- Interpretation: reconstruction includes the current target; less past does
+  not remove that target. Capacity, score distributions, BF200 grid and PA
+  can affect detection differently. MSL BF variability is discussed alongside
+  stable POT, not as proof of better raw score ranking. Feature count1/25/55
+  is not an isolated physical factor; NASA coordinates include command inputs,
+  and baseline FF/embedding ratios are4/1/1. No overfitting diagnosis,
+  physical correlation time or uniquely identified spacecraft mechanism is
+  claimed. Architectural conclusions remain in Chapter 6.
+- Figures: `figures/chapter5/grid_bf200.pdf` shows mean BF200 and sampleSD in
+  separate matched panels for all90cells. `slices_bf200_pot.pdf` shows fixed
+  largest-FF/window sweeps with mean/min--max ranges over3seeds. Both are
+  vector PDFs; PNGs are inspection previews. Red/gray identify BF200/POT;
+  labels are short and detailed conditions are in the captions.
+- Regeneration: `scripts/prepare_chapter5.py` verifies scalar evidence and
+  writes three complete tabular files under `tables/chapter5/`;
+  `scripts/plot_chapter5.py` validates the complete grid and generates figures.
+  Neither script performs model training or inference. No new bibliography
+  entries were added; code/efficiency citations use existing verified keys.
+- Final validation: `prepare_chapter5.py` rebuilt and verified all270 source
+  reports and all540 AUC identities. Figures were regenerated from the
+  persisted CSV; all10 initially rendered chapter pages were inspected, then
+  a one-line spill page was removed by shortening redundant closing prose.
+  The final chapter spans printed pp33--41 (PDF pp41--49), with a54-page
+  complete draft. Final sequential latexmk passes all succeeded; LaTeX/BibTeX
+  logs contain no warnings, unresolved/multiply-defined references or overfull/
+  underfull boxes. The final end page and all table/figure layouts were checked.
+  Protected title-page/metadata/bibliography/main and Chapters1--3 have no diff.
+  Chapter4 changes from the preceding session were retained without alteration.
+
+
+### 2026-11-08 — SMD POT update
+
+Verified every artifact hash in results/v16/smd/author_pot/seed_3/status.json.
+Chapter 4 now selects formats.fp32.oracle.pot in that run's metrics.json:
+F1 68.61043844384682%, precision 53.45988280583316%, recall
+95.74446406738215%, AUC-PA 96.06631611746579%. Published POT F1
+71.29%; difference -2.68 percentage points. The selected seed changes from
+1 to 3; W20/FF76/L5/E100/B8192/LR0.0001/q0.001 are unchanged.
+The former selection remains recorded in benchmark-evidence.json. This is
+a retrospectively selected single run, not a seed average or an independent
+validation estimate. SMD Best-F1 and other datasets are unchanged.
+
+
+### 2026-11-08 — Source consolidation
+
+At the author's request, the single current source root is tranad_plus/.
+Historical references to tranad_variants now resolve to tranad_plus/core;
+tranad_v14, tranad_v15 and tranad_v16 resolve to campaigns/exploration,
+campaigns/temporal and campaigns/precision within that root. Old journal
+entries and result manifests retain their historical paths. The explicit
+relocation hash record is tranad_plus/relocation.json. Numerical core ASTs
+were checked after canonicalizing imports; bootstrap/entry-point path changes
+are separate. All 240 v13 parent source manifests remain compatible. Data,
+results, checkpoints, model objectives and metric computations were not
+changed by the relocation. A new integer-inference campaign is proposed as
+v17; no measurements from it are included in the thesis yet.
+
+
+## 2026-11-10 — Approved introduction and chapter structure
+
+- Applied the author-approved sections 1.1–1.5, including quantization in the research questions and chapter roadmap.
+- Added a separate Chapter 7, Quantization, as a section outline; conclusions become Chapter 8. No experimental results were written into the new chapter.
+- Removed the reproducibility appendix source and include, and repaired its cross-references in Chapter 3. Experiment artifacts, provenance and datasets were preserved.
+- Removed the visible draft to-do list, all to-do boxes and the todonotes dependency. Recolored the two orange diagram styles to neutral gray without changing diagram content.
+- Updated main.tex, outline.md and README.md consistently. The personalized title page was not edited.
+
+
+## 2026-11-10 — Approved concise TranAD section
+
+- Applied the author-approved TranAD text, with attention/transformer concepts integrated into section 2.3; removed the standalone attention section and its figure inclusion. The original figure asset is preserved.
+- Retained the original TranAD Figure 1 crop (paper p. 1204). Sources: Vaswani et al., sections 3.1–3.5; Tuli et al., sections 3.3–3.4.
+- Repaired the two downstream references to removed positional/FFN equations without changing their formulas; updated section numbering in outline.md. TranAD+ prose remains pending review.
+
+
+## 2026-11-11 — Approved TranAD+ architecture and objective
+
+- Applied the author-approved section 2.4.1, retaining the existing TikZ model diagram. Simplified the opening sentence and separated the alpha-weighted reconstruction from the anomaly-score equation.
+- Preserved the author's sentence structure and corrected the punctuation before “where”. Sources: Yermakov et al., section 3.3; reference models.py:34–60 and helpers.py:665–673,831–849, revision 2f02268. No experimental results or bibliography entries changed.
+- Figure provenance: the TranAD+ diagram is a TikZ reconstruction based on paper Figure 1 and the inspected code, not an image crop; repeated encoder/output-head boxes denote shared parameters.
+
+
+## 2026-11-11 — Verified TranAD+ motivation and actual changes
+
+- Updated section 2.4.1 with the DSN numerical/categorical/missing-data motivation (paper abstract and introduction), pipeline corrections and reproducibility resources (README Changes from TranAD).
+- Replaced section 2.4.2 with six concrete model/pipeline/resource points: FF width and bottleneck definition, output mixing, full training-track loading, initial window duplication, configurable training settings, and published reproduction resources. Hyperparameter optimization is attributed to the authors; no causal metric gain is asserted.
+- Compared original TranAD revision 7ffb98d0c18189cc3d9ab732b4cb0278200a0af0, resolved using the official GitHub commits/main API. Added a pinned code bibliography entry. main.py:16–40 verifies the window indexing and fixed SMAP/MSL/SMD track selection; main.py:245–275 verifies positive weighted reconstruction loss and second-output-only inference; models.py:456–488 and dlutils.py:192–229 verify the window-only architecture and lack of causal masks/layer normalization. These are inherited, not TranAD+ innovations.
+- Executed the extracted original convert_to_windows and actual TranAD+ dataset/merge functions on a distinct-valued synthetic track: original first two windows identical; revised padded dataset advances its final target from the first to the second observation. Both assertions passed. This verifies indexing behavior, not a measured benchmark improvement.
+- Compared TranAD+ models.py:34–60, helpers.py:96–128,665–673,831–849, datasets.py and scripts/training_loop.py:123–164. README changes were cross-checked against the official GitHub README.
+- Inspection also confirms FP64/AdamW in the original entrypoint versus FP32/Adam in the TranAD+ entrypoint; not added as a new explanatory thesis claim in this revision.
+- SHA-256 TranAD main.py: `0529c581d3d871bf5cc32316b45428ce9642650b8a0fa2e40e754341f57d4c0c`.
+- SHA-256 TranAD src/models.py: `43a30e7caa7c8b28e91b5e875c724219c9c15789da1f6009bb2015fb1f81d84b`.
+- SHA-256 TranAD src/dlutils.py: `35265d47f3c1c0f999590ab25cf47774cfd2293c99ca3f842419f31dfef750fe`.
+- SHA-256 TranAD+ preserved README: `2b527795e3abc7026601a232983b926a95610a7a60851c65993d9c71a98ea5c7`.
+- SHA-256 TranAD+ src/models.py: `3f6451beed30637248e005633d7c94d1adcede0aca0d53c53665d2a54c3deeef`.
+- SHA-256 TranAD+ src/helpers.py: `7af3ace8879174ca24068a278722efd362bb9bbc893c7a2e433ca0bdaa73879a`.
+- SHA-256 TranAD+ src/datasets.py: `9389c4bf08144eba1739e979cde30bf54e122f7c2dafbf2fa861d96b599dbfcb`.
+- SHA-256 TranAD+ scripts/training_loop.py: `183465d71e8a092739b10bbdf1242a7822712fa992dc9069ae8c0dde47adbcb5`.
+
+
+## 2026-11-11 — Author-directed simplification of sections 2.4.1–2.4.2
+
+- Removed the pipeline/reproducibility overview paragraph from 2.4.1; retained the concrete single-track versus full-training-split issue with numeric bibliography citations.
+- Removed explicit paper/README comparison framing, bold item titles, the training-tracks item and the reproducibility item from 2.4.2. Reduced bottleneck notation to a single width mapping with prose explaining contraction/expansion.
+- Restored the adversarial-loss comparison specifically against the published TranAD formulation described in section 2.3, without claiming that the released TranAD training code has an adversarial objective. Non-negative weights correctly include the zero second-branch weight at epoch 1.
+- Kept output mixing, verified initial-window duplication correction and configurable training settings. No changes to experiments or bibliography.
+
+
+## 2026-11-11 — Concise resource background
+
+- Shortened section 2.5 to three paragraphs distinguishing parameter count, numerical storage, inference memory, operation estimates and hardware/software-dependent execution time. Removed detailed architectural previews and unused FF parameter formula.
+- Moved the analytical attention/FF computation scaling to chapter 5, section Detection performance and computational cost, where it is used; renamed its label and repaired the existing reference. No measured results changed. Sources remain Vaswani (attention/feed-forward operations) and Sze (resource and implementation dependencies).
+
+
+## 2026-11-11 — Resource discussion connected to TranAD+
+
+- Rewrote section 2.5 with connected prose linking the resource discussion directly to TranAD/TranAD+ and future onboard use. The existing shared encoder illustrates why stored parameters and executed operations differ. Retained storage/precision, intermediate memory and hardware-dependent execution time; no previews of new variants or changes to experiments.
+
+
+## 2026-11-12 — Chapters 1–2 aligned with the evaluation and lightweight-detector direction
+
+- Approved by the author. Chapter 2: hyperparameter-optimization statement now attributed to the reference-code documentation (TranADPlus/README_original.md:130); added that min-max scaling is fitted on training data without clipping, so test inputs can leave [0,1] while the sigmoid output cannot; added section 2.6 "Lightweight detectors without transformers" (statistics descriptors, nearest neighbour, linear subspace, fully connected autoencoder; Ruszczak, Chandola, Goodfellow). No numbers.
+- Chapter 1: reference model (not all models) is transformer-based; added research questions 5 (evaluation protocol) and 6 (lightweight alternatives) and one sentence each in scope and contributions. Chapter organization list for chapters 3+ not yet updated (structure pending). `latexmk -pdf main.tex` compiles without errors or undefined references.
+
+
+## 2026-11-12 — Chapter 3 cleanup
+
+- Approved by the author. Rewrote chapter 3 for clarity and concision without changing content, numbers or labels (all \ref targets preserved). Previous draft saved as docs/chapter-datasets_before_2026-11-12_cleanup.tex.
+- Source comments updated to the current repository layout (tranad_variants/ -> tranad_plus/core/, tranad_v14/ -> tranad_plus/campaigns/exploration/); every cited function verified to exist. Added sources for bf_search, calc_point2point (binary AUC), adjust_predicts and the 0.995 training quantile (opssat_scoring.evaluate_selected, campaign_plan). Verified Eq. native-window-count on MSL (w=50, K=27, N=73729 -> 75003 = length of saved v13 test scores).
+- Removed only redundant sentences (GPU-resident caching, batched-scoring timing, generic remarks on hashes). `latexmk -pdf main.tex`: no errors, no undefined references.

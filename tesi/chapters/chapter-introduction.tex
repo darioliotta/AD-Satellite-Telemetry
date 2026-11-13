@@ -7,225 +7,210 @@
 
 \section{Satellite telemetry and anomaly detection}
 \label{sec:introduction-telemetry}
-Spacecraft telemetry records the behavior of sensors and subsystems throughout a
-mission. Measurements such as temperatures, electrical quantities and attitude
-sensor readings allow operations engineers to assess the condition of the
-vehicle. Their interpretation depends on the operating context: a change that is
-expected during a commanded maneuver may require investigation under otherwise
-stable conditions. Detecting departures from nominal behavior is therefore a
-problem of interpreting signals over time, rather than checking isolated values
-alone~\cite{Hundman2018Spacecraft,Ruszczak2025OPSSAT}.
 
-Conventional monitoring often relies on limits assigned to individual telemetry
-parameters. These checks are useful when unacceptable operating ranges are known,
-but a value can remain within its limits while behaving unexpectedly in relation
-to its recent history or to other measurements. Data-driven methods provide a
-complementary approach: a model learns patterns from recorded telemetry and
-assigns an anomaly score to new observations. A decision rule then determines
-which scores should trigger an alert. This separates the representation learned
-from the signal from the operational decision made from that
-representation~\cite{Hundman2018Spacecraft,Yermakov2025TranADPlus}.
+Satellite telemetry consists of measurements collected from spacecraft sensors
+and subsystems. These data, among other things, help operators monitor the spacecraft and identify
+unexpected behavior~\cite{Hundman2018Spacecraft}. This thesis studies lightweight
+models for anomaly detection, with future onboard use as the target application.
+The aim is to support the analysis of telemetry directly on the satellite,
+where memory and computing resources are limited~\cite{TOASTExecutiveSummary}.
 
-The distinction between an anomaly and a fault is important. An unusual signal
-can indicate a malfunction, a sensor artifact or an operational condition that
-deserves attention. An anomaly detector identifies observations for further
-assessment; its output does not by itself establish a physical cause. Expert
-annotations consequently encode an operational interpretation of the data. In
-the \ac{OPS-SAT} benchmark, engineers and machine learning researchers curated
-telemetry fragments and labeled them according to whether their behavior should
-be considered anomalous~\cite{Ruszczak2025OPSSAT}.
+Traditional monitoring relies on limits assigned to individual telemetry
+parameters, and an alert is generated when a measurement exceeds these limits.
+However, some anomalies occur within the allowed ranges and can only be
+identified by considering how the signal changes over time. The expected behavior
+also depends on some operating conditions and spacecraft
+commands~\cite{Hundman2018Spacecraft}. Models that learn from past telemetry
+provide another way to detect these changes: they produce an anomaly score
+for each observation, and a threshold determines whether an observation is
+classified as anomalous~\cite{Yermakov2025TranADPlus}.
 
-Learning from time series introduces further difficulties. Nominal behavior can
-change between operating conditions, and observations can have different sampling
-patterns or missing intervals. Anomaly labels are also difficult to obtain and
-can refer to an entire signal fragment rather than to a precise onset and end
-time. These properties influence both the learning problem and the meaning of a
-reported detection score~\cite{Hundman2018Spacecraft,Ruszczak2025OPSSAT}.
+An anomaly is a signal that requires attention, but it does not necessarily
+identify a fault or explain its cause. In the \ac{OPS-SAT} benchmark,
+telemetry segments were selected and labeled by spacecraft operations
+engineers and machine learning experts. Segments were considered anomalous
+when their behavior required operators to be notified. Examples include
+unexpected peaks, unusual signal shapes, zero values and gaps in the
+measurements~\cite{Ruszczak2025OPSSAT}.
 
-Ground processing provides access to substantial computing resources, but
-onboard analysis is relevant when communication availability or downlink capacity
-limits the information that can be examined promptly on the ground. A detector
-executed near the source of the measurements could support the identification of
-telemetry requiring attention before downlink. This motivation underlies the
-\ac{TOAST} proposal, within which the present thesis is
-positioned~\cite{TOASTExecutiveSummary}. It also places computational requirements
-alongside detection quality as part of the model design problem.
+Onboard anomaly detection is particularly relevant when communication with
+the ground is limited. Downlink capacity restricts the amount of telemetry
+that can be transmitted, while gaps in ground contact can delay its analysis.
+Processing data onboard could help identify relevant events and select the
+information to transmit. This is a motivation of the \ac{TOAST} project,
+within which this thesis is developed~\cite{TOASTExecutiveSummary}.
+The models considered here must therefore be assessed both for their detection
+performance and for the resources required to run them.
 
 \section{Towards lightweight models for onboard inference}
 \label{sec:introduction-lightweight}
-The resources required by a neural network depend on both its parameters and the
-computations performed for each input. Storing the weights is only part of the
-memory requirement: intermediate activations and data movement also contribute
-to execution cost. Likewise, a reduction in arithmetic operations does not imply
-an equal reduction in latency or energy consumption on every processor. These
-relationships depend on the implementation and the memory organization of the
-device~\cite{Sze2017EfficientDNN}.
 
-In this thesis, the term \emph{lightweight} describes a reduction in model and
-inference requirements relative to a reference detector. The quantities of
-interest include the number of trainable parameters, the estimated arithmetic
-cost and the execution time measured on the experimental platform. Detection
-performance is evaluated alongside these quantities. The objective is to identify
-useful compromises between them, without assuming that the largest network is
-necessarily the most appropriate one.
+Running a neural network onboard requires memory to store its weights
+and intermediate results, as well as computing resources to process each
+input. Moving data between memory and the processor also contributes to
+execution time and energy consumption. A reduction in the number of
+operations does not therefore guarantee a proportional reduction in
+execution time: the result also depends on the hardware and its
+implementation~\cite{Sze2017EfficientDNN}.
 
-Transformers provide the modeling family considered here. Their attention
-mechanism forms representations by combining information from different
-positions in an input sequence~\cite{Vaswani2017Attention}. For telemetry, this
-allows observations to be interpreted using their temporal context. TranAD
-applies a transformer architecture to multivariate time-series anomaly
-detection~\cite{Tuli2022TranAD}. TranAD+ subsequently develops this line of work
-for spacecraft communications monitoring and evaluates the resulting approach
-on a collection of anomaly-detection benchmarks~\cite{Yermakov2025TranADPlus}.
+In this thesis, the term \emph{lightweight} refers to models with lower
+storage or computational requirements than a reference model. We will compare
+the number of trainable parameters, the memory needed to store the model and
+the estimated number of operations.
+These quantities are considered together with detection performance
+to assess which changes provide a useful reduction in resource requirements.
 
-TranAD+ provides the reference model and implementation for the experiments in
-this thesis. Its processing stages reconstruct the last observed sample in an
-input window. The discrepancy between the reconstruction and the observation
-contributes to the anomaly score. The quality of that score depends on how well
-it separates nominal
-and anomalous behavior. Reducing a reconstruction error and improving anomaly
-detection are therefore distinct objectives, even when reconstruction is the
-training task.
+The reference model considered here is based on transformers. Their attention
+mechanism combines information from different positions in an input
+sequence~\cite{Vaswani2017Attention}, and this allows a model to use relationships
+between observations at different times. TranAD applies this architecture
+to anomaly detection in multivariate time series~\cite{Tuli2022TranAD}, while
+TranAD+ builds on top of TranAD and evaluates a modified implementation on
+several anomaly-detection benchmarks~\cite{Yermakov2025TranADPlus}.
 
-We investigate simplification at different levels. The input window determines
-how much temporal context is processed at once. The feed-forward dimension
-controls the width of internal transformations in the transformer blocks.
-Architectural interventions change the blocks themselves or how they are reused.
-These choices affect different components of the computational cost, and their
-effects on detection need to be measured rather than inferred from model size
-alone. Their definitions and the reference architecture are developed in
-Chapter~\ref{chap:background}.
+We use TranAD+ as the reference model for our experiments. In the
+implementation used here, the model receives a window of observations
+and reconstructs its last sample, so that the reconstruction error is then used
+to calculate an anomaly score. Effective detection requires this score
+to distinguish nominal from anomalous observations. A lower reconstruction
+error alone does not guarantee better anomaly detection, because errors
+can decrease for both types of observation.
+
+We study several ways to simplify the model: reducing the window size
+limits the amount of past data processed for each observation; reducing
+the feed-forward dimension makes the internal layers smaller;
+architectural changes remove or reuse parts of the reference model;
+quantization reduces the numerical precision
+used to represent weights and to perform
+calculations~\cite{Sze2017EfficientDNN}. For each change, we evaluate
+both the reduction in resource requirements and its effect on
+anomaly detection. We also compare TranAD+ with lightweight detectors
+that do not use transformers and operate on simple statistics of the
+signal.
 
 \section{The TOAST project and thesis scope}
 \label{sec:introduction-toast}
-\ac{TOAST} is a research proposal at the University of Padua, involving the
-Department of Physics and Astronomy and the Department of Information
-Engineering. Its objective is to develop compact transformer models for onboard
-anomaly detection in satellite telemetry. The proposed program connects model
-design with implementation on embedded devices and with the assessment of
-reliability under radiation-induced faults~\cite{TOASTExecutiveSummary}.
-% Source: ../docs/papers/TOAST.pdf, pp. 1 and 6--7. The document is an undated
-% executive summary of a proposal, not a report of completed deployment tests.
 
-The thesis addresses the initial activities concerning data, evaluation protocols
-and model simplification. These correspond to the preparation of a reproducible
-reference and the investigation of compact architectures in the first work
-packages of the proposal. Establishing this reference is necessary before
-assigning a change in detection performance to a particular intervention. A
-comparison also requires a consistent account of data splits, preprocessing,
-threshold selection and the computational quantities being measured.
+\ac{TOAST} is a research proposal at the University of Padua, involving
+the Department of Physics and Astronomy and the Department of Information
+Engineering. It aims to develop compact transformer models for onboard
+anomaly detection in satellite telemetry. The project also plans their
+implementation on embedded devices and the assessment of their robustness
+against faults caused by radiation~\cite{TOASTExecutiveSummary}.
 
-\ac{OPS-SAT} is the main application dataset. It contains telemetry from an
-experimental CubeSat operated by the \ac{ESA}, with annotations attached to
-individual signal fragments~\cite{Ruszczak2025OPSSAT}. The study treats each
-fragment as a single-feature time series and uses its telemetry samples as
-sequential inputs. It therefore examines a
-different representation from the handcrafted segment features also provided
-with the benchmark.
+This thesis contributes to the model-development part of the proposal.
+We first assess the reproducibility of TranAD+ on the benchmarks
+considered in its original study~\cite{Yermakov2025TranADPlus},
+and then investigate changes to the model and evaluate their effects
+on detection performance and resource requirements. Finally, we consider
+whether a detector without transformers can meet the same requirements,
+since the choice of model for onboard use should follow from the evidence.
 
-The main comparative experiments also include \ac{SMAP} and \ac{MSL}. The former
-contains telemetry from a \ac{NASA} Earth-observation satellite; the latter comes
-from the Curiosity rover on Mars~\cite{Hundman2018Spacecraft}. They serve as
-complementary spacecraft telemetry benchmarks already considered in the TranAD+
-study. Their role is to test the simplifications beyond the particular input
-representation and mission represented by \ac{OPS-SAT}. The wider reference
-reproduction and the focused simplification study consequently have different
-dataset scopes, which are defined in Chapter~\ref{chap:datasets}.
+The main dataset is \ac{OPS-SAT}, which contains telemetry from an
+experimental CubeSat operated by the \ac{ESA}. The data are organized
+into single-channel signal fragments, each labeled as nominal or
+anomalous~\cite{Ruszczak2025OPSSAT}. We use the measurements
+within each fragment as a sequence of inputs with one feature.
 
-The measurements in this work concern trained models and their software
-execution on the available computing platform. They characterize candidates for
-further deployment work. Implementation on a flight processor, measurement of
-onboard power consumption and radiation qualification belong to the broader
-\ac{TOAST} program. Fault injection is a possible subsequent investigation; it
-is not treated here as an established property of the models.
+The experiments in this thesis assess trained models through software
+execution on the available computing platform. They provide information
+about detection performance and computational requirements that can
+support future onboard deployment. Implementation on embedded hardware
+and radiation testing belong to later stages of the broader
+\ac{TOAST} proposal~\cite{TOASTExecutiveSummary}.
 
 \section{Objectives and research questions}
 \label{sec:introduction-questions}
-The objective is to determine how a transformer-based telemetry anomaly detector
-can be simplified while characterizing the resulting changes in detection
-performance and resource requirements. This requires a reference that can be
-inspected and reproduced, followed by comparisons in which the interventions are
-explicit. The study is organized around the following research questions:
+
+The objective of this thesis is to investigate how a transformer-based
+anomaly detector can be simplified, and how these changes affect detection
+performance and resource requirements. We start from TranAD+ as a reference
+and study changes to its input window, internal dimensions, architecture
+and numerical precision. The work addresses the following research questions:
 
 \begin{enumerate}[label=\arabic*.]
-  \item \textbf{Reference reproducibility.} How closely can the published TranAD+
-  results be reproduced using the available implementation, configurations and
-  evaluation procedures, and which discrepancies remain?
+  \item \textbf{Reference reproducibility.}
+  How closely can we reproduce the published TranAD+ results using
+  the available code, the same configurations and evaluation procedures?
 
-  \item \textbf{Sensitivity to temporal context and internal width.} How do the
-  input window and feed-forward dimension affect detection quality,
-  computational requirements and variability between training repetitions?
+  \item \textbf{Window size and feed-forward dimension.}
+  How do changes to the input window and feed-forward dimension inside the transformer affect
+  model performance?
 
-  \item \textbf{Architectural simplification.} Which reductions or changes in
-  parameter sharing provide useful detection--cost trade-offs, particularly for
-  \ac{OPS-SAT}, and how consistent are these effects across the selected
-  datasets?
+  \item \textbf{Architectural simplification.}
+  Can parts of the reference model be removed or shared while retaining
+  detection performance?
+
+  \item \textbf{Quantization.}
+  How much can quantization reduce model storage, and how does it affect
+  detection performance? What results are obtained with quantized weights
+  and with integer matrix operations?
+
+  \item \textbf{Evaluation protocol.}
+  Do the metrics of the reference evaluation procedure distinguish
+  models that separate anomalous from nominal observations from models
+  that do not?
+
+  \item \textbf{Lightweight alternatives.}
+  Can a detector without transformers, based on simple statistics
+  of the signal, provide better anomaly detection with lower resource
+  requirements?
 \end{enumerate}
 
-Reference reproduction precedes the interpretation of model changes. Published
-benchmark values depend on the complete experimental procedure, including the
-conversion of scores into decisions. The evaluation therefore distinguishes the
-model output from threshold selection and from any subsequent adjustment of the
-predicted labels. In particular, reproducing the reference protocol and
-estimating performance with choices fixed before the test are separate aims.
-Chapter~\ref{chap:datasets} defines these procedures and the uses of labels in
-each of them.
+The benchmark reproduction establishes a reference for the subsequent
+comparisons. The evaluation procedure must also be considered, since
+detection scores depend, for example, on how thresholds are selected.
 
-The hyperparameter study changes temporal context and feed-forward width
-separately and jointly. The architectural study then examines weight sharing and
-the removal of processing stages. These comparisons test whether the resources
-used by the reference are necessary for the observed detection performance. An
-improvement after simplification is treated as an empirical result to explain,
-not as evidence that every further reduction will also be beneficial.
+These experiments test which resource reductions can be achieved
+without losing detection capability, and whether they can also improve
+detection performance. The direction and
+size of each effect must therefore be established from the results.
 
-Training repetitions provide information about sensitivity to initialization
-and the other random operations in optimization. Comparisons use corresponding
-seeds and report variability alongside average performance. The aim is to
-identify effects that persist across repetitions, while retaining configurations
-that reveal a loss of detection capability. This is particularly relevant when
-a modest difference in mean performance is comparable to the variation between
-runs.
+For the model-comparison studies, repeated training runs are used
+to assess sensitivity to random initialization and other random
+operations during training. Comparisons use corresponding seeds,
+and average performance is reported together with its variability:
+this helps distinguish consistent effects from differences that
+depend on an individual run.
 
 \section{Contributions and organization of the thesis}
 \label{sec:introduction-contributions}
-The contribution of this work is a documented experimental assessment of
-simplification, starting from an existing detector and retaining a connection
-between detection results and implementation cost. The reference-reproduction
-stage reconstructs the configurations and evaluation choices needed to interpret
-the published comparisons. The adaptation to \ac{OPS-SAT} makes the fragment
-structure and label granularity explicit, while preserving its role as the
-principal application.
-% Sources for thesis activities: ../results/legacy/; ../tranad_plus/opssat_pipeline.py;
-% ../tranad_variants/data.py. These identify work performed, not final conclusions.
 
-The subsequent studies provide controlled comparisons of temporal windows,
-feed-forward dimensions and architectural variants. The latter include a shared
-decoder, a single encoder--decoder pass and an encoder followed by a
-reconstruction head. Changes to the training objective that accompany a
-single-output architecture are included in the experimental description. The
-analysis considers parameter storage, estimated arithmetic operations and
-measured execution time together with detection metrics and their variability.
-% Sources: ../results/v10/study/; ../results/v12/study/;
-% ../results/v13/architectures/; ../tranad_variants/models/;
-% ../tranad_variants/training/objectives.py. Additional repetitions are ongoing;
-% the introduction makes no claim about their final outcomes.
+As already stated, this thesis provides an experimental study of model simplification
+for anomaly detection in satellite telemetry. We start from
+the reproduction of TranAD+ benchmarks and its adaptation to
+\ac{OPS-SAT}.
 
-The remaining chapters follow this progression. Chapter~\ref{chap:background}
-introduces time-series anomaly detection, transformer models and the TranAD and
-TranAD+ reference approaches. It also defines the model components considered
-for simplification.
+The subsequent experiments examine changes to window size,
+feed-forward dimension, model architecture and numerical precision.
+The architectural variants include a shared decoder, a single
+encoder--decoder pass and an encoder followed by a reconstruction head.
+Quantization is then evaluated using
+the corresponding trained models as references. We also examine the
+evaluation procedure itself and compare TranAD+ with lightweight
+detectors without transformers.
 
-Chapter~\ref{chap:datasets} presents the datasets and their distinct roles,
-together with preprocessing, data splits, anomaly scoring, threshold selection
-and resource measurements. Chapter~\ref{chap:replication} examines reference
-reproduction and the adaptation to \ac{OPS-SAT}, including discrepancies that
-affect the interpretation of benchmark results.
+The remaining chapters are organized as follows.
+Chapter~\ref{chap:background} introduces time-series anomaly detection,
+transformers, TranAD and TranAD+: it explains the model components
+considered in the experiments and introduces lightweight detectors
+without transformers.
 
-Chapter~\ref{chap:ablation} studies window size and feed-forward dimension,
-considering their individual effects, interactions and variability.
-Chapter~\ref{chap:architecture} evaluates the architectural variants and compares
-their detection performance with their resource requirements.
-Chapter~\ref{chap:conclusions} brings the findings together, discusses the limits
-of the conclusions and identifies subsequent work within \ac{TOAST}.
-Appendix~\ref{app:reproducibility} collects supporting reproducibility materials.
+Chapter~\ref{chap:datasets} presents the datasets, preprocessing,
+training and evaluation procedures. It also describes anomaly scores,
+threshold selection, point adjustment and the quantities used to assess
+resource requirements.
 
+Chapter~\ref{chap:replication} examines the reproduction of the
+TranAD+ benchmarks and the adaptation to \ac{OPS-SAT}:
+it discusses the differences between the reproduced and published
+results and the checks performed to investigate them.
+
+Chapter~\ref{chap:ablation} studies the effects of changing window size
+and feed-forward dimension, both separately and together, while Chapter~\ref{chap:architecture}
+presents the architectural variants
+and Chapter~\ref{chap:quantization} shows quantization experiments, comparing detection performance
+with resource requirements.
+
+Chapter~\ref{chap:conclusions} discusses the main findings,
+their limitations and possible developments within \ac{TOAST}.
